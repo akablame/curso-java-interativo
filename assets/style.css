@@ -21,8 +21,8 @@
   --erro:         #f08080;
 
   --texto:        #d5d5ee;
-  --texto-suave:  #6a6a96;
-  --texto-dim:    #3a3a58;
+  --texto-suave:  #8a8ab8;
+  --texto-dim:    #5a5a7f;
 
   --borda:        #1c1c2e;
   --borda-viva:   #2c2c46;
@@ -322,6 +322,8 @@ pre code { background: none; padding: 0; color: inherit; }
 .btn-secondary:hover { background: rgba(136,184,245,0.08); }
 .btn-ghost { background: transparent; color: var(--texto-suave); border-color: var(--borda-viva); }
 .btn-ghost:hover { background: var(--bg-surface); color: var(--texto); }
+.btn-outline { background: transparent; color: var(--primaria); border-color: var(--borda-viva); }
+.btn-outline:hover { background: rgba(181,160,240,0.08); color: var(--primaria); border-color: var(--primaria-dim); }
 .btn-success { background: transparent; color: var(--sucesso); border-color: var(--sucesso); }
 .btn-success:hover { background: rgba(144,212,168,0.08); }
 .btn-sm { padding: 0.3rem 0.7rem; font-size: 0.8rem; }
@@ -681,6 +683,40 @@ select option { background: var(--bg-elevated); color: var(--texto); }
 
 /* ── hljs ────────────────────────────────────────────────── */
 .hljs { background: var(--bg-code) !important; }
+
+/* ── Dark theme contrast fixes for page-local controls ───── */
+.theme-btn:not(.active),
+.theme-chip:not(.on),
+.tf-chip:not(.on),
+.alpha-btn:not(.active),
+.proj-tab:not(.active),
+.hier-box,
+.canvas-toolbar button,
+.btn-sm-dark,
+.btn-outline {
+  color: var(--texto-suave) !important;
+}
+
+.theme-btn:not(.active):hover,
+.theme-chip:not(.on):hover,
+.tf-chip:not(.on):hover,
+.alpha-btn:not(.active):hover,
+.proj-tab:not(.active):hover,
+.canvas-toolbar button:hover,
+.btn-sm-dark:hover,
+.btn-outline:hover {
+  color: var(--primaria) !important;
+  border-color: var(--primaria-dim) !important;
+  background: rgba(181,160,240,0.08) !important;
+}
+
+.theme-btn.active,
+.theme-chip.on,
+.tf-chip.on,
+.alpha-btn.active,
+.proj-tab.active {
+  color: #ffffff !important;
+}
 
 /* ── Print ───────────────────────────────────────────────── */
 @media print {
