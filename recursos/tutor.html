@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutor Local - Curso Java</title>
+  <link rel="stylesheet" href="../assets/style.css" />
+  <style>
+    .tutor-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .tutor-panel,
+    .tutor-side {
+      background: var(--bg-card);
+      border: 1px solid var(--borda);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .tutor-panel-head,
+    .tutor-side-head {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--borda);
+      padding: 1rem 1.25rem;
+    }
+
+    .tutor-panel-body,
+    .tutor-side-body {
+      padding: 1.25rem;
+    }
+
+    .question-box {
+      min-height: 112px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--texto);
+      margin-bottom: 0.45rem;
+    }
+
+    .suggestion-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 0.85rem;
+    }
+
+    .suggestion-chip,
+    .topic-chip,
+    .history-chip {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--borda-brilho);
+      background: var(--bg-surface);
+      color: var(--texto);
+      border-radius: 999px;
+      padding: 0.38rem 0.75rem;
+      font: inherit;
+      font-size: 0.84rem;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+
+    .suggestion-chip:hover,
+    .topic-chip:hover,
+    .history-chip:hover {
+      border-color: var(--primaria-dim);
+      background: rgba(181,160,240,0.08);
+      color: var(--primaria);
+    }
+
+    .answer-card {
+      margin-top: 1.25rem;
+      border: 1px solid var(--borda);
+      border-radius: var(--radius);
+      background: var(--bg-surface);
+      overflow: hidden;
+    }
+
+    .answer-head {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--borda);
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .answer-title {
+      margin: 0;
+      font-size: 1.15rem;
+      color: var(--texto);
+    }
+
+    .answer-score {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--texto-suave);
+      white-space: nowrap;
+      margin-top: 0.15rem;
+    }
+
+    .answer-body {
+      padding: 1.25rem;
+    }
+
+    .answer-body p {
+      color: var(--texto);
+    }
+
+    .answer-code {
+      margin: 1rem 0;
+      background: var(--bg-code);
+      border: 1px solid var(--borda);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      overflow-x: auto;
+      font-family: var(--mono);
+      color: var(--texto);
+      font-size: 0.84rem;
+      line-height: 1.6;
+      white-space: pre;
+    }
+
+    .answer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 1rem;
+    }
+
+    .answer-link {
+      display: inline-flex;
+      border: 1px solid var(--borda-brilho);
+      border-radius: var(--radius-sm);
+      padding: 0.45rem 0.7rem;
+      color: var(--secundaria);
+      background: rgba(136,184,245,0.06);
+      font-weight: 600;
+      font-size: 0.84rem;
+      text-decoration: none;
+    }
+
+    .answer-link:hover {
+      border-color: var(--secundaria);
+      color: var(--secundaria);
+      text-decoration: none;
+      background: rgba(136,184,245,0.1);
+    }
+
+    .fallback-list {
+      margin-top: 1rem;
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .fallback-btn {
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--borda-brilho);
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      color: var(--texto);
+      padding: 0.75rem;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .fallback-btn:hover {
+      border-color: var(--primaria-dim);
+      color: var(--primaria);
+    }
+
+    .topic-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .history-list {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .empty-note {
+      color: var(--texto-suave);
+      font-size: 0.88rem;
+      margin: 0;
+    }
+
+    @media (max-width: 900px) {
+      .tutor-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .answer-head {
+        flex-direction: column;
+      }
+
+      .suggestion-chip,
+      .topic-chip,
+      .history-chip {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <a href="../index.html" class="navbar-brand">Curso Java</a>
+      <button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button>
+      <div class="navbar-links">
+        <a href="flashcards.html">Flashcards</a>
+        <a href="quiz-geral.html">Quiz</a>
+        <a href="cheatsheet-java.html">Java</a>
+        <a href="cheatsheet-sql.html">SQL</a>
+        <a href="glossario.html">Glossário</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="container">
+      <div class="breadcrumb"><a href="../index.html">Home</a> › Recursos</div>
+      <h1>Tutor Local</h1>
+      <p>Respostas rápidas com base no material do curso. Sem API, sem conta externa e sem custo.</p>
+    </div>
+  </header>
+
+  <main class="container section">
+    <div class="tutor-layout">
+      <section class="tutor-panel">
+        <div class="tutor-panel-head">
+          <h2>Pergunte sobre o curso</h2>
+          <p class="text-muted text-sm">O tutor entende buscas curtas, erros comuns e perguntas sem acento.</p>
+        </div>
+        <div class="tutor-panel-body">
+          <label class="form-label" for="questionInput">Sua pergunta</label>
+          <textarea id="questionInput" class="question-box" placeholder="Exemplo: oq é left join?"></textarea>
+          <div class="flex gap-1 mt-2 flex-wrap">
+            <button id="askBtn" class="btn btn-primary">Responder</button>
+            <button id="clearBtn" class="btn btn-ghost">Limpar</button>
+          </div>
+
+          <div class="suggestion-row" id="suggestions"></div>
+
+          <div id="answerArea" class="answer-card" aria-live="polite">
+            <div class="answer-head">
+              <div>
+                <h3 class="answer-title">Faça uma pergunta para começar</h3>
+                <p class="empty-note mt-1">Você pode perguntar por conceitos de Java, SQL, POO, front-end, UML e projeto final.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="tutor-side">
+        <div class="tutor-side-head">
+          <h3>Atalhos</h3>
+        </div>
+        <div class="tutor-side-body">
+          <p class="text-muted text-sm mb-2">Temas que o tutor consegue explicar:</p>
+          <div class="topic-grid" id="topicGrid"></div>
+
+          <hr style="border:0;border-top:1px solid var(--borda);margin:1.25rem 0" />
+
+          <h4 class="mb-1">Perguntas recentes</h4>
+          <div class="history-list" id="historyList">
+            <p class="empty-note">Nenhuma pergunta ainda.</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="../index.html">Voltar ao portal</a> | <a href="glossario.html">Glossário</a> | <a href="quiz-geral.html">Quiz</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const LINKS = {
+      logica: [{ label: 'Dia 1 - Lógica', href: '../dia1-logica/conteudo.html' }, { label: 'Exercícios de lógica', href: '../dia1-logica/exercicios.html' }],
+      java: [{ label: 'Cheatsheet Java', href: 'cheatsheet-java.html' }, { label: 'Playground Java', href: '../dia1-logica/playground.html' }],
+      poo: [{ label: 'Dia 2 - POO', href: '../dia2-poo/conteudo.html' }, { label: 'Visualizador de classes', href: '../dia2-poo/visualizador-classes.html' }],
+      sql: [{ label: 'Dia 3 - Banco de Dados', href: '../dia3-banco/conteudo.html' }, { label: 'SQL Playground', href: '../dia3-banco/sql-playground.html' }, { label: 'Cheatsheet SQL', href: 'cheatsheet-sql.html' }],
+      web: [{ label: 'Dia 4 - Front-end', href: '../dia4-frontend/conteudo.html' }, { label: 'Editor ao vivo', href: '../dia4-frontend/editor-ao-vivo.html' }],
+      eng: [{ label: 'Dia 5 - Engenharia', href: '../dia5-engenharia/conteudo.html' }, { label: 'UML interativo', href: '../dia5-engenharia/uml-interativo.html' }],
+      projeto: [{ label: 'Dia 6 - Guia de projeto', href: '../dia6-projeto/guia-projeto.html' }, { label: 'Checklist final', href: '../dia6-projeto/checklist.html' }]
+    };
+
+    const KNOWLEDGE = [
+      {
+        title: 'LEFT JOIN',
+        aliases: ['left join', 'join esquerda', 'left', 'o que e left join', 'oq e left join'],
+        tags: ['sql', 'banco', 'join', 'relacionamento'],
+        links: LINKS.sql,
+        answer: [
+          'LEFT JOIN é uma junção que mantém todos os registros da tabela da esquerda, mesmo quando não existe correspondência na tabela da direita.',
+          'Use quando você quer listar o conjunto principal inteiro e trazer dados relacionados quando eles existirem. Se não existir relação, os campos da tabela da direita aparecem como NULL.',
+          'Exemplo cotidiano: listar todos os alunos e, quando houver, mostrar a turma de cada um. Aluno sem turma continua aparecendo.'
+        ],
+        code: `SELECT a.nome, t.nome AS turma
+FROM alunos a
+LEFT JOIN turmas t ON a.turma_id = t.id;`
+      },
+      {
+        title: 'INNER JOIN',
+        aliases: ['inner join', 'join', 'juncao interna', 'junção interna'],
+        tags: ['sql', 'banco', 'join', 'relacionamento'],
+        links: LINKS.sql,
+        answer: [
+          'INNER JOIN retorna apenas os registros que têm correspondência nas duas tabelas.',
+          'Use quando o resultado só faz sentido se a relação existir dos dois lados. Se um aluno não tiver turma, ele não aparece nesse tipo de consulta.'
+        ],
+        code: `SELECT a.nome, t.nome AS turma
+FROM alunos a
+INNER JOIN turmas t ON a.turma_id = t.id;`
+      },
+      {
+        title: 'SELECT',
+        aliases: ['select', 'consulta sql', 'buscar dados', 'pesquisar no banco'],
+        tags: ['sql', 'banco', 'consulta'],
+        links: LINKS.sql,
+        answer: [
+          'SELECT é o comando usado para consultar dados em uma tabela.',
+          'Ele pode buscar todas as colunas, escolher colunas específicas, filtrar com WHERE, ordenar com ORDER BY e combinar tabelas com JOIN.'
+        ],
+        code: `SELECT nome, email
+FROM alunos
+WHERE ativo = 1
+ORDER BY nome;`
+      },
+      {
+        title: 'INSERT',
+        aliases: ['insert', 'inserir', 'cadastrar no banco', 'adicionar registro'],
+        tags: ['sql', 'banco', 'crud'],
+        links: LINKS.sql,
+        answer: [
+          'INSERT adiciona um novo registro em uma tabela.',
+          'No projeto final, ele aparece quando você cadastra um aluno, livro, produto, veículo ou cliente.'
+        ],
+        code: `INSERT INTO alunos (nome, email, ativo)
+VALUES ('Ana', 'ana@email.com', 1);`
+      },
+      {
+        title: 'UPDATE',
+        aliases: ['update', 'atualizar', 'editar registro', 'alterar dados'],
+        tags: ['sql', 'banco', 'crud'],
+        links: LINKS.sql,
+        answer: [
+          'UPDATE altera registros que já existem.',
+          'Quase sempre ele deve vir com WHERE. Sem WHERE, você pode alterar todos os registros da tabela.'
+        ],
+        code: `UPDATE alunos
+SET email = 'novo@email.com'
+WHERE id = 1;`
+      },
+      {
+        title: 'DELETE',
+        aliases: ['delete', 'deletar', 'excluir registro', 'remover do banco'],
+        tags: ['sql', 'banco', 'crud'],
+        links: LINKS.sql,
+        answer: [
+          'DELETE remove registros de uma tabela.',
+          'Assim como UPDATE, ele precisa de cuidado com WHERE. Sem filtro, pode apagar a tabela inteira.'
+        ],
+        code: `DELETE FROM alunos
+WHERE id = 1;`
+      },
+      {
+        title: 'WHERE e HAVING',
+        aliases: ['where having', 'having', 'where', 'diferenca where having', 'diferença where having'],
+        tags: ['sql', 'filtro', 'group by'],
+        links: LINKS.sql,
+        answer: [
+          'WHERE filtra linhas antes do agrupamento. HAVING filtra resultados depois do GROUP BY.',
+          'Regra prática: filtro normal usa WHERE; filtro em soma, média, contagem ou outro agregado usa HAVING.'
+        ],
+        code: `SELECT turma_id, AVG(nota) AS media
+FROM alunos
+GROUP BY turma_id
+HAVING AVG(nota) >= 7;`
+      },
+      {
+        title: 'GROUP BY',
+        aliases: ['group by', 'agrupar sql', 'agrupamento', 'contar por categoria'],
+        tags: ['sql', 'banco', 'agregacao'],
+        links: LINKS.sql,
+        answer: [
+          'GROUP BY agrupa linhas que têm o mesmo valor em uma ou mais colunas.',
+          'Ele é usado com funções como COUNT, SUM, AVG, MIN e MAX para gerar resumos.'
+        ],
+        code: `SELECT turma_id, COUNT(*) AS total
+FROM alunos
+GROUP BY turma_id;`
+      },
+      {
+        title: 'Chave primária',
+        aliases: ['chave primaria', 'primary key', 'pk', 'id tabela'],
+        tags: ['sql', 'modelagem', 'banco'],
+        links: LINKS.sql,
+        answer: [
+          'Chave primária identifica cada registro de forma única dentro de uma tabela.',
+          'Normalmente é uma coluna id numérica. Ela evita registros sem identificação clara e facilita relacionamentos.'
+        ],
+        code: `CREATE TABLE alunos (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  nome VARCHAR(100) NOT NULL
+);`
+      },
+      {
+        title: 'Chave estrangeira',
+        aliases: ['chave estrangeira', 'foreign key', 'fk', 'relacionamento banco'],
+        tags: ['sql', 'modelagem', 'relacionamento'],
+        links: LINKS.sql,
+        answer: [
+          'Chave estrangeira liga uma tabela a outra.',
+          'Ela guarda o id de um registro externo. Por exemplo, aluno.turma_id aponta para turmas.id.'
+        ],
+        code: `CREATE TABLE alunos (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  nome VARCHAR(100) NOT NULL,
+  turma_id INT,
+  FOREIGN KEY (turma_id) REFERENCES turmas(id)
+);`
+      },
+      {
+        title: 'CRUD',
+        aliases: ['crud', 'cadastro completo', 'create read update delete'],
+        tags: ['projeto', 'sql', 'java'],
+        links: LINKS.projeto,
+        answer: [
+          'CRUD é o conjunto das quatro operações básicas de um sistema com cadastro: Create, Read, Update e Delete.',
+          'Em português: cadastrar, listar/consultar, editar e excluir. O projeto final precisa dessas quatro ações funcionando com interface e banco de dados.'
+        ],
+        code: `Create: INSERT
+Read:   SELECT
+Update: UPDATE
+Delete: DELETE`
+      },
+      {
+        title: 'JDBC',
+        aliases: ['jdbc', 'java banco', 'conectar java mysql', 'driver mysql'],
+        tags: ['java', 'sql', 'banco', 'mysql'],
+        links: LINKS.sql,
+        answer: [
+          'JDBC é a API que permite o Java conversar com o banco de dados.',
+          'No NetBeans, você usa o driver MySQL, abre uma conexão, prepara comandos SQL e executa consultas ou alterações.'
+        ],
+        code: `Connection conn = DriverManager.getConnection(url, usuario, senha);
+PreparedStatement stmt = conn.prepareStatement(
+  "SELECT * FROM alunos WHERE id = ?"
+);
+stmt.setInt(1, 10);
+ResultSet rs = stmt.executeQuery();`
+      },
+      {
+        title: 'Variável',
+        aliases: ['variavel', 'variável', 'o que e variavel', 'guardar valor'],
+        tags: ['logica', 'java'],
+        links: LINKS.logica,
+        answer: [
+          'Variável é um espaço com nome usado para guardar um valor durante a execução do programa.',
+          'Pense como uma etiqueta em uma caixa: o nome ajuda você a encontrar e usar o valor depois.'
+        ],
+        code: `int idade = 18;
+String nome = "Ana";
+double media = 8.5;`
+      },
+      {
+        title: 'int e double',
+        aliases: ['int double', 'diferenca int double', 'diferença int double', 'numero inteiro decimal'],
+        tags: ['java', 'tipos', 'logica'],
+        links: LINKS.java,
+        answer: [
+          'int guarda números inteiros, sem casas decimais. double guarda números com casas decimais.',
+          'Use int para idade, quantidade e códigos. Use double para preço, média, peso e medidas.'
+        ],
+        code: `int quantidade = 3;
+double preco = 19.90;`
+      },
+      {
+        title: 'if e else',
+        aliases: ['if else', 'se senao', 'condicao', 'condição', 'desvio condicional'],
+        tags: ['logica', 'java'],
+        links: LINKS.logica,
+        answer: [
+          'if e else permitem que o programa tome decisões.',
+          'O if executa um bloco quando a condição é verdadeira. O else executa outro bloco quando a condição é falsa.'
+        ],
+        code: `if (media >= 7) {
+  System.out.println("Aprovado");
+} else {
+  System.out.println("Recuperação");
+}`
+      },
+      {
+        title: 'for',
+        aliases: ['for', 'loop for', 'laço for', 'laco for', 'repeticao for', 'repetição for'],
+        tags: ['logica', 'java', 'loop'],
+        links: LINKS.logica,
+        answer: [
+          'for é uma estrutura de repetição usada quando você sabe quantas vezes quer repetir algo.',
+          'Ele tem início, condição de continuação e incremento no mesmo lugar.'
+        ],
+        code: `for (int i = 1; i <= 5; i++) {
+  System.out.println("Número " + i);
+}`
+      },
+      {
+        title: 'while',
+        aliases: ['while', 'loop while', 'enquanto', 'repetir enquanto'],
+        tags: ['logica', 'java', 'loop'],
+        links: LINKS.logica,
+        answer: [
+          'while repete um bloco enquanto a condição for verdadeira.',
+          'Ele é útil quando você não sabe exatamente quantas repetições serão necessárias antes de começar.'
+        ],
+        code: `int opcao = 0;
+while (opcao != 5) {
+  System.out.println("Menu aberto");
+  opcao++;
+}`
+      },
+      {
+        title: 'Array',
+        aliases: ['array', 'vetor', 'lista simples', 'guardar varios valores'],
+        tags: ['logica', 'java'],
+        links: LINKS.logica,
+        answer: [
+          'Array é uma estrutura que guarda vários valores do mesmo tipo em uma única variável.',
+          'Cada posição tem um índice, começando em zero.'
+        ],
+        code: `String[] nomes = {"Ana", "Bruno", "Carla"};
+System.out.println(nomes[0]);`
+      },
+      {
+        title: 'Método',
+        aliases: ['metodo', 'método', 'funcao', 'função', 'rotina java'],
+        tags: ['java', 'logica', 'poo'],
+        links: LINKS.java,
+        answer: [
+          'Método é um bloco de código com nome que executa uma tarefa.',
+          'Ele ajuda a reaproveitar código e deixar o programa mais organizado.'
+        ],
+        code: `public static double calcularMedia(double n1, double n2) {
+  return (n1 + n2) / 2;
+}`
+      },
+      {
+        title: 'Classe e objeto',
+        aliases: ['classe objeto', 'classe e objeto', 'objeto java', 'classe java'],
+        tags: ['poo', 'java'],
+        links: LINKS.poo,
+        answer: [
+          'Classe é o molde. Objeto é algo criado a partir desse molde.',
+          'Por exemplo: a classe Aluno define nome, matrícula e nota. Um objeto Aluno representa uma estudante específica.'
+        ],
+        code: `class Aluno {
+  String nome;
+}
+
+Aluno a = new Aluno();
+a.nome = "Ana";`
+      },
+      {
+        title: 'Encapsulamento',
+        aliases: ['encapsulamento', 'get set', 'getter setter', 'private public'],
+        tags: ['poo', 'java'],
+        links: LINKS.poo,
+        answer: [
+          'Encapsulamento protege os dados internos de uma classe.',
+          'A ideia é deixar atributos privados e controlar o acesso com métodos públicos, como getters e setters. Isso evita mudanças inválidas.'
+        ],
+        code: `class Conta {
+  private double saldo;
+
+  public double getSaldo() {
+    return saldo;
+  }
+}`
+      },
+      {
+        title: 'Herança',
+        aliases: ['heranca', 'herança', 'extends', 'classe filha', 'classe pai'],
+        tags: ['poo', 'java'],
+        links: LINKS.poo,
+        answer: [
+          'Herança permite criar uma classe baseada em outra.',
+          'A classe filha herda atributos e métodos da classe pai, evitando repetição quando existe uma relação clara de especialização.'
+        ],
+        code: `class Pessoa {
+  String nome;
+}
+
+class Aluno extends Pessoa {
+  String matricula;
+}`
+      },
+      {
+        title: 'Polimorfismo',
+        aliases: ['polimorfismo', 'override', 'sobrescrita', 'mesmo metodo comportamento diferente'],
+        tags: ['poo', 'java'],
+        links: LINKS.poo,
+        answer: [
+          'Polimorfismo permite que objetos diferentes respondam ao mesmo método de formas diferentes.',
+          'É comum quando classes filhas sobrescrevem um método herdado da classe pai.'
+        ],
+        code: `class Relatorio {
+  void gerar() { System.out.println("Relatório genérico"); }
+}
+
+class RelatorioPDF extends Relatorio {
+  @Override
+  void gerar() { System.out.println("Gerando PDF"); }
+}`
+      },
+      {
+        title: 'HTML',
+        aliases: ['html', 'tag html', 'estrutura pagina', 'estrutura página'],
+        tags: ['web', 'frontend'],
+        links: LINKS.web,
+        answer: [
+          'HTML define a estrutura da página.',
+          'Ele diz quais partes existem: título, parágrafo, botão, formulário, tabela, imagem e assim por diante.'
+        ],
+        code: `<h1>Cadastro de Alunos</h1>
+<p>Preencha os dados abaixo.</p>
+<button>Salvar</button>`
+      },
+      {
+        title: 'CSS',
+        aliases: ['css', 'estilo css', 'visual pagina', 'layout css'],
+        tags: ['web', 'frontend'],
+        links: LINKS.web,
+        answer: [
+          'CSS controla a aparência da página.',
+          'Com ele você define cores, espaçamentos, fontes, tamanhos, bordas, grid, responsividade e estados de hover.'
+        ],
+        code: `.botao {
+  background: #6a56b0;
+  color: white;
+  padding: 12px 16px;
+}`
+      },
+      {
+        title: 'JavaScript',
+        aliases: ['javascript', 'js', 'interatividade', 'script'],
+        tags: ['web', 'frontend'],
+        links: LINKS.web,
+        answer: [
+          'JavaScript adiciona comportamento à página.',
+          'Ele responde a cliques, valida formulários, altera textos na tela e pode salvar progresso no localStorage.'
+        ],
+        code: `document.querySelector("button").addEventListener("click", () => {
+  alert("Salvo com sucesso");
+});`
+      },
+      {
+        title: 'JFrame',
+        aliases: ['jframe', 'swing', 'tela netbeans', 'interface java'],
+        tags: ['java', 'frontend', 'netbeans'],
+        links: LINKS.web,
+        answer: [
+          'JFrame é uma janela de interface gráfica em Java Swing.',
+          'No NetBeans, ele costuma ser usado para montar telas com campos, botões e tabelas em sistemas desktop.'
+        ],
+        code: `JFrame janela = new JFrame("Sistema");
+janela.setSize(400, 300);
+janela.setVisible(true);`
+      },
+      {
+        title: 'UML',
+        aliases: ['uml', 'diagrama uml', 'diagrama de classes', 'modelagem uml'],
+        tags: ['engenharia', 'poo', 'diagrama'],
+        links: LINKS.eng,
+        answer: [
+          'UML é uma linguagem visual para representar partes de um sistema.',
+          'No curso, ela ajuda a planejar classes, casos de uso e sequências antes de escrever o código.'
+        ],
+        code: `Aluno
+-----
+- nome: String
+- matricula: String
+-----
++ calcularMedia(): double`
+      },
+      {
+        title: 'Requisitos',
+        aliases: ['requisitos', 'requisito funcional', 'requisito nao funcional', 'requisito não funcional'],
+        tags: ['engenharia', 'projeto'],
+        links: LINKS.eng,
+        answer: [
+          'Requisitos descrevem o que o sistema precisa fazer e quais qualidades ele precisa ter.',
+          'Funcional é uma ação do sistema, como cadastrar aluno. Não funcional é uma qualidade, como ser rápido, seguro ou fácil de usar.'
+        ],
+        code: `RF01 - O sistema deve cadastrar alunos.
+RNF01 - O sistema deve responder em até 2 segundos.`
+      },
+      {
+        title: 'MVC',
+        aliases: ['mvc', 'model view controller', 'arquitetura mvc', 'separar camadas'],
+        tags: ['engenharia', 'java', 'projeto'],
+        links: LINKS.projeto,
+        answer: [
+          'MVC separa o sistema em três responsabilidades: Model, View e Controller.',
+          'Model representa dados e regras. View é a tela. Controller faz a ponte entre tela, regras e ações do usuário.'
+        ],
+        code: `Model: Aluno.java
+View: TelaAluno.java
+Controller: AlunoController.java`
+      },
+      {
+        title: 'Scrum',
+        aliases: ['scrum', 'sprint', 'backlog', 'metodologia agil', 'metodologia ágil'],
+        tags: ['engenharia', 'projeto'],
+        links: LINKS.eng,
+        answer: [
+          'Scrum é uma forma de organizar trabalho em ciclos curtos chamados sprints.',
+          'Para o projeto do curso, você pode transformar tarefas em backlog, escolher prioridades e acompanhar o progresso no checklist.'
+        ],
+        code: `Backlog: cadastrar aluno, listar alunos, editar aluno
+Sprint: implementar cadastro e listagem
+Revisão: testar fluxo completo`
+      },
+      {
+        title: 'Login',
+        aliases: ['login', 'tela login', 'autenticacao', 'autenticação', 'senha usuario'],
+        tags: ['projeto', 'java', 'sql'],
+        links: LINKS.projeto,
+        answer: [
+          'Login é o fluxo que verifica se usuário e senha estão corretos antes de liberar o sistema.',
+          'No projeto final, ele combina interface, validação em Java e consulta segura no banco de dados.'
+        ],
+        code: `SELECT id, nome
+FROM usuarios
+WHERE email = ? AND senha = ?;`
+      }
+    ];
+
+    const questionInput = document.getElementById('questionInput');
+    const answerArea = document.getElementById('answerArea');
+    const suggestions = document.getElementById('suggestions');
+    const topicGrid = document.getElementById('topicGrid');
+    const historyList = document.getElementById('historyList');
+
+    const SUGGESTIONS = [
+      'oq é left join?',
+      'diferença entre int e double',
+      'o que é encapsulamento?',
+      'como funciona for?',
+      'o que é CRUD?',
+      'o que é MVC?'
+    ];
+
+    const TOPICS = ['Java', 'SQL', 'POO', 'Lógica', 'Front-end', 'UML', 'CRUD', 'Projeto final'];
+
+    function normalize(text) {
+      return String(text)
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/\bo\s*q\b/g, 'o que')
+        .replace(/\boque\b/g, 'o que')
+        .replace(/\boq\b/g, 'o que')
+        .replace(/\bpra\b/g, 'para')
+        .replace(/\bq\b/g, 'que')
+        .replace(/\bbd\b/g, 'banco de dados')
+        .replace(/[^a-z0-9\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function entryText(entry) {
+      return normalize([
+        entry.title,
+        entry.aliases.join(' '),
+        entry.tags.join(' '),
+        entry.answer.join(' ')
+      ].join(' '));
+    }
+
+    function scoreEntry(query, entry) {
+      const normalizedQuery = normalize(query);
+      const text = entryText(entry);
+      const aliases = entry.aliases.map(normalize);
+      const words = normalizedQuery.split(' ').filter(Boolean);
+      let score = 0;
+
+      if (!normalizedQuery) return 0;
+      if (normalize(entry.title) === normalizedQuery) score += 80;
+      if (aliases.includes(normalizedQuery)) score += 90;
+
+      aliases.forEach(alias => {
+        if (alias && normalizedQuery.includes(alias)) score += 45;
+        if (alias && alias.includes(normalizedQuery)) score += 25;
+      });
+
+      words.forEach(word => {
+        if (word.length <= 1) return;
+        if (text.split(' ').includes(word)) score += 8;
+        else if (text.includes(word)) score += 3;
+      });
+
+      entry.tags.forEach(tag => {
+        if (normalizedQuery.includes(normalize(tag))) score += 10;
+      });
+
+      return score;
+    }
+
+    function findAnswers(query) {
+      return KNOWLEDGE
+        .map(entry => ({ entry, score: scoreEntry(query, entry) }))
+        .filter(item => item.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 5);
+    }
+
+    function clearNode(node) {
+      while (node.firstChild) node.removeChild(node.firstChild);
+    }
+
+    function renderAnswer(query, match) {
+      clearNode(answerArea);
+
+      const entry = match.entry;
+      const head = document.createElement('div');
+      head.className = 'answer-head';
+
+      const titleWrap = document.createElement('div');
+      const title = document.createElement('h3');
+      title.className = 'answer-title';
+      title.textContent = entry.title;
+      const asked = document.createElement('p');
+      asked.className = 'empty-note mt-1';
+      asked.textContent = 'Pergunta: ' + query;
+      titleWrap.append(title, asked);
+
+      const score = document.createElement('div');
+      score.className = 'answer-score';
+      score.textContent = match.score >= 60 ? 'alta confiança' : 'resposta aproximada';
+
+      head.append(titleWrap, score);
+
+      const body = document.createElement('div');
+      body.className = 'answer-body';
+
+      entry.answer.forEach(text => {
+        const p = document.createElement('p');
+        p.textContent = text;
+        body.appendChild(p);
+      });
+
+      if (entry.code) {
+        const pre = document.createElement('pre');
+        pre.className = 'answer-code';
+        pre.textContent = entry.code;
+        body.appendChild(pre);
+      }
+
+      if (entry.links && entry.links.length) {
+        const links = document.createElement('div');
+        links.className = 'answer-links';
+        entry.links.forEach(item => {
+          const link = document.createElement('a');
+          link.className = 'answer-link';
+          link.href = item.href;
+          link.textContent = item.label;
+          links.appendChild(link);
+        });
+        body.appendChild(links);
+      }
+
+      answerArea.append(head, body);
+    }
+
+    function renderFallback(query, matches) {
+      clearNode(answerArea);
+
+      const head = document.createElement('div');
+      head.className = 'answer-head';
+      const wrap = document.createElement('div');
+      const title = document.createElement('h3');
+      title.className = 'answer-title';
+      title.textContent = 'Não encontrei uma resposta direta';
+      const note = document.createElement('p');
+      note.className = 'empty-note mt-1';
+      note.textContent = 'Tente usar uma palavra-chave como join, classe, CRUD, if, array, UML ou requisito.';
+      wrap.append(title, note);
+      head.appendChild(wrap);
+
+      const body = document.createElement('div');
+      body.className = 'answer-body';
+      const p = document.createElement('p');
+      p.textContent = 'Pergunta recebida: ' + query;
+      body.appendChild(p);
+
+      if (matches.length) {
+        const label = document.createElement('p');
+        label.className = 'text-muted text-sm';
+        label.textContent = 'Talvez você esteja procurando:';
+        body.appendChild(label);
+
+        const list = document.createElement('div');
+        list.className = 'fallback-list';
+        matches.forEach(({ entry }) => {
+          const btn = document.createElement('button');
+          btn.className = 'fallback-btn';
+          btn.type = 'button';
+          btn.textContent = entry.title;
+          btn.addEventListener('click', () => {
+            questionInput.value = entry.title;
+            ask();
+          });
+          list.appendChild(btn);
+        });
+        body.appendChild(list);
+      }
+
+      answerArea.append(head, body);
+    }
+
+    function saveHistory(query) {
+      const clean = query.trim();
+      if (!clean) return;
+      const current = JSON.parse(localStorage.getItem('tutorHistory') || '[]');
+      const next = [clean, ...current.filter(item => item !== clean)].slice(0, 6);
+      localStorage.setItem('tutorHistory', JSON.stringify(next));
+      renderHistory();
+    }
+
+    function renderHistory() {
+      clearNode(historyList);
+      const items = JSON.parse(localStorage.getItem('tutorHistory') || '[]');
+      if (!items.length) {
+        const empty = document.createElement('p');
+        empty.className = 'empty-note';
+        empty.textContent = 'Nenhuma pergunta ainda.';
+        historyList.appendChild(empty);
+        return;
+      }
+
+      items.forEach(text => {
+        const btn = document.createElement('button');
+        btn.className = 'history-chip';
+        btn.type = 'button';
+        btn.textContent = text;
+        btn.addEventListener('click', () => {
+          questionInput.value = text;
+          ask();
+        });
+        historyList.appendChild(btn);
+      });
+    }
+
+    function ask() {
+      const query = questionInput.value.trim();
+      if (!query) {
+        questionInput.focus();
+        return;
+      }
+
+      const matches = findAnswers(query);
+      if (matches.length && matches[0].score >= 18) {
+        renderAnswer(query, matches[0]);
+      } else {
+        renderFallback(query, matches);
+      }
+      saveHistory(query);
+    }
+
+    function renderSuggestions() {
+      SUGGESTIONS.forEach(text => {
+        const btn = document.createElement('button');
+        btn.className = 'suggestion-chip';
+        btn.type = 'button';
+        btn.textContent = text;
+        btn.addEventListener('click', () => {
+          questionInput.value = text;
+          ask();
+        });
+        suggestions.appendChild(btn);
+      });
+    }
+
+    function renderTopics() {
+      TOPICS.forEach(text => {
+        const btn = document.createElement('button');
+        btn.className = 'topic-chip';
+        btn.type = 'button';
+        btn.textContent = text;
+        btn.addEventListener('click', () => {
+          questionInput.value = text;
+          ask();
+        });
+        topicGrid.appendChild(btn);
+      });
+    }
+
+    document.getElementById('askBtn').addEventListener('click', ask);
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      questionInput.value = '';
+      questionInput.focus();
+    });
+    questionInput.addEventListener('keydown', event => {
+      if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) ask();
+    });
+
+    renderSuggestions();
+    renderTopics();
+    renderHistory();
+  </script>
+</body>
+</html>
