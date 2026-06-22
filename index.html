@@ -1,248 +1,494 @@
-﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Curso Java — Portal de Estudos</title><link rel="stylesheet" href="assets/style.css" /><style>.day-card {
- background: var(--bg-card);
- border-radius: 16px;
- border: 1px solid var(--borda);
- box-shadow: var(--sombra);
- overflow: hidden;
- transition: var(--transition);
- position: relative;
- display: flex;
- flex-direction: column;
- min-height: 330px;
- }
- .day-card:hover { box-shadow: var(--sombra-hover); transform: translateY(-3px); }
- #daysGrid .day-card.done .day-header { background: linear-gradient(135deg, var(--sucesso), #7DD4B0) !important; }
- .day-card.done::after {
- content: 'Concluído!';
- position: absolute;
- top: 0.85rem; right: 0.85rem;
- background: rgba(20,20,31,0.9);
- border: 1px solid rgba(255,255,255,0.14);
- color: var(--sucesso);
- font-size: 0.7rem;
- font-weight: 700;
- padding: 0.2rem 0.6rem;
- border-radius: 99px;
- z-index: 2;
- }
- #daysGrid .day-card >.day-header,
- #daysGrid .day-card >.day-header[style] {
- background: linear-gradient(135deg, var(--primaria), var(--secundaria));
- color: white;
- min-height: 118px;
- padding: 1.35rem 1.5rem 1.25rem !important;
- position: relative;
- display: flex;
- flex-direction: column;
- justify-content: center;
- border-bottom: 1px solid rgba(255,255,255,0.08);
- background-size: cover !important;
- background-position: center !important;
- overflow: hidden;
- }
- #dayCard1 >.day-header { background: linear-gradient(90deg,rgba(8,8,16,.82) 0%,rgba(8,8,16,.48) 46%,rgba(8,8,16,.14) 100%), url('assets/images/dia1.png') center/cover !important; }
- #dayCard2 >.day-header { background: linear-gradient(90deg,rgba(8,8,16,.82) 0%,rgba(8,8,16,.48) 46%,rgba(8,8,16,.14) 100%), url('assets/images/dia2.png') center/cover !important; }
- #dayCard3 >.day-header { background: linear-gradient(90deg,rgba(8,8,16,.82) 0%,rgba(8,8,16,.48) 46%,rgba(8,8,16,.14) 100%), url('assets/images/dia3.png') center/cover !important; }
- #dayCard4 >.day-header { background: linear-gradient(90deg,rgba(8,8,16,.82) 0%,rgba(8,8,16,.48) 46%,rgba(8,8,16,.14) 100%), url('assets/images/dia4.png') center/cover !important; }
- #dayCard5 >.day-header { background: linear-gradient(90deg,rgba(8,8,16,.82) 0%,rgba(8,8,16,.48) 46%,rgba(8,8,16,.14) 100%), url('assets/images/dia5.png') center/cover !important; }
- #dayCard6 >.day-header { background: linear-gradient(90deg,rgba(8,8,16,.82) 0%,rgba(8,8,16,.48) 46%,rgba(8,8,16,.14) 100%), url('assets/images/dia6.png') center/cover !important; }
- #daysGrid .day-card >.day-header::after { display: none; }
- .day-number { font-size: 0.74rem; font-weight: 800; opacity: 0.82; text-transform: uppercase; letter-spacing: 0.08em; }
- .day-title {
- font-size: 1.16rem;
- font-weight: 800;
- line-height: 1.25;
- margin-top: 0.35rem;
- max-width: 100%;
- min-height: 2.9rem;
- display: flex;
- align-items: flex-start;
- }
- .day-icon { display: none; }
- .day-body {
- padding: 1.25rem 1.5rem 1.35rem;
- display: flex;
- flex: 1;
- flex-direction: column;
- }
- .day-body >.progress-bar { flex: 0 0 8px; }
- .topic-tags {
- display: flex;
- flex-wrap: wrap;
- align-content: flex-start;
- gap: 0.42rem;
- margin: 0.9rem 0 1rem;
- min-height: 62px;
- }
- .topic-tag {
- background: rgba(181,160,240,0.08);
- color: var(--primaria);
- font-size: 0.72rem;
- font-weight: 600;
- line-height: 1.2;
- padding: 0.28rem 0.6rem;
- border-radius: 99px;
- white-space: nowrap;
- }
- .day-links {
- display: grid;
- grid-template-columns: repeat(3, minmax(0, 1fr));
- gap: 0.55rem;
- margin-top: auto;
- }
- .day-links a {
- min-width: 0;
- min-height: 2.75rem;
- text-align: center;
- padding: 0.55rem 0.45rem;
- border-radius: 10px;
- font-size: 0.78rem;
- font-weight: 700;
- line-height: 1.25;
- background: rgba(181,160,240,0.06);
- color: var(--primaria);
- border: 1px solid var(--borda);
- transition: var(--transition);
- display: flex;
- align-items: center;
- justify-content: center;
- flex-direction: row;
- gap: 0.18rem;
- }
- .day-links a:hover { background: var(--primaria); color: white; border-color: var(--primaria); }
- .day-card .btn.w-full {
- min-height: 2.3rem;
- justify-content: center;
- margin-top: 1rem;
- padding: 0.45rem 0.7rem;
- border-radius: 7px;
- line-height: 1.25;
- }
- .hero-stats { display: flex; gap: 1.5rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
- .stat-item { text-align: center; }
- .stat-value { font-size: 2rem; font-weight: 700; color: white; }
- .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.75); }
- .overall-progress { background: var(--bg-card); border-radius: 16px; padding: 1.5rem 2rem; margin: 2rem 0 1rem; box-shadow: var(--sombra); }
- .overall-progress h3 { margin-bottom: 0.5rem; }
- .shortcuts { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
- .shortcut-card {
- flex: 1;
- min-width: 140px;
- background: var(--bg-card);
- border-radius: 12px;
- padding: 1rem 1.25rem;
- border: 1px solid var(--borda);
- box-shadow: var(--sombra);
- text-align: center;
- text-decoration: none;
- transition: var(--transition);
- }
- .shortcut-card:hover { transform: translateY(-2px); box-shadow: var(--sombra-hover); }
- .shortcut-icon { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
- .shortcut-name { font-size: 0.85rem; font-weight: 700; color: var(--texto); }
- .shortcut-desc { font-size: 0.75rem; color: var(--texto-suave); }
- .progress-days { display: flex; gap: 0.4rem; margin-top: 0.75rem; }
- .progress-dot {
- width: 32px; height: 32px;
- border-radius: 50%;
- background: var(--borda);
- display: flex; align-items: center; justify-content: center;
- font-size: 0.7rem;
- font-weight: 700;
- color: var(--texto-suave);
- cursor: pointer;
- transition: var(--transition);
- }
- .progress-dot.done { background: var(--sucesso); color: white; }
- .progress-dot:hover { transform: scale(1.1); }
- .welcome-msg { font-size: 0.95rem; color: rgba(255,255,255,0.9); max-width: 500px; margin: 0.75rem auto 0; }
- @media(max-width:900px){
- #daysGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
- }
- @media(max-width:600px){
- .hero-stats { gap: 1rem; }
- .stat-value { font-size: 1.5rem; }
- #daysGrid { grid-template-columns: 1fr; }
- .day-card { min-height: 0; }
- #daysGrid .day-card >.day-header,
- #daysGrid .day-card >.day-header[style] { min-height: 118px; padding: 1.2rem 1.25rem !important; }
- .day-body { padding: 1.1rem 1.25rem 1.25rem; }
- .topic-tags { min-height: 0; }
- .day-links { grid-template-columns: repeat(3, minmax(0, 1fr)); }
- .day-links a { min-height: 3.15rem; font-size: 0.74rem; }
- }
- @media(max-width:380px){
- .day-links { grid-template-columns: 1fr; }
- .day-links a { min-height: 2.6rem; flex-direction: row; }
- }
- </style></head><body><!-- NAVBAR --><nav class="navbar"><div class="container navbar-inner"><a href="index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="recursos/flashcards.html">Flashcards</a><a href="recursos/quiz-geral.html">Quiz</a><a href="recursos/cheatsheet-java.html">Java</a><a href="recursos/cheatsheet-sql.html">SQL</a><a href="recursos/glossario.html">Glossário</a></div></div></nav><!-- HERO --><section class="hero"><div class="container"><div class="hero-badge">Curso Completo de Programação Java</div><h1 id="heroGreeting">Olá! Vamos programar? </h1><p class="welcome-msg">6 dias de conteúdo interativo, do zero ao projeto completo. Cada dia, um novo superpoder!</p><div class="hero-stats"><div class="stat-item"><div class="stat-value">6</div><div class="stat-label">Dias de Conteúdo</div></div><div class="stat-item"><div class="stat-value" id="totalTopics">40+</div><div class="stat-label">Tópicos</div></div><div class="stat-item"><div class="stat-value">5</div><div class="stat-label">Projetos Práticos</div></div><div class="stat-item"><div class="stat-value" id="daysCompleted">0</div><div class="stat-label">Dias Concluídos</div></div></div></div></section><!-- PROGRESSO GERAL --><div class="container"><div class="overall-progress mt-3"><div class="flex items-center justify-between mb-1"><h3>Seu Progresso Geral</h3><span id="progressPercent" class="badge badge-primary">0%</span></div><div class="progress-bar mb-2"><div class="progress-fill" id="progressFill" style="width:0%"></div></div><div class="progress-days" id="progressDots"></div><p class="text-sm text-muted mt-1" id="motivMsg">Comece pelo Dia 1 — Lógica de Programação! </p></div></div><!-- ATALHOS RÁPIDOS --><div class="container"><h2 class="mt-2 mb-2" style="font-size:1.1rem; color:var(--texto-suave); font-weight:600; text-transform:uppercase; letter-spacing:0.05em;">Acesso Rápido</h2><div class="shortcuts"><a href="recursos/flashcards.html" class="shortcut-card"><div class="shortcut-name">Flashcards</div><div class="shortcut-desc">75 cartões de revisão</div></a><a href="recursos/quiz-geral.html" class="shortcut-card"><div class="shortcut-name">Quiz Geral</div><div class="shortcut-desc">50 questões + pontuação</div></a><a href="recursos/cheatsheet-java.html" class="shortcut-card"><div class="shortcut-name">Cheatsheet Java</div><div class="shortcut-desc">Referência rápida</div></a><a href="recursos/cheatsheet-sql.html" class="shortcut-card"><div class="shortcut-name">Cheatsheet SQL</div><div class="shortcut-desc">Comandos SQL</div></a><a href="recursos/glossario.html" class="shortcut-card"><div class="shortcut-name">Glossário</div><div class="shortcut-desc">60+ termos explicados</div></a><a href="dia6-projeto/checklist.html" class="shortcut-card"><div class="shortcut-name">Checklist</div><div class="shortcut-desc">Acompanhe seu progresso</div></a></div></div><!-- DIAS DO CURSO --><div class="container section"><h2 class="mb-3" style="font-size:1.1rem;color:var(--texto-suave);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Conteúdo por Dia</h2><div class="grid grid-3" id="daysGrid"><!-- DIA 1 --><div class="day-card" id="dayCard1"><div class="day-header"><div class="day-number">Dia 1</div><div class="day-title">Lógica de Programação</div></div><div class="day-body"><div class="progress-bar"><div class="progress-fill" id="prog1" style="width:0%"></div></div><div class="topic-tags"><span class="topic-tag">Variáveis</span><span class="topic-tag">Tipos</span><span class="topic-tag">if/else</span><span class="topic-tag">Loops</span><span class="topic-tag">Arrays</span><span class="topic-tag">Funções</span><span class="topic-tag">Algoritmos</span></div><div class="day-links"><a href="dia1-logica/conteudo.html">Conteúdo</a><a href="dia1-logica/exercicios.html">Exercícios</a><a href="dia1-logica/playground.html">Playground</a></div><button class="btn btn-sm w-full mt-2" style="background:rgba(106,86,176,0.08);color:var(--primaria);border:1px solid var(--borda);" onclick="toggleDay(1)"><span id="doneBtn1">Marcar como Concluído</span></button></div></div><!-- DIA 2 --><div class="day-card" id="dayCard2"><div class="day-header" style="background:linear-gradient(135deg,#E97CA0,#F4A03A)"><div class="day-number">Dia 2</div><div class="day-title">Orientação a Objetos</div></div><div class="day-body"><div class="progress-bar"><div class="progress-fill" id="prog2" style="width:0%"></div></div><div class="topic-tags"><span class="topic-tag">Classes</span><span class="topic-tag">Objetos</span><span class="topic-tag">Encapsulamento</span><span class="topic-tag">Herança</span><span class="topic-tag">Polimorfismo</span></div><div class="day-links"><a href="dia2-poo/conteudo.html">Conteúdo</a><a href="dia2-poo/exercicios.html">Exercícios</a><a href="dia2-poo/visualizador-classes.html">Visualizador</a></div><button class="btn btn-sm w-full mt-2" style="background:rgba(106,86,176,0.08);color:var(--primaria);border:1px solid var(--borda);" onclick="toggleDay(2)"><span id="doneBtn2">Marcar como Concluído</span></button></div></div><!-- DIA 3 --><div class="day-card" id="dayCard3"><div class="day-header" style="background:linear-gradient(135deg,#5DAF8E,var(--secundaria))"><div class="day-number">Dia 3</div><div class="day-title">Banco de Dados</div></div><div class="day-body"><div class="progress-bar"><div class="progress-fill" id="prog3" style="width:0%"></div></div><div class="topic-tags"><span class="topic-tag">SQL</span><span class="topic-tag">SELECT</span><span class="topic-tag">INSERT</span><span class="topic-tag">Relacionamentos</span><span class="topic-tag">MySQL</span></div><div class="day-links"><a href="dia3-banco/conteudo.html">Conteúdo</a><a href="dia3-banco/exercicios.html">Exercícios</a><a href="dia3-banco/sql-playground.html">SQL Play</a></div><button class="btn btn-sm w-full mt-2" style="background:rgba(106,86,176,0.08);color:var(--primaria);border:1px solid var(--borda);" onclick="toggleDay(3)"><span id="doneBtn3">Marcar como Concluído</span></button></div></div><!-- DIA 4 --><div class="day-card" id="dayCard4"><div class="day-header" style="background:linear-gradient(135deg,#F4A03A,#E97CA0)"><div class="day-number">Dia 4</div><div class="day-title">Front-end</div></div><div class="day-body"><div class="progress-bar"><div class="progress-fill" id="prog4" style="width:0%"></div></div><div class="topic-tags"><span class="topic-tag">HTML</span><span class="topic-tag">CSS</span><span class="topic-tag">JavaScript</span><span class="topic-tag">JFrame</span></div><div class="day-links"><a href="dia4-frontend/conteudo.html">Conteúdo</a><a href="dia4-frontend/exercicios.html">Exercícios</a><a href="dia4-frontend/editor-ao-vivo.html">Editor</a></div><button class="btn btn-sm w-full mt-2" style="background:rgba(106,86,176,0.08);color:var(--primaria);border:1px solid var(--borda);" onclick="toggleDay(4)"><span id="doneBtn4">Marcar como Concluído</span></button></div></div><!-- DIA 5 --><div class="day-card" id="dayCard5"><div class="day-header" style="background:linear-gradient(135deg,var(--secundaria),var(--primaria))"><div class="day-number">Dia 5</div><div class="day-title">Engenharia de Software</div></div><div class="day-body"><div class="progress-bar"><div class="progress-fill" id="prog5" style="width:0%"></div></div><div class="topic-tags"><span class="topic-tag">UML</span><span class="topic-tag">Requisitos</span><span class="topic-tag">Arquitetura</span><span class="topic-tag">Scrum</span></div><div class="day-links"><a href="dia5-engenharia/conteudo.html">Conteúdo</a><a href="dia5-engenharia/exercicios.html">Exercícios</a><a href="dia5-engenharia/uml-interativo.html">UML</a></div><button class="btn btn-sm w-full mt-2" style="background:rgba(106,86,176,0.08);color:var(--primaria);border:1px solid var(--borda);" onclick="toggleDay(5)"><span id="doneBtn5">Marcar como Concluído</span></button></div></div><!-- DIA 6 --><div class="day-card" id="dayCard6"><div class="day-header" style="background:linear-gradient(135deg,var(--primaria),#E97CA0)"><div class="day-number">Dia 6</div><div class="day-title">Projeto Completo</div></div><div class="day-body"><div class="progress-bar"><div class="progress-fill" id="prog6" style="width:0%"></div></div><div class="topic-tags"><span class="topic-tag">Login</span><span class="topic-tag">BD</span><span class="topic-tag">Interface</span><span class="topic-tag">CRUD</span><span class="topic-tag">5 Projetos</span></div><div class="day-links"><a href="dia6-projeto/guia-projeto.html">Guia</a><a href="dia6-projeto/checklist.html">Checklist</a></div><button class="btn btn-sm w-full mt-2" style="background:rgba(106,86,176,0.08);color:var(--primaria);border:1px solid var(--borda);" onclick="toggleDay(6)"><span id="doneBtn6">Marcar como Concluído</span></button></div></div></div></div><!-- FOOTER --><footer class="footer"><div class="container"><p>Feito com carinho para você aprender Java do jeito certo</p><p class="text-xs mt-1" style="color:#aaa">Salvo automaticamente no navegador — sem internet necessária para estudar</p></div></footer><script>// Saudação dinâmica
- const hours = new Date().getHours();
- const greet = hours < 12 ? 'Bom dia' : hours < 18 ? 'Boa tarde' : 'Boa noite';
- document.getElementById('heroGreeting').textContent = `${greet}! Vamos programar?`;
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Curso Java — Portal de Estudos</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+  <style>
+    /* ── Portal hero ── */
+    .portal-hero {
+      padding: 3.5rem 0 2.5rem;
+      border-bottom: 1px solid var(--borda);
+    }
+    .portal-hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+      line-height: 1.1;
+    }
+    .portal-hero .sub {
+      color: var(--texto-suave);
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+    .portal-progress {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .portal-progress-bar {
+      flex: 1;
+      min-width: 160px;
+      height: 3px;
+      background: var(--bg-elevated);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .portal-progress-fill {
+      height: 100%;
+      background: var(--primaria-dim);
+      border-radius: 99px;
+      transition: width 0.4s ease;
+    }
+    .portal-progress-label {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--texto-suave);
+      white-space: nowrap;
+    }
 
- const DAYS = [1,2,3,4,5,6];
- const LABELS = ['Lógica','POO','Banco','Frontend','Engenharia','Projeto'];
+    /* ── Resource strip ── */
+    .resource-strip {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--borda);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .resource-strip::-webkit-scrollbar { display: none; }
+    .resource-strip a {
+      color: var(--texto-suave);
+      font-size: 0.83rem;
+      font-weight: 500;
+      padding: 0.85rem 1.1rem;
+      border-right: 1px solid var(--borda);
+      white-space: nowrap;
+      transition: color 0.12s, background 0.12s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .resource-strip a:hover { color: var(--texto); background: var(--bg-surface); }
+    .resource-strip a:first-child { border-left: 1px solid var(--borda); }
 
- function getState() {
- return JSON.parse(localStorage.getItem('cursoDays') || '{}');
- }
+    /* ── Section label ── */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--texto-dim);
+      margin-bottom: 1.25rem;
+    }
 
- function saveState(state) {
- localStorage.setItem('cursoDays', JSON.stringify(state));
- }
+    /* ── Day cards ── */
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--borda);
+      border: 1px solid var(--borda);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .day-card {
+      background: var(--bg-card);
+      display: flex;
+      flex-direction: column;
+      transition: background 0.15s;
+      position: relative;
+    }
+    .day-card:hover { background: var(--bg-surface); }
+    .day-card.done { background: var(--bg-card); }
 
- function toggleDay(n) {
- const state = getState();
- state[n] = !state[n];
- saveState(state);
- render();
- }
+    /* image header */
+    .day-img {
+      height: 130px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .day-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(14,14,23,0.15) 0%, rgba(14,14,23,0.7) 100%);
+    }
+    .day-img-meta {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 0.75rem 1rem;
+      z-index: 1;
+    }
+    .day-num {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: rgba(213,213,238,0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.2rem;
+    }
+    .day-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.25;
+    }
 
- function render() {
- const state = getState();
- const done = DAYS.filter(d =>state[d]).length;
+    /* body */
+    .day-body {
+      padding: 0.875rem 1rem 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .day-prog {
+      height: 2px;
+      background: var(--bg-elevated);
+      border-radius: 99px;
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+    }
+    .day-prog-fill {
+      height: 100%;
+      background: var(--primaria-dim);
+      border-radius: 99px;
+      transition: width 0.4s ease;
+    }
+    .day-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-bottom: 0.875rem;
+      flex: 1;
+    }
+    .day-tag {
+      font-size: 0.68rem;
+      color: var(--texto-dim);
+      background: var(--bg-elevated);
+      border: 1px solid var(--borda-viva);
+      border-radius: 3px;
+      padding: 0.1rem 0.4rem;
+      line-height: 1.5;
+    }
+    .day-links {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .day-links a {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--texto-suave);
+      background: var(--bg-elevated);
+      border: 1px solid var(--borda-viva);
+      border-radius: 4px;
+      padding: 0.3rem 0.65rem;
+      transition: color 0.12s, border-color 0.12s;
+      flex: 1;
+      text-align: center;
+      min-width: 0;
+    }
+    .day-links a:hover { color: var(--primaria); border-color: var(--primaria-dim); }
 
- document.getElementById('daysCompleted').textContent = done;
- const pct = Math.round((done / 6) * 100);
- document.getElementById('progressPercent').textContent = pct + '%';
- document.getElementById('progressFill').style.width = pct + '%';
+    .day-done-btn {
+      margin-top: 0.75rem;
+      width: 100%;
+      font-size: 0.73rem;
+      font-weight: 600;
+      color: var(--texto-dim);
+      background: transparent;
+      border: 1px solid var(--borda-viva);
+      border-radius: 4px;
+      padding: 0.35rem 0.5rem;
+      cursor: pointer;
+      font-family: var(--sans);
+      transition: color 0.12s, border-color 0.12s;
+      text-align: center;
+    }
+    .day-done-btn:hover { color: var(--sucesso); border-color: var(--sucesso); }
+    .day-card.done .day-done-btn { color: var(--sucesso); border-color: rgba(144,212,168,0.3); background: rgba(144,212,168,0.05); }
 
- // Mensagem motivacional
- const msgs = [
- 'Comece pelo Dia 1 — Lógica de Programação!',
- 'Ótimo começo! Continue para o Dia 2.',
- 'Incrível! Você está indo muito bem.',
- 'Metade do caminho! Você está avançando bem.',
- 'Quase lá! Só mais dois dias.',
- 'Um dia para terminar.',
- 'Parabéns! Você completou o curso.'
- ];
- document.getElementById('motivMsg').textContent = msgs[done];
+    .done-badge {
+      display: none;
+      position: absolute;
+      top: 0.6rem; right: 0.6rem;
+      z-index: 2;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: var(--sucesso);
+      background: rgba(14,14,23,0.85);
+      border: 1px solid rgba(144,212,168,0.3);
+      border-radius: 3px;
+      padding: 0.15rem 0.45rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .day-card.done .done-badge { display: block; }
 
- // Dots
- const dotsEl = document.getElementById('progressDots');
- dotsEl.innerHTML = DAYS.map(d =>`<div class="progress-dot ${state[d] ? 'done' : ''}" onclick="toggleDay(${d})" title="Dia ${d}: ${LABELS[d-1]}">${d}</div>`
- ).join('');
+    @media (max-width: 900px) { .days-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 580px) { .days-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
 
- // Cards
- DAYS.forEach(d =>{
- const card = document.getElementById('dayCard' + d);
- const btn = document.getElementById('doneBtn' + d);
- const prog = document.getElementById('prog' + d);
- if (state[d]) {
- card.classList.add('done');
- btn.textContent = 'Concluído. Clique para desmarcar';
- prog.style.width = '100%';
- } else {
- card.classList.remove('done');
- btn.textContent = 'Marcar como Concluído';
- // manter progresso parcial se houver
- }
- });
- }
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a href="index.html" class="navbar-brand">Curso Java</a>
+    <button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">☰</button>
+    <div class="navbar-links">
+      <a href="recursos/flashcards.html">Flashcards</a>
+      <a href="recursos/quiz-geral.html">Quiz</a>
+      <a href="recursos/cheatsheet-java.html">Cheatsheet Java</a>
+      <a href="recursos/cheatsheet-sql.html">Cheatsheet SQL</a>
+      <a href="recursos/glossario.html">Glossário</a>
+    </div>
+  </div>
+</nav>
 
- render();
-</script></body></html>
+<!-- HERO -->
+<div class="container">
+  <div class="portal-hero">
+    <h1 id="heroGreeting">Bom dia.</h1>
+    <p class="sub">6 dias · do zero ao projeto completo em Java.</p>
+    <div class="portal-progress">
+      <div class="portal-progress-bar">
+        <div class="portal-progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <span class="portal-progress-label" id="progressLabel">0 de 6 dias concluídos</span>
+    </div>
+  </div>
+</div>
 
+<!-- RECURSOS -->
+<div class="resource-strip">
+  <a href="recursos/flashcards.html">🃏 Flashcards</a>
+  <a href="recursos/quiz-geral.html">🏆 Quiz</a>
+  <a href="recursos/cheatsheet-java.html">📋 Java</a>
+  <a href="recursos/cheatsheet-sql.html">🗄️ SQL</a>
+  <a href="recursos/glossario.html">📖 Glossário</a>
+  <a href="dia6-projeto/checklist.html">✅ Checklist</a>
+</div>
 
+<!-- DIAS -->
+<div class="container" style="padding-top:2rem;padding-bottom:3rem;">
+  <p class="section-label">Conteúdo</p>
+  <div class="days-grid" id="daysGrid">
 
+    <!-- DIA 1 -->
+    <div class="day-card" id="dayCard1">
+      <div class="done-badge">Concluído</div>
+      <div class="day-img" style="background-image:url('assets/images/dia1.png')">
+        <div class="day-img-meta">
+          <div class="day-num">Dia 01</div>
+          <div class="day-title">Lógica de Programação</div>
+        </div>
+      </div>
+      <div class="day-body">
+        <div class="day-prog"><div class="day-prog-fill" id="prog1" style="width:0%"></div></div>
+        <div class="day-tags">
+          <span class="day-tag">Variáveis</span>
+          <span class="day-tag">Tipos</span>
+          <span class="day-tag">if/else</span>
+          <span class="day-tag">Loops</span>
+          <span class="day-tag">Arrays</span>
+          <span class="day-tag">Funções</span>
+        </div>
+        <div class="day-links">
+          <a href="dia1-logica/conteudo.html">Conteúdo</a>
+          <a href="dia1-logica/exercicios.html">Exercícios</a>
+          <a href="dia1-logica/playground.html">Playground</a>
+        </div>
+        <button class="day-done-btn" onclick="toggleDay(1)"><span id="doneBtn1">Marcar como concluído</span></button>
+      </div>
+    </div>
+
+    <!-- DIA 2 -->
+    <div class="day-card" id="dayCard2">
+      <div class="done-badge">Concluído</div>
+      <div class="day-img" style="background-image:url('assets/images/dia2.png')">
+        <div class="day-img-meta">
+          <div class="day-num">Dia 02</div>
+          <div class="day-title">Orientação a Objetos</div>
+        </div>
+      </div>
+      <div class="day-body">
+        <div class="day-prog"><div class="day-prog-fill" id="prog2" style="width:0%"></div></div>
+        <div class="day-tags">
+          <span class="day-tag">Classes</span>
+          <span class="day-tag">Objetos</span>
+          <span class="day-tag">Encapsulamento</span>
+          <span class="day-tag">Herança</span>
+          <span class="day-tag">Polimorfismo</span>
+        </div>
+        <div class="day-links">
+          <a href="dia2-poo/conteudo.html">Conteúdo</a>
+          <a href="dia2-poo/exercicios.html">Exercícios</a>
+          <a href="dia2-poo/visualizador-classes.html">Visualizador</a>
+        </div>
+        <button class="day-done-btn" onclick="toggleDay(2)"><span id="doneBtn2">Marcar como concluído</span></button>
+      </div>
+    </div>
+
+    <!-- DIA 3 -->
+    <div class="day-card" id="dayCard3">
+      <div class="done-badge">Concluído</div>
+      <div class="day-img" style="background-image:url('assets/images/dia3.png')">
+        <div class="day-img-meta">
+          <div class="day-num">Dia 03</div>
+          <div class="day-title">Banco de Dados</div>
+        </div>
+      </div>
+      <div class="day-body">
+        <div class="day-prog"><div class="day-prog-fill" id="prog3" style="width:0%"></div></div>
+        <div class="day-tags">
+          <span class="day-tag">SQL</span>
+          <span class="day-tag">SELECT</span>
+          <span class="day-tag">JOIN</span>
+          <span class="day-tag">Relacionamentos</span>
+          <span class="day-tag">MySQL</span>
+        </div>
+        <div class="day-links">
+          <a href="dia3-banco/conteudo.html">Conteúdo</a>
+          <a href="dia3-banco/exercicios.html">Exercícios</a>
+          <a href="dia3-banco/sql-playground.html">SQL Play</a>
+        </div>
+        <button class="day-done-btn" onclick="toggleDay(3)"><span id="doneBtn3">Marcar como concluído</span></button>
+      </div>
+    </div>
+
+    <!-- DIA 4 -->
+    <div class="day-card" id="dayCard4">
+      <div class="done-badge">Concluído</div>
+      <div class="day-img" style="background-image:url('assets/images/dia4.png')">
+        <div class="day-img-meta">
+          <div class="day-num">Dia 04</div>
+          <div class="day-title">Front-end</div>
+        </div>
+      </div>
+      <div class="day-body">
+        <div class="day-prog"><div class="day-prog-fill" id="prog4" style="width:0%"></div></div>
+        <div class="day-tags">
+          <span class="day-tag">HTML</span>
+          <span class="day-tag">CSS</span>
+          <span class="day-tag">JavaScript</span>
+          <span class="day-tag">JFrame</span>
+        </div>
+        <div class="day-links">
+          <a href="dia4-frontend/conteudo.html">Conteúdo</a>
+          <a href="dia4-frontend/exercicios.html">Exercícios</a>
+          <a href="dia4-frontend/editor-ao-vivo.html">Editor</a>
+        </div>
+        <button class="day-done-btn" onclick="toggleDay(4)"><span id="doneBtn4">Marcar como concluído</span></button>
+      </div>
+    </div>
+
+    <!-- DIA 5 -->
+    <div class="day-card" id="dayCard5">
+      <div class="done-badge">Concluído</div>
+      <div class="day-img" style="background-image:url('assets/images/dia5.png')">
+        <div class="day-img-meta">
+          <div class="day-num">Dia 05</div>
+          <div class="day-title">Engenharia de Software</div>
+        </div>
+      </div>
+      <div class="day-body">
+        <div class="day-prog"><div class="day-prog-fill" id="prog5" style="width:0%"></div></div>
+        <div class="day-tags">
+          <span class="day-tag">UML</span>
+          <span class="day-tag">Requisitos</span>
+          <span class="day-tag">Arquitetura</span>
+          <span class="day-tag">Scrum</span>
+        </div>
+        <div class="day-links">
+          <a href="dia5-engenharia/conteudo.html">Conteúdo</a>
+          <a href="dia5-engenharia/exercicios.html">Exercícios</a>
+          <a href="dia5-engenharia/uml-interativo.html">UML</a>
+        </div>
+        <button class="day-done-btn" onclick="toggleDay(5)"><span id="doneBtn5">Marcar como concluído</span></button>
+      </div>
+    </div>
+
+    <!-- DIA 6 -->
+    <div class="day-card" id="dayCard6">
+      <div class="done-badge">Concluído</div>
+      <div class="day-img" style="background-image:url('assets/images/dia6.png')">
+        <div class="day-img-meta">
+          <div class="day-num">Dia 06</div>
+          <div class="day-title">Projeto Completo</div>
+        </div>
+      </div>
+      <div class="day-body">
+        <div class="day-prog"><div class="day-prog-fill" id="prog6" style="width:0%"></div></div>
+        <div class="day-tags">
+          <span class="day-tag">Login</span>
+          <span class="day-tag">CRUD</span>
+          <span class="day-tag">Interface</span>
+          <span class="day-tag">5 Projetos</span>
+        </div>
+        <div class="day-links">
+          <a href="dia6-projeto/guia-projeto.html">Guia</a>
+          <a href="dia6-projeto/checklist.html">Checklist</a>
+        </div>
+        <button class="day-done-btn" onclick="toggleDay(6)"><span id="doneBtn6">Marcar como concluído</span></button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>Salvo automaticamente no navegador — sem internet necessária para estudar.</p>
+  </div>
+</footer>
+
+<script>
+  const hours = new Date().getHours();
+  const greet = hours < 12 ? 'Bom dia.' : hours < 18 ? 'Boa tarde.' : 'Boa noite.';
+  document.getElementById('heroGreeting').textContent = greet;
+
+  const DAYS = [1,2,3,4,5,6];
+
+  function getState() { return JSON.parse(localStorage.getItem('cursoDays') || '{}'); }
+  function saveState(s) { localStorage.setItem('cursoDays', JSON.stringify(s)); }
+
+  function toggleDay(n) {
+    const s = getState();
+    s[n] = !s[n];
+    saveState(s);
+    render();
+  }
+
+  function render() {
+    const s = getState();
+    const done = DAYS.filter(d => s[d]).length;
+    document.getElementById('progressFill').style.width = (done / 6 * 100) + '%';
+    document.getElementById('progressLabel').textContent = done + ' de 6 dias concluídos';
+
+    DAYS.forEach(d => {
+      const card = document.getElementById('dayCard' + d);
+      const btn  = document.getElementById('doneBtn' + d);
+      const prog = document.getElementById('prog' + d);
+      if (s[d]) {
+        card.classList.add('done');
+        btn.textContent = 'Concluído — clique para desmarcar';
+        prog.style.width = '100%';
+      } else {
+        card.classList.remove('done');
+        btn.textContent = 'Marcar como concluído';
+      }
+    });
+  }
+
+  render();
+</script>
+</body>
+</html>
