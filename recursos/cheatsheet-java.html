@@ -1,0 +1,306 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Cheatsheet Java</title><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>.cs-search{width:100%;max-width:400px;padding:.6rem 1rem;border:2px solid var(--borda);border-radius:20px;font-family:inherit;font-size:.9rem;margin-bottom:1.5rem;outline:none;}
+ .cs-search:focus{border-color:var(--primaria);}
+ .cs-section{background:var(--bg-card);border-radius:14px;border:1px solid var(--borda);box-shadow:var(--sombra);margin-bottom:1.5rem;overflow:hidden;}
+ .cs-section-header{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1.25rem;background:linear-gradient(135deg,rgba(106,86,176,.06),rgba(136,184,245,.04));border-bottom:1px solid var(--borda);}
+ .cs-section-title{font-weight:700;display:flex;align-items:center;gap:.5rem;}
+ .cs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem;padding:1.25rem;}
+ .cs-item{background:#1e1e2e;border-radius:10px;overflow:hidden;}
+ .cs-item-header{display:flex;align-items:center;justify-content:space-between;padding:.4rem .75rem;background:#2a2a3e;}
+ .cs-item-title{color:#89b4fa;font-family:'Fira Code',monospace;font-size:.78rem;font-weight:700;}
+ .cs-item pre{margin:0;padding:.6rem .75rem;font-size:.78rem;overflow-x:auto;}
+ .copy-mini{background:transparent;border:1px solid rgba(137,180,250,.3);color:#89b4fa;border-radius:4px;padding:.15rem .4rem;font-size:.68rem;cursor:pointer;font-family:inherit;}
+ .copy-mini:hover{background:rgba(137,180,250,.1);}
+ .hidden-by-search{display:none;}
+ @media print{.navbar,.footer,input{display:none!important;}.cs-item pre{font-size:.65rem;}}
+ </style></head><body><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="cheatsheet-sql.html">SQL</a><a href="glossario.html">Glossário</a><button class="btn btn-ghost btn-sm" onclick="window.print()">Imprimir</button></div></div></nav><div class="page-header" style="background:linear-gradient(135deg,var(--primaria),var(--secundaria))"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› Recursos</div><h1>Cheatsheet Java</h1><p>Referência rápida dos principais conceitos e sintaxes Java</p></div></div><div class="container section"><input class="cs-search" id="csSearch" placeholder=" Filtrar cheatsheet..." oninput="filterCS()"/><!-- VARIÁVEIS E TIPOS --><div class="cs-section" data-s="variaveis"><div class="cs-section-header"><div class="cs-section-title">Variáveis e Tipos</div></div><div class="cs-grid"><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Primitivos</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">int i = 42; // -2^31 a 2^31-1
+long l = 100L; // maior inteiro
+double d = 3.14; // ponto flutuante
+float f = 3.14f; // menos precisão
+boolean b = true; // true / false
+char c = 'A'; // caractere único
+byte by = 127; // -128 a 127</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">String</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">String s = "Olá Java!";
+s.length(); // tamanho
+s.toUpperCase(); // MAIÚSCULO
+s.toLowerCase(); // minúsculo
+s.contains("Java"); // true
+s.startsWith("Olá"); // true
+s.substring(0, 3); // "Olá"
+s.trim(); // remove espaços
+s.equals("outro"); // comparar!
+s.replace("a","@"); // substituir</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Casting e Conversão</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">int x = (int) 9.9; // 9 (trunca)
+double d = (double) 5; // 5.0
+String s = String.valueOf(42); // "42"
+int n = Integer.parseInt("42"); // 42
+double d2 = Double.parseDouble("3.14");
+String.format("%.2f", 3.14159); // "3.14"</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Operadores</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">// Aritméticos
++ - * / % // básicos
+++x / x++ // pré/pós incremento
+
+// Relacionais
+== != >< >= <=
+
+// Lógicos
+&& (AND) || (OR) ! (NOT)
+
+// Ternário
+int max = (a >b) ? a : b;</code></pre></div></div></div><!-- CONDICIONAIS --><div class="cs-section" data-s="condicionais"><div class="cs-section-header"><div class="cs-section-title">Condicionais</div></div><div class="cs-grid"><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">if / else if / else</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">if (nota >= 7) {
+ System.out.println("Aprovado");
+} else if (nota >= 5) {
+ System.out.println("Recuperação");
+} else {
+ System.out.println("Reprovado");
+}</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">switch</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">switch (dia) {
+ case 1: System.out.println("Segunda"); break;
+ case 2: System.out.println("Terça"); break;
+ case 6:
+ case 7: System.out.println("Fim de semana!"); break;
+ default: System.out.println("Outro dia");
+}</code></pre></div></div></div><!-- LOOPS --><div class="cs-section" data-s="loops"><div class="cs-section-header"><div class="cs-section-title">Loops</div></div><div class="cs-grid"><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">for</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">for (int i = 0; i < 5; i++) {
+ System.out.println(i);
+}
+// for-each para arrays/listas
+for (String s : lista) {
+ System.out.println(s);
+}</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">while / do-while</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">while (condicao) {
+ // executa 0 ou mais vezes
+}
+
+do {
+ // executa pelo menos 1 vez
+} while (condicao);</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">break / continue</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">for (int i = 0; i < 10; i++) {
+ if (i == 5) break; // para o loop
+ if (i % 2 == 0) continue; // pula par
+ System.out.println(i); // 1, 3
+}</code></pre></div></div></div><!-- ARRAYS --><div class="cs-section" data-s="arrays"><div class="cs-section-header"><div class="cs-section-title">Arrays</div></div><div class="cs-grid"><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Arrays básicos</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">int[] nums = {10, 20, 30};
+int[] vazio = new int[5]; // {0,0,0,0,0}
+nums[0] = 99; // editar
+System.out.println(nums.length); // 3
+// Percorrer
+for (int n : nums) System.out.println(n);
+// Ordenar
+Arrays.sort(nums);</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">ArrayList</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">ArrayList&lt;String&gt; lista = new ArrayList&lt;&gt;();
+lista.add("Java"); // adicionar
+lista.add(0, "Primeiro"); // inserir no índice
+lista.get(0); // obter
+lista.set(0, "PHP"); // alterar
+lista.remove(0); // remover por índice
+lista.size(); // tamanho
+lista.contains("Java"); // buscar
+lista.clear(); // limpar</code></pre></div></div></div><!-- POO --><div class="cs-section" data-s="poo"><div class="cs-section-header"><div class="cs-section-title">POO — Classes e Objetos</div></div><div class="cs-grid"><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Classe completa</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">public class Pessoa {
+ // Atributos
+ private String nome;
+ private int idade;
+
+ // Construtor
+ public Pessoa(String nome, int idade) {
+ this.nome = nome;
+ this.idade = idade;
+ }
+
+ // Getter/Setter
+ public String getNome() { return nome; }
+ public void setNome(String nome) { this.nome = nome; }
+
+ @Override
+ public String toString() {
+ return "Pessoa{nome='" + nome + "', idade=" + idade + "}";
+ }
+}</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Herança</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">public class Animal {
+ protected String nome;
+ public void fazerSom() { System.out.println("..."); }
+}
+
+public class Cachorro extends Animal {
+ public Cachorro(String nome) {
+ super(); // chama construtor pai
+ this.nome = nome;
+ }
+
+ @Override
+ public void fazerSom() {
+ System.out.println("Au Au!");
+ }
+}</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Interface</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">public interface Calculavel {
+ double calcularArea(); // contrato
+ default void exibir() { // método padrão
+ System.out.printf("Área: %.2f%n", calcularArea());
+ }
+}
+
+public class Circulo implements Calculavel {
+ private double raio;
+ public Circulo(double r) { this.raio = r; }
+
+ @Override
+ public double calcularArea() {
+ return Math.PI * raio * raio;
+ }
+}</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Modificadores de acesso</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">public // visível em qualquer lugar
+private // só dentro da classe
+protected // classe + subclasses + mesmo pacote
+(padrão) // só no mesmo pacote
+
+// Outros modificadores
+static // pertence à classe, não ao objeto
+final // não pode ser alterado/herdado
+abstract // método sem implementação</code></pre></div></div></div><!-- EXCEÇÕES --><div class="cs-section" data-s="excecoes"><div class="cs-section-header"><div class="cs-section-title">Exceções</div></div><div class="cs-grid"><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">try/catch/finally</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">try {
+ int result = 10 / 0; // ArithmeticException!
+ int n = Integer.parseInt("abc"); // NumberFormatException
+} catch (ArithmeticException e) {
+ System.out.println("Divisão por zero: " + e.getMessage());
+} catch (Exception e) {
+ System.out.println("Erro: " + e.getMessage());
+} finally {
+ System.out.println("Sempre executa!");
+}</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">throws / throw</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">// throws: avisa que pode lançar
+public void sacar(double valor) throws Exception {
+ if (valor >saldo) {
+ throw new Exception("Saldo insuficiente!");
+ }
+ saldo -= valor;
+}
+
+// Uso:
+try {
+ conta.sacar(1000);
+} catch (Exception e) {
+ JOptionPane.showMessageDialog(null, e.getMessage());
+}</code></pre></div></div></div><!-- JDBC --><div class="cs-section" data-s="jdbc"><div class="cs-section-header"><div class="cs-section-title">JDBC — Banco de Dados</div></div><div class="cs-grid"><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Conexão</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">import java.sql.*;
+
+public class Conexao {
+ private static final String URL =
+ "jdbc:mysql://localhost:3306/meubanco";
+ private static final String USER = "root";
+ private static final String PASS = "senha";
+
+ public static Connection getConnection() throws SQLException {
+ return DriverManager.getConnection(URL, USER, PASS);
+ }
+}</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">SELECT (consulta)</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">String sql = "SELECT * FROM alunos WHERE turma_id = ?";
+try (Connection conn = Conexao.getConnection();
+ PreparedStatement ps = conn.prepareStatement(sql)) {
+
+ ps.setInt(1, turmaId);
+ ResultSet rs = ps.executeQuery();
+
+ while (rs.next()) {
+ String nome = rs.getString("nome");
+ double nota = rs.getDouble("nota");
+ System.out.println(nome + ": " + nota);
+ }
+}</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">INSERT / UPDATE / DELETE</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">// INSERT
+String sql = "INSERT INTO alunos(nome,nota) VALUES(?,?)";
+PreparedStatement ps = conn.prepareStatement(sql,
+ Statement.RETURN_GENERATED_KEYS);
+ps.setString(1, "Ana");
+ps.setDouble(2, 8.5);
+ps.executeUpdate();
+ResultSet rs = ps.getGeneratedKeys();
+if (rs.next()) int id = rs.getInt(1); // id gerado
+
+// UPDATE
+String upd = "UPDATE alunos SET nota=? WHERE id=?";
+ps.setDouble(1, 9.0); ps.setInt(2, id);
+ps.executeUpdate();
+
+// DELETE
+ps = conn.prepareStatement("DELETE FROM alunos WHERE id=?");
+ps.setInt(1, id); ps.executeUpdate();</code></pre></div></div></div><!-- JFRAME --><div class="cs-section" data-s="jframe"><div class="cs-section-header"><div class="cs-section-title">JFrame — Interface Gráfica</div></div><div class="cs-grid"><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">JFrame básico</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">import javax.swing.*;
+
+public class MinhaJanela extends JFrame {
+ public MinhaJanela() {
+ setTitle("Minha Janela");
+ setSize(400, 300);
+ setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+ setLocationRelativeTo(null); // centraliza
+ setLayout(new FlowLayout());
+
+ add(new JButton("Clique!"));
+ setVisible(true);
+ }
+ public static void main(String[] args) {
+ new MinhaJanela();
+ }
+}</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Componentes essenciais</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">JLabel lbl = new JLabel("Nome:");
+JTextField txt = new JTextField(20);
+JPasswordField pwd = new JPasswordField(20);
+JButton btn = new JButton("Salvar");
+JComboBox&lt;String&gt; combo = new JComboBox&lt;&gt;();
+JCheckBox check = new JCheckBox("Ativo");
+JRadioButton radio = new JRadioButton("Opção A");
+JTextArea area = new JTextArea(5, 20);
+JTable tabela = new JTable(dados, colunas);
+
+// Ler valores
+txt.getText();
+combo.getSelectedItem().toString();
+check.isSelected();</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Layouts</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">// FlowLayout: componentes em linha
+setLayout(new FlowLayout());
+
+// GridLayout: grade com linhas/colunas
+setLayout(new GridLayout(3, 2, 5, 5));
+
+// BorderLayout: Norte, Sul, Leste, Oeste, Centro
+setLayout(new BorderLayout());
+add(panel, BorderLayout.NORTH);
+add(btn, BorderLayout.SOUTH);
+
+// GridBagLayout: mais flexível (avançado)</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Eventos (ActionListener)</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">btn.addActionListener(e ->{
+ String nome = txtNome.getText();
+ if (nome.isEmpty()) {
+ JOptionPane.showMessageDialog(this,
+ "Informe o nome!", "Erro",
+ JOptionPane.ERROR_MESSAGE);
+ return;
+ }
+ JOptionPane.showMessageDialog(this,
+ "Salvo: " + nome);
+});</code></pre></div></div></div><!-- UTILITÁRIOS --><div class="cs-section" data-s="utils"><div class="cs-section-header"><div class="cs-section-title">Classes Utilitárias</div></div><div class="cs-grid"><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Math</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">Math.abs(-5); // 5
+Math.max(3, 7); // 7
+Math.min(3, 7); // 3
+Math.pow(2, 10); // 1024.0
+Math.sqrt(16); // 4.0
+Math.round(3.6); // 4
+Math.floor(3.9); // 3.0
+Math.ceil(3.1); // 4.0
+Math.random(); // 0.0 a <1.0
+(int)(Math.random() * 6) + 1; // dado 1-6</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">LocalDate (Java 8+)</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">import java.time.*;
+import java.time.format.*;
+
+LocalDate hoje = LocalDate.now();
+LocalDate data = LocalDate.of(2024, 3, 15);
+hoje.plusDays(30); // daqui 30 dias
+hoje.minusMonths(1); // 1 mês atrás
+ChronoUnit.DAYS.between(data, hoje); // diferença
+
+DateTimeFormatter fmt =
+ DateTimeFormatter.ofPattern("dd/MM/yyyy");
+String s = hoje.format(fmt); // "22/06/2026"
+LocalDate d2 = LocalDate.parse("15/03/2024", fmt);</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Scanner (entrada)</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-java">import java.util.Scanner;
+Scanner sc = new Scanner(System.in);
+
+int n = sc.nextInt();
+double d = sc.nextDouble();
+sc.nextLine(); // limpar buffer
+String s = sc.nextLine();
+
+sc.close(); // fechar ao final</code></pre></div></div></div></div><footer class="footer"><div class="container"><p><a href="../index.html">← Portal</a>| <a href="cheatsheet-sql.html">SQL Cheatsheet</a>| <a href="glossario.html">Glossário</a></p></div></footer><script>hljs.highlightAll();
+ function filterCS() {
+ const q = document.getElementById('csSearch').value.toLowerCase();
+ document.querySelectorAll('.cs-item').forEach(item =>{
+ const text = item.textContent.toLowerCase();
+ item.classList.toggle('hidden-by-search', q.length >0 && !text.includes(q));
+ });
+ document.querySelectorAll('.cs-section').forEach(sec =>{
+ const visible = [...sec.querySelectorAll('.cs-item')].some(i =>!i.classList.contains('hidden-by-search'));
+ sec.style.display = visible ? '' : 'none';
+ });
+ }
+ function copyCS(btn) {
+ const code = btn.closest('.cs-item').querySelector('code');
+ navigator.clipboard.writeText(code.textContent).then(() =>{ btn.textContent = ''; setTimeout(() =>btn.textContent = 'copiar', 1500); });
+ }
+</script></body></html>
+
+
+

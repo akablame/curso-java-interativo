@@ -1,0 +1,297 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Editor HTML/CSS/JS ao Vivo</title><link rel="stylesheet" href="../assets/style.css"/><style>body { margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+ .editor-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+ .top-bar { background: var(--bg-surface); border-bottom: 1px solid var(--borda); padding: 0.5rem 1rem; display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; overflow-x: auto; }
+ .top-bar .logo { color: var(--primaria); font-weight: 700; font-size: 0.9rem; font-family: 'Fira Code', monospace; margin-right: auto; white-space: nowrap; }
+ .panels-area { display: flex; flex: 1; overflow: hidden; }
+ .code-panel { flex: 1; display: flex; flex-direction: column; border-right: 1px solid var(--borda); }
+ .panel-tabs { display: flex; background: var(--bg-elevated); flex-shrink: 0; }
+ .panel-tab { padding: 0.5rem 1rem; font-family: 'Fira Code', monospace; font-size: 0.78rem; font-weight: 600; cursor: pointer; color: var(--texto-suave); border-bottom: 2px solid transparent; transition: all 0.2s; }
+ .panel-tab.active { color: var(--texto); border-bottom-color: var(--primaria); }
+ .panel-tab:hover { color: var(--texto); }
+ .code-area { flex: 1; display: none; }
+ .code-area.active { display: flex; }
+ .code-area textarea { flex: 1; background: var(--bg-code); border: none; padding: 1rem; font-family: 'Fira Code', monospace; font-size: 0.88rem; color: var(--texto); outline: none; resize: none; line-height: 1.7; }
+ .preview-panel { flex: 1; display: flex; flex-direction: column; }
+ .preview-header { background: var(--bg-elevated); padding: 0.5rem 1rem; font-family: 'Fira Code', monospace; font-size: 0.78rem; color: var(--texto-suave); display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+ .preview-frame { flex: 1; border: none; background: var(--bg-card); }
+ .btn-sm-dark { background: rgba(181,160,240,0.12); color: var(--primaria); border: 1px solid rgba(181,160,240,0.22); border-radius: 99px; padding: 0.25rem 0.75rem; font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; text-decoration: none; }
+ .btn-sm-dark:hover { background: rgba(181,160,240,0.22); text-decoration: none; }
+ .examples-row { display: flex; gap: 0.4rem; align-items: center; flex-wrap: nowrap; }
+ .divider { width: 1px; height: 20px; background: var(--borda-brilho); flex-shrink: 0; }
+ @media(max-width:700px){
+ body { height: 100dvh; }
+ .top-bar { align-items: flex-start; flex-wrap: wrap; overflow-y: auto; max-height: 132px; }
+ .top-bar .logo { width: 100%; margin-right: 0; }
+ .examples-row { overflow-x: auto; width: 100%; padding-bottom: 0.15rem; }
+ .divider { display: none; }
+ .panels-area{flex-direction:column;}
+ .code-panel,.preview-panel{flex:none;height:50%;}
+ .panel-tab { flex: 1; text-align: center; padding: 0.55rem 0.5rem; }
+ }
+ </style></head><body><div class="editor-wrap"><div class="top-bar"><span class="logo">Editor ao Vivo — HTML/CSS/JS</span><div class="examples-row"><span style="color:#6c7086;font-size:.75rem">Exemplos:</span><button class="btn-sm-dark" onclick="loadEx('hello')">Olá Mundo</button><button class="btn-sm-dark" onclick="loadEx('form')">Formulário</button><button class="btn-sm-dark" onclick="loadEx('list')">Lista Dinâmica</button><button class="btn-sm-dark" onclick="loadEx('calc')">Calculadora</button><button class="btn-sm-dark" onclick="loadEx('cards')">Cards</button><button class="btn-sm-dark" onclick="loadEx('anim')">Animação</button></div><div class="divider"></div><button class="btn-sm-dark" onclick="runPreview()">▶ Atualizar</button><button class="btn-sm-dark" onclick="copyAll()">Copiar</button><button class="btn-sm-dark" onclick="resetAll()">Reset</button><a href="../index.html" class="btn-sm-dark">Home</a></div><div class="panels-area"><!-- CÓDIGO --><div class="code-panel"><div class="panel-tabs"><div class="panel-tab active" onclick="switchEditorTab('html', this)">HTML</div><div class="panel-tab" onclick="switchEditorTab('css', this)">CSS</div><div class="panel-tab" onclick="switchEditorTab('js', this)">JavaScript</div></div><div class="code-area active" id="html-area"><textarea id="html-editor" oninput="autoPreview()" spellcheck="false" placeholder="<!-- HTML aqui -->"></textarea></div><div class="code-area" id="css-area"><textarea id="css-editor" oninput="autoPreview()" spellcheck="false" placeholder="/* CSS aqui */"></textarea></div><div class="code-area" id="js-area"><textarea id="js-editor" oninput="autoPreview()" spellcheck="false" placeholder="// JavaScript aqui"></textarea></div></div><!-- PREVIEW --><div class="preview-panel"><div class="preview-header"><span>Preview em Tempo Real</span></div><iframe id="preview" class="preview-frame"></iframe></div></div></div><script>const examples = {
+ hello: {
+ html: `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Olá Mundo!</title></head><body><h1>Olá, Mundo! </h1><p>Meu primeiro programa HTML.</p><button onclick="saudar()">Clique aqui!</button><p id="mensagem"></p></body></html>`,
+ css: `body {
+ font-family: Arial, sans-serif;
+ background: #f8f6fc;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ padding: 2rem;
+ text-align: center;
+}
+
+h1 {
+ color: var(--primaria);
+ font-size: 2.5rem;
+}
+
+button {
+ background: var(--primaria);
+ color: white;
+ border: none;
+ padding: 0.75rem 2rem;
+ border-radius: 99px;
+ font-size: 1rem;
+ cursor: pointer;
+ transition: all 0.2s;
+}
+
+button:hover {
+ background: #6345a8;
+ transform: scale(1.05);
+}
+
+#mensagem {
+ color: var(--acento);
+ font-size: 1.2rem;
+ font-weight: bold;
+ margin-top: 1rem;
+}`,
+ js: `function saudar() {
+ const nomes = ['Ana', 'Beatriz', 'Carol', 'Daniela'];
+ const nome = nomes[Math.floor(Math.random() * nomes.length)];
+ document.getElementById('mensagem').textContent =
+ 'Olá, ' + nome + '! Bem-vinda ao HTML! ';
+}`
+ },
+ form: {
+ html: `<div class="container"><h2>Formulário de Cadastro</h2><form id="form" onsubmit="cadastrar(event)"><div class="group"><label>Nome completo *</label><input type="text" id="nome" required placeholder="Digite seu nome"/></div><div class="group"><label>E-mail *</label><input type="email" id="email" required placeholder="seu@email.com"/></div><div class="group"><label>Idade</label><input type="number" id="idade" min="1" max="120" placeholder="Ex: 20"/></div><div class="group"><label>Curso</label><select id="curso"><option value="">Selecione...</option><option>Programação Java</option><option>Front-end</option><option>Banco de Dados</option></select></div><button type="submit">Cadastrar</button></form><div id="resultado"></div></div>`,
+ css: `* { box-sizing: border-box; }
+body { font-family: 'Segoe UI', sans-serif; background: #f0ebfb; padding: 1.5rem; }
+.container { background: var(--bg-card); max-width: 450px; margin: 0 auto; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(106,86,176,0.12); }
+h2 { color: var(--primaria); margin-bottom: 1.5rem; }
+.group { margin-bottom: 1rem; }
+label { display: block; font-weight: 600; color: #444; margin-bottom: 0.35rem; font-size: 0.9rem; }
+input, select { width: 100%; padding: 0.6rem 0.85rem; border: 2px solid #E2DDF0; border-radius: 8px; font-size: 0.95rem; transition: border 0.2s; }
+input:focus, select:focus { outline: none; border-color: var(--primaria); }
+button { width: 100%; padding: 0.75rem; background: var(--primaria); color: white; border: none; border-radius: 99px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 0.5rem; }
+button:hover { background: #6345a8; }
+#resultado { margin-top: 1.5rem; padding: 1rem; border-radius: 10px; display: none; }
+.success { background: #d4edda; color: #155724; }`,
+ js: `function cadastrar(e) {
+ e.preventDefault();
+ const nome = document.getElementById('nome').value;
+ const email = document.getElementById('email').value;
+ const idade = document.getElementById('idade').value;
+ const curso = document.getElementById('curso').value;
+
+ const res = document.getElementById('resultado');
+ res.style.display = 'block';
+ res.className = 'success';
+ res.innerHTML = \`
+ <strong>Cadastro realizado!</strong><br><b>Nome:</b>\${nome}<br><b>E-mail:</b>\${email}<br>\${idade ? '<b>Idade:</b>' + idade + '<br>' : ''}
+ \${curso ? '<b>Curso:</b>' + curso : ''}
+ \`;
+ document.getElementById('form').reset();
+}`
+ },
+ list: {
+ html: `<div class="app"><h2>Lista de Tarefas</h2><div class="input-row"><input type="text" id="taskInput" placeholder="Digite uma tarefa..." onkeydown="if(event.key==='Enter') addTask()"/><button onclick="addTask()">+ Adicionar</button></div><p id="stats"></p><ul id="taskList"></ul></div>`,
+ css: `* { box-sizing: border-box; }
+body { font-family: 'Segoe UI', sans-serif; background: #f8f6fc; padding: 1.5rem; }
+.app { max-width: 400px; margin: 0 auto; }
+h2 { color: var(--primaria); }
+.input-row { display: flex; gap: .5rem; margin-bottom: .5rem; }
+input { flex: 1; padding: .6rem .85rem; border: 2px solid #E2DDF0; border-radius: 8px; font-size: .95rem; }
+input:focus { outline: none; border-color: var(--primaria); }
+button { padding: .6rem 1rem; background: var(--primaria); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+#stats { font-size: .82rem; color: #888; margin-bottom: .5rem; }
+ul { list-style: none; padding: 0; }
+li { display: flex; align-items: center; gap: .5rem; padding: .65rem .85rem; background: var(--bg-card); border-radius: 8px; margin-bottom: .4rem; border: 1px solid var(--borda); }
+li.done span { text-decoration: line-through; color: #aaa; }
+li span { flex: 1; cursor: pointer; }
+.del { background: #fde; color: #E05C7A; border: none; border-radius: 4px; padding: .2rem .5rem; cursor: pointer; font-size: .8rem; }`,
+ js: `let tasks = [];
+function addTask() {
+ const input = document.getElementById('taskInput');
+ const text = input.value.trim();
+ if (!text) return;
+ tasks.push({ text, done: false });
+ input.value = '';
+ render();
+}
+function toggleTask(i) {
+ tasks[i].done = !tasks[i].done;
+ render();
+}
+function deleteTask(i) {
+ tasks.splice(i, 1);
+ render();
+}
+function render() {
+ const done = tasks.filter(t =>t.done).length;
+ document.getElementById('stats').textContent =
+ tasks.length + ' tarefa(s) | ' + done + ' concluída(s)';
+ document.getElementById('taskList').innerHTML = tasks.map((t, i) =>\`<li class="\${t.done ? 'done' : ''}"><input type="checkbox" \${t.done ? 'checked' : ''} onchange="toggleTask(\${i})"/><span onclick="toggleTask(\${i})">\${t.text}</span><button class="del" onclick="deleteTask(\${i})"></button></li>\`
+ ).join('');
+}`
+ },
+ calc: {
+ html: `<div class="calc"><div class="display" id="display">0</div><div class="buttons"><button class="op" onclick="clear_()">C</button><button class="op" onclick="sign()">+/-</button><button class="op" onclick="percent()">%</button><button class="div-btn" onclick="op('/')">÷</button><button onclick="num('7')">7</button><button onclick="num('8')">8</button><button onclick="num('9')">9</button><button class="div-btn" onclick="op('*')">×</button><button onclick="num('4')">4</button><button onclick="num('5')">5</button><button onclick="num('6')">6</button><button class="div-btn" onclick="op('-')">−</button><button onclick="num('1')">1</button><button onclick="num('2')">2</button><button onclick="num('3')">3</button><button class="div-btn" onclick="op('+')">+</button><button class="span2" onclick="num('0')">0</button><button onclick="dot()">.</button><button class="eq-btn" onclick="calc()">=</button></div></div>`,
+ css: `* { box-sizing: border-box; }
+body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #1a1a2e; }
+.calc { background: #2a2a3e; border-radius: 20px; padding: 1.5rem; width: 260px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+.display { background: #16213e; color: #eee; text-align: right; padding: 1rem 1.25rem; border-radius: 12px; font-size: 2rem; font-family: 'Fira Code', monospace; margin-bottom: 1rem; min-height: 64px; word-break: break-all; }
+.buttons { display: grid; grid-template-columns: repeat(4,1fr); gap: .4rem; }
+button { padding: .9rem; border: none; border-radius: 10px; font-size: 1rem; cursor: pointer; background: #3a3a4e; color: #eee; font-weight: 600; transition: all 0.15s; }
+button:hover { filter: brightness(1.2); }
+button:active { transform: scale(0.95); }
+.op { background: #4a4a5e; }
+.div-btn { background: var(--primaria); }
+.eq-btn { background: #E97CA0; }
+.span2 { grid-column: span 2; }`,
+ js: `let cur='0', prev='', op_='', reset=false;
+const disp = () =>document.getElementById('display').textContent = cur;
+function num(n){ if(cur==='0'||reset){cur=n;reset=false;}else cur+=n; disp(); }
+function dot(){ if(!cur.includes('.')) cur+='.'; disp(); }
+function clear_(){ cur='0';prev='';op_=''; disp(); }
+function sign(){ cur=String(-parseFloat(cur)); disp(); }
+function percent(){ cur=String(parseFloat(cur)/100); disp(); }
+function op(o){ prev=cur;op_=o;reset=true; }
+function calc(){
+ if(!op_||!prev) return;
+ const a=parseFloat(prev), b=parseFloat(cur);
+ let r=0;
+ if(op_==='+') r=a+b; else if(op_==='-') r=a-b;
+ else if(op_==='*') r=a*b; else if(op_==='/') r=b?a/b:'Erro';
+ cur=String(Math.round(r*1e10)/1e10); op_=''; prev=''; disp();
+}`
+ },
+ cards: {
+ html: `<div class="page"><h2>Galeria de Cards</h2><div class="grid" id="grid"></div></div>`,
+ css: `* { box-sizing: border-box; }
+body { font-family: 'Segoe UI', sans-serif; background: #f8f6fc; padding: 1.5rem; }
+h2 { color: var(--primaria); text-align: center; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
+.card { background: var(--bg-card); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.08); transition: all .2s; cursor: pointer; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(106,86,176,.2); }
+.card-img { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+.card-body { padding: 1rem; }
+.card-title { font-weight: 700; color: var(--texto); margin-bottom: .3rem; }
+.card-text { font-size: .82rem; color: #888; }
+.card-badge { display: inline-block; padding: .15rem .55rem; border-radius: 99px; font-size: .72rem; font-weight: 700; margin-top: .5rem; }`,
+ js: `const items = [
+ {emoji:'', title:'HTML', text:'Estrutura das páginas web', color:'#fde', badge:'markup', bc:'#E97CA0'},
+ {emoji:'', title:'CSS', text:'Estilo e beleza visual', color:'#def', badge:'estilo', bc:'var(--secundaria)'},
+ {emoji:'', title:'JavaScript', text:'Interatividade e lógica', color:'#ffc', badge:'script', bc:'#F4A03A'},
+ {emoji:'', title:'Java', text:'POO e sistemas robustos', color:'#efe', badge:'backend', bc:'#5DAF8E'},
+ {emoji:'', title:'SQL', text:'Banco de dados relacional', color:'#fee', badge:'dados', bc:'var(--primaria)'},
+ {emoji:'', title:'UML', text:'Diagramas e arquitetura', color:'#f0f', badge:'design', bc:'#E97CA0'},
+];
+document.getElementById('grid').innerHTML = items.map(i =>\`<div class="card"><div class="card-img" style="background:\${i.color}">\${i.emoji}</div><div class="card-body"><div class="card-title">\${i.title}</div><div class="card-text">\${i.text}</div><span class="card-badge" style="background:\${i.bc}22;color:\${i.bc}">\${i.badge}</span></div></div>\`
+).join('');`
+ },
+ anim: {
+ html: `<div class="scene"><div class="orb" id="orb"></div><h1>Clique em mim!</h1><p id="count">Cliques: 0</p></div>`,
+ css: `* { box-sizing: border-box; }
+body { margin: 0; background: #0d1117; display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; }
+.scene { text-align: center; }
+h1 { color: white; margin-bottom: .5rem; }
+p { color: #8b949e; }
+.orb {
+ width: 120px; height: 120px; border-radius: 50%;
+ background: radial-gradient(circle at 35% 35%, #cba6f7, var(--primaria));
+ margin: 0 auto 1.5rem;
+ cursor: pointer;
+ transition: transform 0.2s;
+ box-shadow: 0 0 40px rgba(203,166,247,.4);
+ animation: float 3s ease-in-out infinite;
+}
+.orb:hover { transform: scale(1.1); }
+.orb:active { transform: scale(0.9); }
+@keyframes float {
+ 0%,100% { transform: translateY(0); }
+ 50% { transform: translateY(-15px); }
+}
+@keyframes explode {
+ 0% { transform: scale(1); }
+ 50% { transform: scale(1.5); background: radial-gradient(circle, #E97CA0, #F4A03A); }
+ 100% { transform: scale(1); }
+}`,
+ js: `let count = 0;
+document.getElementById('orb').addEventListener('click', function() {
+ count++;
+ document.getElementById('count').textContent = 'Cliques: ' + count;
+ this.style.animation = 'none';
+ this.offsetHeight; // trigger reflow
+ this.style.animation = 'explode 0.4s ease';
+ this.style.boxShadow = '0 0 ' + (40 + count * 5) + 'px rgba(233,124,160,.6)';
+ if (count % 10 === 0) {
+ document.querySelector('h1').textContent = ' ' + count + ' cliques!';
+ }
+});`
+ }
+};
+
+function switchEditorTab(tab, btn) {
+ document.querySelectorAll('.panel-tab').forEach(t =>t.classList.remove('active'));
+ document.querySelectorAll('.code-area').forEach(a =>a.classList.remove('active'));
+ btn.classList.add('active');
+ document.getElementById(tab + '-area').classList.add('active');
+}
+
+let previewTimeout;
+function autoPreview() {
+ clearTimeout(previewTimeout);
+ previewTimeout = setTimeout(runPreview, 600);
+}
+
+function runPreview() {
+ const html = document.getElementById('html-editor').value;
+ const css = document.getElementById('css-editor').value;
+ const js = document.getElementById('js-editor').value;
+ const iframe = document.getElementById('preview');
+ const doc = iframe.contentDocument || iframe.contentWindow.document;
+ const full = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${css}</style></head><body>${html}<script>${js}<\/script></body></html>`;
+ doc.open(); doc.write(full); doc.close();
+}
+
+function loadEx(key) {
+ const ex = examples[key];
+ document.getElementById('html-editor').value = ex.html;
+ document.getElementById('css-editor').value = ex.css;
+ document.getElementById('js-editor').value = ex.js;
+ runPreview();
+}
+
+function copyAll() {
+ const html = document.getElementById('html-editor').value;
+ const css = document.getElementById('css-editor').value;
+ const js = document.getElementById('js-editor').value;
+ const full = `<!-- HTML -->\n${html}\n\n<!-- CSS -->\n<style>\n${css}\n</style>\n\n<!-- JavaScript -->\n<script>\n${js}\n<\/script>`;
+ navigator.clipboard.writeText(full).then(() =>alert(' Código copiado!'));
+}
+
+function resetAll() {
+ document.getElementById('html-editor').value = '';
+ document.getElementById('css-editor').value = '';
+ document.getElementById('js-editor').value = '';
+ runPreview();
+}
+
+// Carregar exemplo inicial
+loadEx('hello');
+</script></body></html>
+
+

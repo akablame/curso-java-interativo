@@ -1,0 +1,492 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Playground Java — Dia 1</title><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>.playground-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 0; height: calc(100vh - 120px); }
+ .editor-panel { background: var(--bg-surface); display: flex; flex-direction: column; border-right: 2px solid var(--borda-brilho); }
+ .output-panel { background: var(--bg-code); display: flex; flex-direction: column; }
+ .panel-header {
+ background: var(--bg-elevated); padding: 0.6rem 1rem;
+ display: flex; align-items: center; justify-content: space-between;
+ border-bottom: 1px solid var(--borda); flex-shrink: 0;
+ }
+ .panel-title { color: var(--texto-suave); font-size: 0.8rem; font-weight: 600; font-family: 'Fira Code', monospace; }
+ .code-editor {
+ flex: 1; padding: 1.25rem; font-family: 'Fira Code', monospace; font-size: 0.88rem;
+ color: var(--texto); background: transparent; border: none; outline: none; resize: none; line-height: 1.7;
+ }
+ .output-content {
+ flex: 1; padding: 1.25rem; font-family: 'Fira Code', monospace; font-size: 0.88rem;
+ color: var(--sucesso); overflow-y: auto; line-height: 1.7; white-space: pre-wrap; word-break: break-all;
+ }
+ .output-content .out-line { margin-bottom: 0.1rem; }
+ .output-content .out-error { color: var(--erro); }
+ .output-content .out-info { color: var(--secundaria); }
+ .output-content .out-prompt { color: var(--aviso); }
+ .run-btn {
+ background: var(--sucesso); color: #0e0e17; border: none;
+ padding: 0.4rem 1rem; border-radius: 99px;
+ font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 700; cursor: pointer;
+ display: flex; align-items: center; gap: 0.35rem; transition: all 0.2s;
+ }
+ .run-btn:hover { filter: brightness(1.1); }
+ .run-btn:active { transform: scale(0.96); }
+ .examples-bar {
+ background: var(--bg); border-top: 1px solid var(--borda);
+ padding: 0.5rem 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;
+ flex-shrink: 0;
+ }
+ .ex-chip {
+ background: rgba(181,160,240,0.1); color: var(--primaria);
+ border: 1px solid rgba(181,160,240,0.2); border-radius: 99px;
+ padding: 0.2rem 0.7rem; font-size: 0.75rem; font-weight: 600; cursor: pointer;
+ transition: all 0.2s;
+ }
+ .ex-chip:hover { background: rgba(181,160,240,0.2); }
+ .clear-btn {
+ background: rgba(240,128,128,0.1); color: var(--erro);
+ border: 1px solid rgba(240,128,128,0.2); border-radius: 99px;
+ padding: 0.2rem 0.7rem; font-size: 0.75rem; font-weight: 600; cursor: pointer;
+ transition: all 0.2s;
+ }
+ .clear-btn:hover { background: rgba(240,128,128,0.2); }
+ .status-bar {
+ background: var(--bg); border-top: 1px solid var(--borda);
+ padding: 0.35rem 1rem; font-size: 0.75rem; color: var(--texto-dim); font-family: 'Fira Code', monospace;
+ flex-shrink: 0;
+ }
+ .note-box {
+ background: rgba(245,204,122,0.07); border: 1px solid rgba(245,204,122,0.15);
+ border-radius: 8px; padding: 0.6rem 0.85rem; margin: 0.35rem 0;
+ font-size: 0.75rem; color: var(--aviso);
+ }
+ @media(max-width:700px){
+ .playground-layout { grid-template-columns: 1fr; height: auto; }
+ .editor-panel { min-height: 300px; }
+ .output-panel { min-height: 200px; }
+ }
+ </style></head><body style="margin:0;padding:0;"><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="conteudo.html">Conteúdo</a><a href="exercicios.html">Exercícios</a></div></div></nav><div class="playground-layout"><!-- EDITOR --><div class="editor-panel"><div class="panel-header"><span class="panel-title">Editor Java (simulado)</span><button class="run-btn" onclick="runCode()">▶ Executar</button></div><textarea class="code-editor" id="codeEditor" spellcheck="false" placeholder="// Escreva seu código Java aqui..."></textarea><div class="examples-bar"><span style="color:#6c7086;font-size:0.75rem;align-self:center;">Exemplos:</span><span class="ex-chip" onclick="loadExample('ola')">Olá Mundo</span><span class="ex-chip" onclick="loadExample('vars')">Variáveis</span><span class="ex-chip" onclick="loadExample('if')">if/else</span><span class="ex-chip" onclick="loadExample('for')">for loop</span><span class="ex-chip" onclick="loadExample('while')">while</span><span class="ex-chip" onclick="loadExample('array')">Arrays</span><span class="ex-chip" onclick="loadExample('metodo')">Método</span><span class="ex-chip" onclick="loadExample('tabuada')">Tabuada</span></div></div><!-- OUTPUT --><div class="output-panel"><div class="panel-header"><span class="panel-title">Console Output</span><button class="clear-btn" onclick="clearOutput()">Limpar</button></div><div class="output-content" id="outputArea"><div class="out-info">// Clique em ▶ Executar para ver o resultado</div><div class="out-info">// Simulação JavaScript — comportamento 99% fiel ao Java</div></div><div class="status-bar" id="statusBar">Pronto para executar</div></div></div><div class="note-box" style="margin:0;border-radius:0;border-top:1px solid rgba(249,226,175,0.1)"><strong>Playground Simulado:</strong>Este editor simula a saída de Java usando JavaScript. Suporta: System.out.println, variáveis, operadores, if/else, for/while, arrays, métodos simples. Para compilar Java real, use o NetBeans ou o site <a href="https://onecompiler.com/java" target="_blank" style="color:#cba6f7">onecompiler.com/java</a></div><script>const examples = {
+ ola: `public class OlaMundo {
+ public static void main(String[] args) {
+ System.out.println("Olá, Mundo! ");
+ System.out.println("Meu primeiro programa Java!");
+ System.out.println("Está funcionando! ");
+ }
+}`,
+ vars: `public class Variaveis {
+ public static void main(String[] args) {
+ // Tipos primitivos
+ int idade = 20;
+ double altura = 1.65;
+ boolean estudante = true;
+ char inicial = 'A';
+ String nome = "Ana Paula";
+
+ System.out.println("=== Apresentação ===");
+ System.out.println("Nome: " + nome);
+ System.out.println("Idade: " + idade + " anos");
+ System.out.println("Altura: " + altura + "m");
+ System.out.println("Estudante: " + estudante);
+ System.out.println("Inicial: " + inicial);
+
+ // Operações
+ int anoNascimento = 2024 - idade;
+ System.out.println("Ano de nascimento aprox.: " + anoNascimento);
+ }
+}`,
+ if: `public class Condicionais {
+ public static void main(String[] args) {
+ double nota = 7.5;
+
+ System.out.println("Nota: " + nota);
+ System.out.print("Situação: ");
+
+ if (nota >= 9.0) {
+ System.out.println("A - Excelente! ");
+ } else if (nota >= 7.0) {
+ System.out.println("B - Bom! ");
+ } else if (nota >= 5.0) {
+ System.out.println("C - Regular ");
+ } else {
+ System.out.println("D - Reprovado ");
+ }
+
+ // Operador ternário
+ String status = (nota >= 7.0) ? "APROVADO " : "REPROVADO ";
+ System.out.println("Status: " + status);
+ }
+}`,
+ for: `public class LoopFor {
+ public static void main(String[] args) {
+ System.out.println("=== Contando de 1 a 5 ===");
+ for (int i = 1; i <= 5; i++) {
+ System.out.println("Número: " + i);
+ }
+
+ System.out.println("\\n=== Números pares de 0 a 10 ===");
+ for (int i = 0; i <= 10; i += 2) {
+ System.out.print(i + " ");
+ }
+ System.out.println();
+
+ System.out.println("\\n=== Countdown ===");
+ for (int i = 5; i >= 1; i--) {
+ System.out.println(i + "...");
+ }
+ System.out.println(" Lançar!");
+ }
+}`,
+ while: `public class LoopWhile {
+ public static void main(String[] args) {
+ // Dobrar até passar de 100
+ int valor = 1;
+ int passos = 0;
+
+ System.out.println("Dobrando valor...");
+ while (valor < 100) {
+ valor *= 2;
+ passos++;
+ System.out.println("Passo " + passos + ": " + valor);
+ }
+ System.out.println("Passou de 100 em " + passos + " passos!");
+
+ // Soma de 1 a N
+ int n = 10, soma = 0, i = 1;
+ while (i <= n) {
+ soma += i;
+ i++;
+ }
+ System.out.println("\\nSoma de 1 a " + n + " = " + soma);
+ }
+}`,
+ array: `public class Arrays {
+ public static void main(String[] args) {
+ int[] notas = {85, 92, 78, 95, 88};
+
+ System.out.println("=== Notas dos Alunos ===");
+ int soma = 0;
+ int maior = notas[0];
+ int menor = notas[0];
+
+ for (int i = 0; i < notas.length; i++) {
+ System.out.println("Aluno " + (i+1) + ": " + notas[i]);
+ soma += notas[i];
+ if (notas[i] >maior) maior = notas[i];
+ if (notas[i] < menor) menor = notas[i];
+ }
+
+ double media = (double) soma / notas.length;
+ System.out.println("\\nMédia: " + media);
+ System.out.println("Maior nota: " + maior);
+ System.out.println("Menor nota: " + menor);
+ }
+}`,
+ metodo: `public class Metodos {
+ // Método que calcula área de um círculo
+ static double areaCirculo(double raio) {
+ return Math.PI * raio * raio;
+ }
+
+ // Método que verifica se é par
+ static boolean ehPar(int numero) {
+ return numero % 2 == 0;
+ }
+
+ // Método que repete uma string
+ static String repetir(String texto, int vezes) {
+ String resultado = "";
+ for (int i = 0; i < vezes; i++) {
+ resultado += texto;
+ }
+ return resultado;
+ }
+
+ public static void main(String[] args) {
+ System.out.println("Área do círculo (r=5): " + areaCirculo(5));
+ System.out.println("4 é par? " + ehPar(4));
+ System.out.println("7 é par? " + ehPar(7));
+ System.out.println(repetir("Java! ", 3));
+ }
+}`,
+ tabuada: `public class Tabuada {
+ public static void main(String[] args) {
+ int numero = 7;
+
+ System.out.println("=== Tabuada do " + numero + " ===");
+ for (int i = 1; i <= 10; i++) {
+ System.out.println(numero + " x " + i + " = " + (numero * i));
+ }
+ }
+}`
+};
+
+function loadExample(key) {
+ document.getElementById('codeEditor').value = examples[key];
+ clearOutput();
+ output('<span class="out-info">// Exemplo carregado! Clique ▶ Executar</span>');
+}
+
+let outputLines = [];
+
+function output(html) {
+ outputLines.push(html);
+ document.getElementById('outputArea').innerHTML = outputLines.join('\n');
+}
+
+function clearOutput() {
+ outputLines = [];
+ document.getElementById('outputArea').innerHTML = '<div class="out-info">// Output limpo</div>';
+}
+
+// Simulador Java simples em JavaScript
+function runCode() {
+ const code = document.getElementById('codeEditor').value;
+ outputLines = [];
+ const startTime = Date.now();
+ document.getElementById('statusBar').textContent = 'Executando...';
+
+ try {
+ simulateJava(code);
+ const elapsed = Date.now() - startTime;
+ document.getElementById('statusBar').textContent = ` Executado com sucesso em ${elapsed}ms`;
+ } catch (e) {
+ output(`<span class="out-error">Erro: ${e.message}</span>`);
+ document.getElementById('statusBar').textContent = ' Erro na execução';
+ }
+}
+
+function simulateJava(code) {
+ const prints = [];
+
+ // Remover comentários de linha
+ let c = code.replace(/\/\/[^\n]*/g, '');
+ // Remover comentários de bloco
+ c = c.replace(/\/\*[\s\S]*?\*\//g, '');
+
+ // Extrair e executar blocos de código em métodos
+ // Vamos usar uma abordagem de regex simplificada para demonstração
+
+ // Extrair variáveis simples
+ const vars = {};
+
+ // Processar linha a linha (simulação simplificada)
+ const lines = c.split('\n').map(l =>l.trim()).filter(l =>l);
+
+ let inMethod = false;
+ let braceCount = 0;
+ let methodLines = [];
+ let inClass = false;
+
+ for (const line of lines) {
+ if (line.includes('class ')) { inClass = true; continue; }
+ if (inClass && (line.includes('static') || line.includes('void main') || line.includes('public static'))) {
+ inMethod = true; braceCount = 0; continue;
+ }
+ if (inMethod) {
+ if (line === '{') { braceCount++; continue; }
+ if (line === '}') {
+ braceCount--;
+ if (braceCount < 0) { inMethod = false; break; }
+ continue;
+ }
+ methodLines.push(line);
+ }
+ }
+
+ // Executar as linhas do main com contexto
+ executeLines(methodLines.length >0 ? methodLines : lines, vars, prints);
+
+ if (prints.length === 0) {
+ output('<span class="out-info">// Programa executado (sem saída visível)</span>');
+ }
+}
+
+function executeLines(lines, vars, prints) {
+ let i = 0;
+ while (i < lines.length && i < 200) {
+ const line = lines[i].trim();
+
+ // System.out.println
+ const printlnMatch = line.match(/System\.out\.println\s*\((.+)\)\s*;/);
+ const printMatch = line.match(/System\.out\.print\s*\((.+)\)\s*;/);
+ const printfMatch = line.match(/System\.out\.printf\s*\((.+)\)\s*;/);
+
+ if (printlnMatch) {
+ const val = evalExpr(printlnMatch[1], vars);
+ output(`<div class="out-line">${escHtml(String(val))}</div>`);
+ i++; continue;
+ }
+ if (printMatch) {
+ const val = evalExpr(printMatch[1], vars);
+ output(`<span>${escHtml(String(val))}</span>`);
+ i++; continue;
+ }
+ if (printfMatch) {
+ const val = simPrintf(printfMatch[1], vars);
+ output(`<div class="out-line">${escHtml(val)}</div>`);
+ i++; continue;
+ }
+
+ // Declaração de variável
+ const varMatch = line.match(/^(?:int|double|float|long|boolean|String|char|var)\s+(\w+)\s*=\s*(.+);/);
+ if (varMatch) {
+ vars[varMatch[1]] = evalExpr(varMatch[2], vars);
+ i++; continue;
+ }
+
+ // Atribuição
+ const assignMatch = line.match(/^(\w+)\s*=\s*(.+);/);
+ if (assignMatch && vars.hasOwnProperty(assignMatch[1])) {
+ vars[assignMatch[1]] = evalExpr(assignMatch[2], vars);
+ i++; continue;
+ }
+
+ // Atribuição composta (+=, -=, *=)
+ const compMatch = line.match(/^(\w+)\s*(\+=|-=|\*=|\/=|%=)\s*(.+);/);
+ if (compMatch) {
+ const v = compMatch[1], op = compMatch[2], rhs = evalExpr(compMatch[3], vars);
+ if (op === '+=') vars[v] = (vars[v]||0) + rhs;
+ else if (op === '-=') vars[v] = (vars[v]||0) - rhs;
+ else if (op === '*=') vars[v] = (vars[v]||0) * rhs;
+ else if (op === '/=') vars[v] = (vars[v]||0) / rhs;
+ i++; continue;
+ }
+
+ // i++ / i--
+ if (line.match(/^(\w+)\+\+;/)) { const m = line.match(/^(\w+)\+\+;/); vars[m[1]] = (vars[m[1]]||0) + 1; i++; continue; }
+ if (line.match(/^(\w+)--;/)) { const m = line.match(/^(\w+)--;/); vars[m[1]] = (vars[m[1]]||0) - 1; i++; continue; }
+
+ // for loop
+ const forMatch = line.match(/^for\s*\(\s*(?:int|double)?\s*(\w+)\s*=\s*(.+?);\s*(.+?);\s*(.+?)\s*\)\s*\{?/);
+ if (forMatch) {
+ const [, vname, init, cond, inc] = forMatch;
+ vars[vname] = evalExpr(init, vars);
+ const bodyLines = [];
+ let j = i + 1, depth = line.endsWith('{') ? 1 : 0;
+ if (!line.endsWith('{') && lines[i+1] && lines[i+1].trim() === '{') { j = i + 2; depth = 1; }
+ while (j < lines.length) {
+ const bl = lines[j].trim();
+ if (bl === '{') { depth++; j++; continue; }
+ if (bl === '}') { depth--; if (depth <= 0) { j++; break; } j++; continue; }
+ bodyLines.push(bl); j++;
+ }
+ let maxIter = 0;
+ while (evalCond(cond, vars) && maxIter < 500) {
+ executeLines(bodyLines, vars, prints);
+ applyInc(inc, vars);
+ maxIter++;
+ }
+ i = j; continue;
+ }
+
+ // while
+ const whileMatch = line.match(/^while\s*\((.+)\)\s*\{?/);
+ if (whileMatch) {
+ const cond = whileMatch[1];
+ const bodyLines = [];
+ let j = i + 1, depth = line.endsWith('{') ? 1 : 0;
+ if (!line.endsWith('{') && lines[i+1] && lines[i+1].trim() === '{') { j = i + 2; depth = 1; }
+ while (j < lines.length) {
+ const bl = lines[j].trim();
+ if (bl === '{') { depth++; j++; continue; }
+ if (bl === '}') { depth--; if (depth <= 0) { j++; break; } j++; continue; }
+ bodyLines.push(bl); j++;
+ }
+ let maxIter = 0;
+ while (evalCond(cond, vars) && maxIter < 500) {
+ executeLines(bodyLines, vars, prints);
+ maxIter++;
+ }
+ i = j; continue;
+ }
+
+ i++;
+ }
+}
+
+function evalExpr(expr, vars) {
+ expr = expr.trim();
+ // Remove cast (double), (int), etc.
+ expr = expr.replace(/\(double\)\s*/g, '').replace(/\(int\)\s*/g, '').replace(/\(float\)\s*/g, '');
+ // String literals
+ if (expr.startsWith('"') && expr.endsWith('"')) return expr.slice(1, -1);
+ // Char literals
+ if (expr.startsWith("'") && expr.endsWith("'")) return expr.slice(1, -1);
+ // Boolean
+ if (expr === 'true') return true;
+ if (expr === 'false') return false;
+ // Null
+ if (expr === 'null') return null;
+ // Math.PI
+ expr = expr.replace(/Math\.PI/g, Math.PI);
+ expr = expr.replace(/Math\.abs\(([^)]+)\)/g, (_, a) =>Math.abs(evalExpr(a, vars)));
+ expr = expr.replace(/Math\.sqrt\(([^)]+)\)/g, (_, a) =>Math.sqrt(evalExpr(a, vars)));
+ expr = expr.replace(/Math\.pow\(([^,]+),([^)]+)\)/g, (_, a, b) =>Math.pow(evalExpr(a, vars), evalExpr(b, vars)));
+
+ // String concatenation with +
+ // Replace variables
+ let resolved = expr.replace(/\b([a-zA-Z_]\w*)\b/g, (match) =>{
+ if (vars.hasOwnProperty(match)) {
+ const v = vars[match];
+ if (typeof v === 'string') return JSON.stringify(v);
+ return v;
+ }
+ return match;
+ });
+
+ // Evaluate safely
+ try {
+ // Handle String + number
+ const result = Function('"use strict"; return (' + resolved + ')')();
+ return result;
+ } catch {
+ return expr;
+ }
+}
+
+function evalCond(cond, vars) {
+ try {
+ let c = cond.replace(/\b([a-zA-Z_]\w*)\b/g, (match) =>{
+ if (vars.hasOwnProperty(match)) return vars[match];
+ return match;
+ });
+ c = c.replace(/&&/g, '&&').replace(/\|\|/g, '||').replace(/!=/g, '!==').replace(/==/g, '===');
+ return !!Function('"use strict"; return (' + c + ')')();
+ } catch { return false; }
+}
+
+function applyInc(inc, vars) {
+ inc = inc.trim();
+ const pp = inc.match(/^(\w+)\+\+$/); if (pp) { vars[pp[1]] = (vars[pp[1]]||0) + 1; return; }
+ const mm = inc.match(/^(\w+)--$/); if (mm) { vars[mm[1]] = (vars[mm[1]]||0) - 1; return; }
+ const pe = inc.match(/^(\w+)\s*\+=\s*(.+)$/); if (pe) { vars[pe[1]] = (vars[pe[1]]||0) + evalExpr(pe[2], vars); return; }
+ const me = inc.match(/^(\w+)\s*-=\s*(.+)$/); if (me) { vars[me[1]] = (vars[me[1]]||0) - evalExpr(me[2], vars); return; }
+}
+
+function simPrintf(args, vars) {
+ const parts = args.split(',');
+ if (parts.length < 1) return '';
+ let fmt = evalExpr(parts[0].trim(), vars);
+ fmt = String(fmt);
+ let argIdx = 1;
+ return fmt.replace(/%[\d.]*[dfns%]/g, (spec) =>{
+ if (spec === '%%') return '%';
+ const val = argIdx < parts.length ? evalExpr(parts[argIdx++].trim(), vars) : '';
+ if (spec.endsWith('d')) return Math.round(Number(val));
+ if (spec.endsWith('f')) {
+ const precMatch = spec.match(/\.(\d+)f/);
+ if (precMatch) return Number(val).toFixed(parseInt(precMatch[1]));
+ return Number(val).toFixed(6);
+ }
+ if (spec.endsWith('n')) return '\n';
+ if (spec.endsWith('s')) return String(val);
+ return val;
+ }).replace(/%n/g, '\n').replace(/\\n/g, '\n').replace(/\\t/g, '\t');
+}
+
+function escHtml(str) {
+ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// Carregar exemplo padrão
+loadExample('ola');
+</script></body></html>
+
+
+

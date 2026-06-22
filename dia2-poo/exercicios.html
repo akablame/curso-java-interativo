@@ -1,0 +1,308 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Exercícios POO — Dia 2</title><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>.exercise-card{background:var(--bg-card);border-radius:16px;border:1px solid var(--borda);box-shadow:var(--sombra);margin-bottom:2rem;overflow:hidden;}
+ .exercise-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;background:linear-gradient(135deg,rgba(233,124,160,0.07),rgba(244,160,58,0.05));border-bottom:1px solid var(--borda);}
+ .ex-number{background:linear-gradient(135deg,var(--acento),var(--aviso));color:white;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0;}
+ .ex-title{flex:1;margin:0 .75rem;font-size:1.05rem;font-weight:700;}
+ .exercise-body{padding:1.5rem;}
+ .hint-block{display:none;}
+ .hint-block.show{display:block;}
+ .solution-block{display:none;}
+ .solution-block.show{display:block;}
+ .done-btn.done{background:var(--sucesso)!important;color:white!important;border-color:var(--sucesso)!important;}
+ </style></head><body><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="conteudo.html">Conteúdo</a><a href="visualizador-classes.html">UML</a></div></div></nav><div class="page-header" style="background:linear-gradient(135deg,#E97CA0,#F4A03A)"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› <a href="conteudo.html">Dia 2</a>› Exercícios</div><h1>Exercícios — Dia 2: POO</h1><p>5 exercícios práticos sobre classes, encapsulamento, herança e polimorfismo</p></div></div><div class="container section"><!-- EX 1 --><div class="exercise-card"><div class="exercise-header"><div class="ex-number">1</div><div class="ex-title">Classe Retângulo</div><span class="badge badge-success">Iniciante</span></div><div class="exercise-body"><p>Crie uma classe <strong>Retangulo</strong>com atributos <code>largura</code>e <code>altura</code>. Adicione métodos para calcular a <strong>área</strong>e o <strong>perímetro</strong>, e um método <strong>exibir()</strong>que mostra tudo formatado.</p><div class="flex gap-1 mt-2 flex-wrap"><button class="btn btn-ghost btn-sm" onclick="toggleEl('h1')">Dica</button><button class="btn btn-outline btn-sm" onclick="toggleEl('s1')">Solução</button><button class="btn btn-sm done-btn" id="done1" onclick="markDone(1)">Feito</button></div><div id="h1" class="hint-block callout callout-tip mt-2"><div><div class="callout-title">Dica</div><p class="text-sm">Área = largura × altura. Perímetro = 2 × (largura + altura).</p></div></div><div id="s1" class="solution-block mt-2"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">public class Retangulo {
+ private double largura;
+ private double altura;
+
+ public Retangulo(double largura, double altura) {
+ this.largura = largura;
+ this.altura = altura;
+ }
+
+ public double calcularArea() {
+ return largura * altura;
+ }
+
+ public double calcularPerimetro() {
+ return 2 * (largura + altura);
+ }
+
+ public void exibir() {
+ System.out.println("=== Retângulo ===");
+ System.out.printf("Dimensões: %.1f x %.1f%n", largura, altura);
+ System.out.printf("Área: %.2f%n", calcularArea());
+ System.out.printf("Perímetro: %.2f%n", calcularPerimetro());
+ }
+}
+
+// Main
+Retangulo r = new Retangulo(5.0, 3.0);
+r.exibir();
+// === Retângulo ===
+// Dimensões: 5.0 x 3.0
+// Área: 15.00
+// Perímetro: 16.00</code></pre></div></div></div></div><!-- EX 2 --><div class="exercise-card"><div class="exercise-header"><div class="ex-number">2</div><div class="ex-title">Classe Aluno com Encapsulamento</div><span class="badge badge-blue">Encapsulamento</span></div><div class="exercise-body"><p>Crie uma classe <strong>Aluno</strong>com atributos privados: nome, matrícula e array de notas (5 notas). Use getters/setters. Adicione métodos: <strong>calcularMedia()</strong>e <strong>getSituacao()</strong>(Aprovado/Recuperação/Reprovado).</p><div class="flex gap-1 mt-2 flex-wrap"><button class="btn btn-ghost btn-sm" onclick="toggleEl('h2')">Dica</button><button class="btn btn-outline btn-sm" onclick="toggleEl('s2')">Solução</button><button class="btn btn-sm done-btn" id="done2" onclick="markDone(2)">Feito</button></div><div id="h2" class="hint-block callout callout-tip mt-2"><div><div class="callout-title">Dica</div><p class="text-sm">Use um loop for-each para somar as notas. Divida pela quantidade. No setter de nota, valide que o valor é entre 0 e 10.</p></div></div><div id="s2" class="solution-block mt-2"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">public class Aluno {
+ private String nome;
+ private String matricula;
+ private double[] notas;
+
+ public Aluno(String nome, String matricula) {
+ this.nome = nome;
+ this.matricula = matricula;
+ this.notas = new double[5];
+ }
+
+ public String getNome() { return nome; }
+ public String getMatricula() { return matricula; }
+
+ public void setNota(int posicao, double valor) {
+ if (posicao >= 0 && posicao < 5 && valor >= 0 && valor <= 10) {
+ notas[posicao] = valor;
+ } else {
+ System.out.println(" Nota ou posição inválida!");
+ }
+ }
+
+ public double calcularMedia() {
+ double soma = 0;
+ for (double n : notas) soma += n;
+ return soma / notas.length;
+ }
+
+ public String getSituacao() {
+ double media = calcularMedia();
+ if (media >= 7.0) return " Aprovado";
+ if (media >= 5.0) return " Recuperação";
+ return " Reprovado";
+ }
+
+ public void boletim() {
+ System.out.println("=== BOLETIM: " + nome + " (" + matricula + ") ===");
+ for (int i = 0; i < notas.length; i++) {
+ System.out.printf("Nota %d: %.1f%n", i+1, notas[i]);
+ }
+ System.out.printf("Média: %.2f — %s%n", calcularMedia(), getSituacao());
+ }
+}
+
+// Main
+Aluno a = new Aluno("Ana Silva", "2024001");
+a.setNota(0, 8.5);
+a.setNota(1, 7.0);
+a.setNota(2, 9.0);
+a.setNota(3, 6.5);
+a.setNota(4, 8.0);
+a.boletim();</code></pre></div></div></div></div><!-- EX 3 --><div class="exercise-card"><div class="exercise-header"><div class="ex-number">3</div><div class="ex-title">Hierarquia de Veículos</div><span class="badge badge-warn">Herança</span></div><div class="exercise-body"><p>Crie a hierarquia: <strong>Veiculo</strong>(marca, ano, velocidadeMaxima) → <strong>Carro</strong>(qtdPortas) e <strong>Moto</strong>(cilindrada). Cada subclasse deve sobrescrever o método <strong>exibirInfo()</strong>.</p><div class="flex gap-1 mt-2 flex-wrap"><button class="btn btn-ghost btn-sm" onclick="toggleEl('h3')">Dica</button><button class="btn btn-outline btn-sm" onclick="toggleEl('s3')">Solução</button><button class="btn btn-sm done-btn" id="done3" onclick="markDone(3)">Feito</button></div><div id="h3" class="hint-block callout callout-tip mt-2"><div><div class="callout-title">Dica</div><p class="text-sm">Na subclasse, use <code>super.exibirInfo()</code>para chamar o método do pai primeiro, depois adicione as informações específicas.</p></div></div><div id="s3" class="solution-block mt-2"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">public class Veiculo {
+ protected String marca;
+ protected int ano;
+ protected int velocidadeMaxima;
+
+ public Veiculo(String marca, int ano, int velMax) {
+ this.marca = marca;
+ this.ano = ano;
+ this.velocidadeMaxima = velMax;
+ }
+
+ public void exibirInfo() {
+ System.out.println("Marca: " + marca);
+ System.out.println("Ano: " + ano);
+ System.out.println("Vel. Máx: " + velocidadeMaxima + " km/h");
+ }
+}
+
+public class Carro extends Veiculo {
+ private int qtdPortas;
+
+ public Carro(String marca, int ano, int velMax, int portas) {
+ super(marca, ano, velMax);
+ this.qtdPortas = portas;
+ }
+
+ @Override
+ public void exibirInfo() {
+ System.out.println(" === CARRO ===");
+ super.exibirInfo();
+ System.out.println("Portas: " + qtdPortas);
+ }
+}
+
+public class Moto extends Veiculo {
+ private int cilindrada;
+
+ public Moto(String marca, int ano, int velMax, int cilindrada) {
+ super(marca, ano, velMax);
+ this.cilindrada = cilindrada;
+ }
+
+ @Override
+ public void exibirInfo() {
+ System.out.println(" === MOTO ===");
+ super.exibirInfo();
+ System.out.println("Cilindrada: " + cilindrada + "cc");
+ }
+}
+
+// Polimorfismo!
+Veiculo[] frota = {
+ new Carro("Honda", 2022, 180, 4),
+ new Moto("Yamaha", 2023, 200, 600),
+ new Carro("Ford", 2021, 160, 2)
+};
+for (Veiculo v : frota) { v.exibirInfo(); System.out.println(); }</code></pre></div></div></div></div><!-- EX 4 --><div class="exercise-card"><div class="exercise-header"><div class="ex-number">4</div><div class="ex-title">Interface Calculável</div><span class="badge badge-primary">Interface</span></div><div class="exercise-body"><p>Crie uma interface <strong>Calculavel</strong>com métodos <code>calcularArea()</code>e <code>calcularPerimetro()</code>. Implemente-a nas classes <strong>Circulo</strong>e <strong>Triangulo</strong>.</p><div class="flex gap-1 mt-2 flex-wrap"><button class="btn btn-ghost btn-sm" onclick="toggleEl('h4')">Dica</button><button class="btn btn-outline btn-sm" onclick="toggleEl('s4')">Solução</button><button class="btn btn-sm done-btn" id="done4" onclick="markDone(4)">Feito</button></div><div id="h4" class="hint-block callout callout-tip mt-2"><div><div class="callout-title">Dica</div><p class="text-sm">Círculo: área = π × r². Triângulo (equilátero): área = (√3/4) × lado². Use <code>Math.PI</code>e <code>Math.sqrt(3)</code>.</p></div></div><div id="s4" class="solution-block mt-2"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">public interface Calculavel {
+ double calcularArea();
+ double calcularPerimetro();
+}
+
+public class Circulo implements Calculavel {
+ private double raio;
+ public Circulo(double raio) { this.raio = raio; }
+
+ @Override
+ public double calcularArea() {
+ return Math.PI * raio * raio;
+ }
+
+ @Override
+ public double calcularPerimetro() {
+ return 2 * Math.PI * raio;
+ }
+
+ public void exibir() {
+ System.out.printf(" Círculo (r=%.1f): Área=%.2f | Perímetro=%.2f%n",
+ raio, calcularArea(), calcularPerimetro());
+ }
+}
+
+public class Triangulo implements Calculavel {
+ private double lado; // equilátero
+
+ public Triangulo(double lado) { this.lado = lado; }
+
+ @Override
+ public double calcularArea() {
+ return (Math.sqrt(3) / 4) * lado * lado;
+ }
+
+ @Override
+ public double calcularPerimetro() {
+ return 3 * lado;
+ }
+
+ public void exibir() {
+ System.out.printf(" Triângulo (l=%.1f): Área=%.2f | Perímetro=%.2f%n",
+ lado, calcularArea(), calcularPerimetro());
+ }
+}
+
+// Polimorfismo com interface
+Calculavel[] formas = { new Circulo(5), new Triangulo(6) };
+for (Calculavel f : formas) {
+ System.out.printf("Área=%.2f | Perímetro=%.2f%n", f.calcularArea(), f.calcularPerimetro());
+}</code></pre></div></div></div></div><!-- EX 5 --><div class="exercise-card"><div class="exercise-header"><div class="ex-number">5</div><div class="ex-title">Sistema de Biblioteca (Mini-Projeto)</div><span class="badge badge-accent">Completo</span></div><div class="exercise-body"><p>Crie as classes: <strong>Livro</strong>(titulo, autor, isbn, disponivel) e <strong>Biblioteca</strong>(com array de Livros). A biblioteca deve ter métodos: <strong>adicionarLivro()</strong>, <strong>emprestarLivro(isbn)</strong>, <strong>devolverLivro(isbn)</strong>e <strong>listarLivros()</strong>.</p><div class="flex gap-1 mt-2 flex-wrap"><button class="btn btn-ghost btn-sm" onclick="toggleEl('h5')">Dica</button><button class="btn btn-outline btn-sm" onclick="toggleEl('s5')">Solução</button><button class="btn btn-sm done-btn" id="done5" onclick="markDone(5)">Feito</button></div><div id="h5" class="hint-block callout callout-tip mt-2"><div><div class="callout-title">Dica</div><p class="text-sm">Use um ArrayList ou array de Livro na Biblioteca. Para buscar por ISBN, percorra o array comparando com <code>.equals()</code>.</p></div></div><div id="s5" class="solution-block mt-2"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">public class Livro {
+ private String titulo;
+ private String autor;
+ private String isbn;
+ private boolean disponivel;
+
+ public Livro(String titulo, String autor, String isbn) {
+ this.titulo = titulo;
+ this.autor = autor;
+ this.isbn = isbn;
+ this.disponivel = true;
+ }
+
+ public String getIsbn() { return isbn; }
+ public boolean isDisponivel() { return disponivel; }
+ public void setDisponivel(boolean d) { this.disponivel = d; }
+
+ public void exibir() {
+ String status = disponivel ? " Disponível" : " Emprestado";
+ System.out.printf(" %-25s | %-15s | ISBN: %-12s | %s%n",
+ titulo, autor, isbn, status);
+ }
+}
+
+public class Biblioteca {
+ private Livro[] acervo;
+ private int quantidade;
+ private static final int CAPACIDADE = 100;
+
+ public Biblioteca() {
+ this.acervo = new Livro[CAPACIDADE];
+ this.quantidade = 0;
+ }
+
+ public void adicionarLivro(Livro livro) {
+ if (quantidade < CAPACIDADE) {
+ acervo[quantidade++] = livro;
+ System.out.println(" Livro adicionado: " + livro.getIsbn());
+ } else {
+ System.out.println(" Biblioteca cheia!");
+ }
+ }
+
+ public boolean emprestarLivro(String isbn) {
+ for (int i = 0; i < quantidade; i++) {
+ if (acervo[i].getIsbn().equals(isbn)) {
+ if (acervo[i].isDisponivel()) {
+ acervo[i].setDisponivel(false);
+ System.out.println(" Livro emprestado com sucesso!");
+ return true;
+ } else {
+ System.out.println(" Livro já está emprestado!");
+ return false;
+ }
+ }
+ }
+ System.out.println(" Livro não encontrado!");
+ return false;
+ }
+
+ public void devolverLivro(String isbn) {
+ for (int i = 0; i < quantidade; i++) {
+ if (acervo[i].getIsbn().equals(isbn)) {
+ acervo[i].setDisponivel(true);
+ System.out.println(" Livro devolvido com sucesso!");
+ return;
+ }
+ }
+ System.out.println(" ISBN não encontrado!");
+ }
+
+ public void listarLivros() {
+ System.out.println("=== ACERVO DA BIBLIOTECA ===");
+ for (int i = 0; i < quantidade; i++) {
+ acervo[i].exibir();
+ }
+ }
+}
+
+// Main
+Biblioteca bib = new Biblioteca();
+bib.adicionarLivro(new Livro("Clean Code", "Robert C. Martin", "978-0132350884"));
+bib.adicionarLivro(new Livro("Java Efetivo", "Joshua Bloch", "978-0134685991"));
+bib.adicionarLivro(new Livro("Design Patterns", "Gang of Four", "978-0201633610"));
+
+bib.listarLivros();
+bib.emprestarLivro("978-0132350884");
+bib.listarLivros();</code></pre></div></div></div></div><div class="card"><div class="card-body text-center"><h3>Excelente trabalho!</h3><p class="text-muted mt-1 mb-2">Você está dominando POO! Continue para o Banco de Dados.</p><div class="flex gap-1 justify-between flex-wrap"><a href="visualizador-classes.html" class="btn btn-secondary">Visualizador UML</a><a href="../dia3-banco/conteudo.html" class="btn btn-primary">Dia 3: Banco de Dados →</a></div></div></div></div><footer class="footer"><div class="container"><p><a href="../index.html">← Portal</a>| <a href="conteudo.html">Conteúdo</a>| <a href="../dia3-banco/conteudo.html">Dia 3 →</a></p></div></footer><script>hljs.highlightAll();
+ function toggleEl(id) { const el = document.getElementById(id); el.classList.toggle('show'); if(el.classList.contains('show')) hljs.highlightAll(); }
+ function copyCode(btn) { const pre = btn.closest('.code-block').querySelector('pre code'); navigator.clipboard.writeText(pre.textContent).then(() =>{ btn.textContent = ' Copiado!'; setTimeout(() =>btn.textContent = 'Copiar', 2000); }); }
+ const NAMES = ['Retângulo','Aluno','Veículos','Interface','Biblioteca'];
+ function markDone(n) {
+ const saved = JSON.parse(localStorage.getItem('dia2ex') || '{}');
+ saved[n] = !saved[n];
+ localStorage.setItem('dia2ex', JSON.stringify(saved));
+ const btn = document.getElementById('done' + n);
+ if (saved[n]) { btn.textContent = ' Feito!'; btn.classList.add('done'); }
+ else { btn.textContent = ' Feito'; btn.classList.remove('done'); }
+ }
+ function init() {
+ const saved = JSON.parse(localStorage.getItem('dia2ex') || '{}');
+ for (let i = 1; i <= 5; i++) {
+ if (saved[i]) { const btn = document.getElementById('done' + i); btn.textContent = ' Feito!'; btn.classList.add('done'); }
+ }
+ }
+ init();
+</script></body></html>
+
+
+

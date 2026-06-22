@@ -1,0 +1,381 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>UML Builder Interativo</title><link rel="stylesheet" href="../assets/style.css"/><style>.builder-layout{display:grid;grid-template-columns:200px 1fr;gap:0;height:calc(100vh - 70px);}
+ .tools-panel{background:#1e1e2e;border-right:1px solid #2a2a3e;padding:.75rem;overflow-y:auto;}
+ .tools-panel h4{color:#a0a0b8;font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem;font-weight:700;}
+ .tool-btn{width:100%;background:rgba(203,166,247,.1);color:#cba6f7;border:1px solid rgba(203,166,247,.2);border-radius:8px;padding:.5rem;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;margin-bottom:.3rem;text-align:left;transition:all .2s;}
+ .tool-btn:hover{background:rgba(203,166,247,.2);}
+ .canvas-wrap{position:relative;overflow:hidden;background:var(--bg);cursor:default;}
+ .canvas-wrap.select-mode{cursor:default;}
+ svg#umlCanvas{width:100%;height:100%;position:absolute;top:0;left:0;}
+ .uml-el{cursor:move;user-select:none;}
+ .uml-el-rect{fill:white;stroke:var(--primaria);stroke-width:2;rx:4;}
+ .uml-el-header{fill:var(--primaria);}
+ .uml-el-title{fill:white;font-family:'Fira Code',monospace;font-size:13px;font-weight:700;}
+ .uml-el-line{stroke:#E2DDF0;stroke-width:1;}
+ .uml-attr{font-family:'Fira Code',monospace;font-size:11px;}
+ .arrow-line{stroke:var(--secundaria);stroke-width:2;stroke-dasharray:6 3;}
+ .actor-circle{fill:white;stroke:var(--primaria);stroke-width:2;}
+ .uc-ellipse{fill:rgba(106,86,176,.08);stroke:var(--primaria);stroke-width:2;}
+ .canvas-toolbar{position:absolute;top:.5rem;right:.5rem;display:flex;gap:.4rem;z-index:10;}
+ .canvas-toolbar button{background:var(--bg-card);border:1px solid var(--borda);border-radius:8px;padding:.35rem .7rem;font-size:.75rem;font-weight:600;cursor:pointer;box-shadow:var(--sombra);}
+ .canvas-toolbar button:hover{background:var(--bg-elevated);}
+ .empty-hint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:var(--texto-suave);pointer-events:none;}
+ </style></head><body><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="conteudo.html">Conteúdo</a><a href="exercicios.html">Exercícios</a></div></div></nav><div class="builder-layout"><!-- TOOLS --><div class="tools-panel"><h4>Adicionar</h4><button class="tool-btn" onclick="addClass()">Classe</button><button class="tool-btn" onclick="addActor()">Ator</button><button class="tool-btn" onclick="addUseCase()">Caso de Uso</button><button class="tool-btn" onclick="addNote()">Nota</button><h4 style="margin-top:.75rem">Conectar</h4><button class="tool-btn" onclick="startArrow('heranca')">▷ Herança</button><button class="tool-btn" onclick="startArrow('associacao')">→ Associação</button><button class="tool-btn" onclick="startArrow('depends')">⇢ Dependência</button><button class="tool-btn" id="arrowBtn" style="display:none;background:rgba(233,124,160,.2);color:var(--acento)">Cancelar</button><h4 style="margin-top:.75rem">Exemplos</h4><button class="tool-btn" onclick="loadEx('biblioteca')">Biblioteca</button><button class="tool-btn" onclick="loadEx('escola')">Escola</button><button class="tool-btn" onclick="loadEx('loja')">Loja</button><h4 style="margin-top:.75rem">Ações</h4><button class="tool-btn" onclick="clearAll()" style="background:rgba(224,92,122,.1);color:#E05C7A;border-color:rgba(224,92,122,.2)">Limpar</button><button class="tool-btn" onclick="exportSVG()">Exportar SVG</button></div><!-- CANVAS --><div class="canvas-wrap" id="canvasWrap"><div class="canvas-toolbar"><button onclick="zoom(1.1)">+</button><button onclick="zoom(0.9)">-</button><button onclick="resetZoom()">↺</button></div><div class="empty-hint" id="emptyHint"><div style="font-size:3rem"></div><p>Adicione elementos pelo painel<br>ou carregue um exemplo!</p></div><svg id="umlCanvas" xmlns="http://www.w3.org/2000/svg"><defs><marker id="mArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="var(--secundaria)"/></marker><marker id="mArrowH" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto"><polygon points="0 0, 12 4, 0 8" fill="none" stroke="var(--primaria)" stroke-width="1.5"/></marker></defs><g id="arrowsGroup"></g><g id="elementsGroup"></g></svg></div></div><script>let elements = [], arrows = [], nextId = 1;
+let dragging = null, dragOffX = 0, dragOffY = 0;
+let arrowMode = null, arrowSrc = null;
+let scale = 1;
+
+const svg = document.getElementById('umlCanvas');
+const elGroup = document.getElementById('elementsGroup');
+const arGroup = document.getElementById('arrowsGroup');
+
+function getCanvasSize() {
+ const r = document.getElementById('canvasWrap').getBoundingClientRect();
+ return { w: r.width, h: r.height };
+}
+
+function addClass(name = null, attrs = [], methods = [], x = null, y = null) {
+ const sz = getCanvasSize();
+ const el = {
+ id: nextId++, type: 'class',
+ name: name || prompt('Nome da classe:', 'MinhaClasse') || 'Classe',
+ attrs: attrs.length ? attrs : ['- atributo: Tipo'],
+ methods: methods.length ? methods : ['+ metodo(): void'],
+ x: x || 50 + Math.random() * (sz.w - 250),
+ y: y || 50 + Math.random() * (sz.h - 200)
+ };
+ elements.push(el);
+ renderElement(el);
+ document.getElementById('emptyHint').style.display = 'none';
+}
+
+function addActor(name = null, x = null, y = null) {
+ const sz = getCanvasSize();
+ const el = {
+ id: nextId++, type: 'actor',
+ name: name || prompt('Nome do ator:', 'Usuário') || 'Ator',
+ x: x || 50 + Math.random() * (sz.w - 150),
+ y: y || 50 + Math.random() * (sz.h - 150)
+ };
+ elements.push(el);
+ renderElement(el);
+ document.getElementById('emptyHint').style.display = 'none';
+}
+
+function addUseCase(name = null, x = null, y = null) {
+ const sz = getCanvasSize();
+ const el = {
+ id: nextId++, type: 'usecase',
+ name: name || prompt('Nome do caso de uso:', 'Fazer Login') || 'Caso de Uso',
+ x: x || 100 + Math.random() * (sz.w - 250),
+ y: y || 80 + Math.random() * (sz.h - 150)
+ };
+ elements.push(el);
+ renderElement(el);
+ document.getElementById('emptyHint').style.display = 'none';
+}
+
+function addNote(text = null, x = null, y = null) {
+ const sz = getCanvasSize();
+ const el = {
+ id: nextId++, type: 'note',
+ name: text || prompt('Texto da nota:', 'Nota...') || 'Nota',
+ x: x || 50 + Math.random() * (sz.w - 200),
+ y: y || 50 + Math.random() * (sz.h - 100)
+ };
+ elements.push(el);
+ renderElement(el);
+ document.getElementById('emptyHint').style.display = 'none';
+}
+
+function renderElement(el) {
+ const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+ g.setAttribute('id', 'el-' + el.id);
+ g.setAttribute('class', 'uml-el');
+ g.setAttribute('transform', `translate(${el.x},${el.y})`);
+
+ if (el.type === 'class') {
+ const W = 200, HROW = 20, HHEAD = 32;
+ const nRows = el.attrs.length + el.methods.length + 1;
+ const H = HHEAD + (el.attrs.length + 1) * HROW + el.methods.length * HROW + 4;
+
+ // Border
+ const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+ rect.setAttribute('width', W); rect.setAttribute('height', H);
+ rect.setAttribute('class', 'uml-el-rect');
+ g.appendChild(rect);
+
+ // Header
+ const hdr = document.createElementNS('http://www.w3.org/2000/svg','rect');
+ hdr.setAttribute('width', W); hdr.setAttribute('height', HHEAD);
+ hdr.setAttribute('class', 'uml-el-header');
+ g.appendChild(hdr);
+
+ // Title
+ const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+ txt.setAttribute('x', W/2); txt.setAttribute('y', HHEAD - 9);
+ txt.setAttribute('text-anchor', 'middle');
+ txt.setAttribute('class', 'uml-el-title');
+ txt.textContent = el.name;
+ g.appendChild(txt);
+
+ // Divider
+ const divider = document.createElementNS('http://www.w3.org/2000/svg','line');
+ divider.setAttribute('x1', 0); divider.setAttribute('y1', HHEAD + el.attrs.length * HROW + 2);
+ divider.setAttribute('x2', W); divider.setAttribute('y2', HHEAD + el.attrs.length * HROW + 2);
+ divider.setAttribute('class', 'uml-el-line');
+ g.appendChild(divider);
+
+ // Attrs
+ el.attrs.forEach((a, i) =>{
+ const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+ t.setAttribute('x', 8); t.setAttribute('y', HHEAD + 14 + i * HROW);
+ t.setAttribute('class', 'uml-attr');
+ t.setAttribute('fill', a.startsWith('-') ? '#e05c7a' : a.startsWith('+') ? '#5daf8e' : '#f4a03a');
+ t.textContent = a;
+ g.appendChild(t);
+ });
+
+ // Methods
+ el.methods.forEach((m, i) =>{
+ const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+ t.setAttribute('x', 8); t.setAttribute('y', HHEAD + 14 + (el.attrs.length + 1) * HROW + i * HROW + 2);
+ t.setAttribute('class', 'uml-attr');
+ t.setAttribute('fill', 'var(--secundaria)');
+ t.textContent = m;
+ g.appendChild(t);
+ });
+
+ // Delete btn
+ addDeleteBtn(g, W - 18, 10, el.id);
+
+ } else if (el.type === 'actor') {
+ const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+ circle.setAttribute('cx', 30); circle.setAttribute('cy', 20); circle.setAttribute('r', 16);
+ circle.setAttribute('class', 'actor-circle');
+ g.appendChild(circle);
+
+ // Stick figure
+ const body = document.createElementNS('http://www.w3.org/2000/svg','line');
+ body.setAttribute('x1',30);body.setAttribute('y1',36);body.setAttribute('x2',30);body.setAttribute('y2',60);
+ body.setAttribute('stroke','var(--primaria)');body.setAttribute('stroke-width','2');g.appendChild(body);
+
+ const arms = document.createElementNS('http://www.w3.org/2000/svg','line');
+ arms.setAttribute('x1',15);arms.setAttribute('y1',45);arms.setAttribute('x2',45);arms.setAttribute('y2',45);
+ arms.setAttribute('stroke','var(--primaria)');arms.setAttribute('stroke-width','2');g.appendChild(arms);
+
+ const legL = document.createElementNS('http://www.w3.org/2000/svg','line');
+ legL.setAttribute('x1',30);legL.setAttribute('y1',60);legL.setAttribute('x2',18);legL.setAttribute('y2',78);
+ legL.setAttribute('stroke','var(--primaria)');legL.setAttribute('stroke-width','2');g.appendChild(legL);
+
+ const legR = document.createElementNS('http://www.w3.org/2000/svg','line');
+ legR.setAttribute('x1',30);legR.setAttribute('y1',60);legR.setAttribute('x2',42);legR.setAttribute('y2',78);
+ legR.setAttribute('stroke','var(--primaria)');legR.setAttribute('stroke-width','2');g.appendChild(legR);
+
+ // Face
+ const face = document.createElementNS('http://www.w3.org/2000/svg','text');
+ face.setAttribute('x',30);face.setAttribute('y',26);face.setAttribute('text-anchor','middle');
+ face.setAttribute('font-size','18');face.textContent='';g.appendChild(face);
+
+ const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+ label.setAttribute('x',30);label.setAttribute('y',92);label.setAttribute('text-anchor','middle');
+ label.setAttribute('font-family','Inter,sans-serif');label.setAttribute('font-size','12');
+ label.setAttribute('font-weight','600');label.setAttribute('fill','#2D2D3A');
+ label.textContent = el.name; g.appendChild(label);
+
+ addDeleteBtn(g, 52, 2, el.id);
+
+ } else if (el.type === 'usecase') {
+ const ellipse = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+ ellipse.setAttribute('cx', 85); ellipse.setAttribute('cy', 35);
+ ellipse.setAttribute('rx', 80); ellipse.setAttribute('ry', 30);
+ ellipse.setAttribute('class', 'uc-ellipse');
+ g.appendChild(ellipse);
+
+ const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+ t.setAttribute('x', 85); t.setAttribute('y', 39);
+ t.setAttribute('text-anchor', 'middle');
+ t.setAttribute('font-family', 'Inter,sans-serif'); t.setAttribute('font-size', '12');
+ t.setAttribute('font-weight', '600'); t.setAttribute('fill', 'var(--primaria)');
+ t.textContent = el.name.length >18 ? el.name.substring(0,16) + '...' : el.name;
+ g.appendChild(t);
+
+ addDeleteBtn(g, 155, 5, el.id);
+
+ } else if (el.type === 'note') {
+ const W = 160, H = 60;
+ const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+ rect.setAttribute('width',W);rect.setAttribute('height',H);
+ rect.setAttribute('fill','#fffde7');rect.setAttribute('stroke','#F4A03A');rect.setAttribute('stroke-width','1.5');
+ rect.setAttribute('rx','4');g.appendChild(rect);
+
+ const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+ t.setAttribute('x', 8); t.setAttribute('y', 22);
+ t.setAttribute('font-family', 'Inter,sans-serif'); t.setAttribute('font-size', '11');
+ t.setAttribute('fill', '#6B6B7E');
+ t.textContent = el.name.length >22 ? el.name.substring(0,20) + '...' : el.name;
+ g.appendChild(t);
+
+ addDeleteBtn(g, W - 18, 5, el.id);
+ }
+
+ // Click for arrow mode
+ g.addEventListener('click', (e) =>{
+ if (arrowMode) {
+ if (!arrowSrc) {
+ arrowSrc = el.id;
+ g.style.opacity = '0.7';
+ } else if (arrowSrc !== el.id) {
+ addArrow(arrowSrc, el.id, arrowMode);
+ // Reset arrow mode
+ document.getElementById('el-' + arrowSrc).style.opacity = '1';
+ arrowMode = null; arrowSrc = null;
+ document.getElementById('arrowBtn').style.display = 'none';
+ }
+ e.stopPropagation();
+ }
+ });
+
+ // Drag
+ g.addEventListener('mousedown', (e) =>{
+ if (e.target.tagName === 'text' && e.target.textContent.includes('')) return;
+ if (arrowMode) return;
+ dragging = el;
+ const pt = svg.createSVGPoint();
+ pt.x = e.clientX; pt.y = e.clientY;
+ const svgPt = pt.matrixTransform(svg.getScreenCTM().inverse());
+ dragOffX = svgPt.x - el.x;
+ dragOffY = svgPt.y - el.y;
+ e.preventDefault();
+ });
+
+ elGroup.appendChild(g);
+}
+
+function addDeleteBtn(g, x, y, id) {
+ const btn = document.createElementNS('http://www.w3.org/2000/svg','text');
+ btn.setAttribute('x', x); btn.setAttribute('y', y + 10);
+ btn.setAttribute('font-size', '12'); btn.setAttribute('fill', 'rgba(224,92,122,.8)');
+ btn.setAttribute('cursor', 'pointer'); btn.setAttribute('font-family', 'Arial');
+ btn.textContent = '';
+ btn.addEventListener('click', () =>deleteEl(id));
+ g.appendChild(btn);
+}
+
+function deleteEl(id) {
+ elements = elements.filter(e =>e.id !== id);
+ arrows = arrows.filter(a =>a.src !== id && a.tgt !== id);
+ const el = document.getElementById('el-' + id);
+ if (el) el.remove();
+ redrawArrows();
+ if (elements.length === 0) document.getElementById('emptyHint').style.display = '';
+}
+
+function startArrow(type) {
+ arrowMode = type; arrowSrc = null;
+ document.getElementById('arrowBtn').style.display = 'block';
+}
+
+function addArrow(src, tgt, type) {
+ arrows.push({ src, tgt, type });
+ redrawArrows();
+}
+
+function redrawArrows() {
+ arGroup.innerHTML = '';
+ arrows.forEach(ar =>{
+ const srcEl = elements.find(e =>e.id === ar.src);
+ const tgtEl = elements.find(e =>e.id === ar.tgt);
+ if (!srcEl || !tgtEl) return;
+ const sx = srcEl.x + 100, sy = srcEl.y + 20;
+ const tx = tgtEl.x + 100, ty = tgtEl.y + 20;
+
+ const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+ line.setAttribute('x1', sx); line.setAttribute('y1', sy);
+ line.setAttribute('x2', tx); line.setAttribute('y2', ty);
+ line.setAttribute('stroke', ar.type === 'heranca' ? 'var(--primaria)' : ar.type === 'depends' ? '#F4A03A' : 'var(--secundaria)');
+ line.setAttribute('stroke-width', '2');
+ if (ar.type === 'depends') line.setAttribute('stroke-dasharray', '5 3');
+ line.setAttribute('marker-end', ar.type === 'heranca' ? 'url(#mArrowH)' : 'url(#mArrow)');
+ arGroup.appendChild(line);
+
+ const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+ label.setAttribute('x', (sx+tx)/2 + 5); label.setAttribute('y', (sy+ty)/2 - 5);
+ label.setAttribute('font-size', '10'); label.setAttribute('fill', '#6B6B7E');
+ label.setAttribute('font-family', 'Fira Code,monospace');
+ const lbl = ar.type === 'heranca' ? '«extends»' : ar.type === 'depends' ? '«uses»' : '';
+ label.textContent = lbl;
+ arGroup.appendChild(label);
+ });
+}
+
+// Mouse drag
+svg.addEventListener('mousemove', (e) =>{
+ if (!dragging) return;
+ const pt = svg.createSVGPoint();
+ pt.x = e.clientX; pt.y = e.clientY;
+ const svgPt = pt.matrixTransform(svg.getScreenCTM().inverse());
+ dragging.x = svgPt.x - dragOffX;
+ dragging.y = svgPt.y - dragOffY;
+ document.getElementById('el-' + dragging.id).setAttribute('transform', `translate(${dragging.x},${dragging.y})`);
+ redrawArrows();
+});
+svg.addEventListener('mouseup', () =>dragging = null);
+
+function zoom(f) { scale *= f; elGroup.setAttribute('transform', `scale(${scale})`); arGroup.setAttribute('transform', `scale(${scale})`); }
+function resetZoom() { scale = 1; elGroup.removeAttribute('transform'); arGroup.removeAttribute('transform'); }
+
+function clearAll() {
+ elements = []; arrows = [];
+ elGroup.innerHTML = ''; arGroup.innerHTML = '';
+ document.getElementById('emptyHint').style.display = '';
+ nextId = 1;
+}
+
+const EXAMPLES = {
+ biblioteca: () =>{
+ clearAll();
+ addClass('Livro',['- id: int','- titulo: String','- isbn: String','- disponivel: boolean'],['+ getIsbn(): String','+ isDisponivel(): boolean'],50,30);
+ addClass('Usuario',['- id: int','- nome: String','- email: String'],['+ getNome(): String'],300,30);
+ addClass('Emprestimo',['- id: int','- dataEmprestimo: Date','- dataDevolucao: Date'],['+ calcularMulta(): double'],175,200);
+ setTimeout(() =>{ addArrow(elements[2].id, elements[0].id, 'associacao'); addArrow(elements[2].id, elements[1].id, 'associacao'); }, 100);
+ },
+ escola: () =>{
+ clearAll();
+ addActor('Aluno', 20, 80);
+ addActor('Professor', 20, 220);
+ addUseCase('Ver Notas', 200, 60);
+ addUseCase('Lançar Notas', 200, 160);
+ addUseCase('Ver Horário', 200, 260);
+ setTimeout(() =>{
+ addArrow(elements[0].id, elements[2].id, 'associacao');
+ addArrow(elements[0].id, elements[4].id, 'associacao');
+ addArrow(elements[1].id, elements[3].id, 'associacao');
+ }, 100);
+ },
+ loja: () =>{
+ clearAll();
+ addClass('Produto',['- id: int','- nome: String','- preco: double','- estoque: int'],['+ vender(qtd: int): void'],30,30);
+ addClass('Cliente',['- id: int','- nome: String','- cpf: String'],['+ getCpf(): String'],280,30);
+ addClass('Pedido',['- id: int','- data: Date','- total: double'],['+ calcularTotal(): double'],155,200);
+ addNote('Relacionamento N:N\nUm pedido tem\nvários produtos', 10, 210);
+ setTimeout(() =>{
+ addArrow(elements[2].id, elements[0].id, 'associacao');
+ addArrow(elements[2].id, elements[1].id, 'associacao');
+ }, 100);
+ }
+};
+
+function loadEx(key) { EXAMPLES[key](); }
+function exportSVG() {
+ const svgEl = document.getElementById('umlCanvas');
+ const blob = new Blob([svgEl.outerHTML], {type:'image/svg+xml'});
+ const url = URL.createObjectURL(blob);
+ const a = document.createElement('a'); a.href = url; a.download = 'diagrama-uml.svg'; a.click();
+}
+
+// Load default
+loadEx('biblioteca');
+</script></body></html>
+
+
+

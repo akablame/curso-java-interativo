@@ -1,0 +1,485 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>SQL Playground — Dia 3</title><link rel="stylesheet" href="../assets/style.css"/><style>.playground-wrap { padding: 1.5rem 0; }
+ .sql-editor { background: #1e1e2e; border-radius: 12px; overflow: hidden; margin-bottom: 1rem; }
+ .sql-editor textarea {
+ width: 100%; background: transparent; border: none; padding: 1.25rem;
+ font-family: 'Fira Code', monospace; font-size: 0.9rem; color: #cdd6f4;
+ min-height: 120px; resize: vertical; outline: none; line-height: 1.6;
+ }
+ .sql-toolbar { background: #2a2a3e; padding: 0.6rem 1rem; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; border-top: 1px solid rgba(255,255,255,0.05); }
+ .sql-toolbar-label { color: #a0a0b8; font-size: 0.78rem; }
+ .run-sql { background: #5daf8e; color: white; border: none; padding: 0.4rem 1.2rem; border-radius: 99px; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
+ .run-sql:hover { background: #4a9a7a; }
+ .example-chip { background: rgba(106,86,176,0.15); color: #cba6f7; border: 1px solid rgba(106,86,176,0.25); border-radius: 99px; padding: 0.2rem 0.65rem; font-size: 0.73rem; font-weight: 600; cursor: pointer; font-family: 'Fira Code', monospace; }
+ .example-chip:hover { background: rgba(106,86,176,0.3); }
+ .result-area { background: var(--bg-card); border: 1px solid var(--borda); border-radius: 12px; overflow: hidden; }
+ .result-header { background: rgba(106,86,176,0.06); padding: 0.7rem 1rem; border-bottom: 1px solid var(--borda); display: flex; justify-content: space-between; align-items: center; }
+ .result-header span { font-size: 0.85rem; font-weight: 600; color: var(--texto-suave); }
+ .result-table { overflow-x: auto; }
+ .result-table table { width: 100%; border-collapse: collapse; font-size: 0.85rem; font-family: 'Fira Code', monospace; }
+ .result-table th { background: rgba(106,86,176,0.08); padding: 0.5rem 0.85rem; text-align: left; font-weight: 700; color: var(--primaria); border-bottom: 2px solid var(--borda); }
+ .result-table td { padding: 0.45rem 0.85rem; border-bottom: 1px solid var(--borda); }
+ .result-table tr:hover td { background: rgba(106,86,176,0.03); }
+ .result-table tr:last-child td { border-bottom: none; }
+ .result-msg { padding: 1rem; font-family: 'Fira Code', monospace; font-size: 0.88rem; }
+ .result-success { color: var(--sucesso); }
+ .result-error { color: var(--erro); }
+ .db-viewer { background: var(--bg-card); border: 1px solid var(--borda); border-radius: 12px; overflow: hidden; }
+ .db-viewer-header { background: linear-gradient(135deg, var(--primaria), var(--secundaria)); color: white; padding: 0.75rem 1rem; font-weight: 700; font-size: 0.9rem; }
+ .db-table-item { border-bottom: 1px solid var(--borda); }
+ .db-table-header { padding: 0.6rem 1rem; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; font-weight: 600; font-size: 0.85rem; }
+ .db-table-header:hover { background: rgba(106,86,176,0.04); }
+ .db-table-cols { display: none; padding: 0 1rem 0.5rem 2rem; }
+ .db-table-cols.open { display: block; }
+ .db-col { font-family: 'Fira Code', monospace; font-size: 0.75rem; padding: 0.15rem 0; color: var(--texto-suave); }
+ .db-col .pk { color: var(--aviso); font-weight: 700; }
+ .db-col .fk { color: var(--acento); }
+ .history-item { font-family: 'Fira Code', monospace; font-size: 0.75rem; padding: 0.3rem 0; border-bottom: 1px solid var(--borda); color: var(--texto-suave); cursor: pointer; }
+ .history-item:hover { color: var(--primaria); }
+ </style></head><body><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="conteudo.html">Conteúdo</a><a href="exercicios.html">Exercícios</a></div></div></nav><div class="page-header" style="background:linear-gradient(135deg,#5DAF8E,var(--secundaria))"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› <a href="conteudo.html">Dia 3</a>› SQL Playground</div><h1>SQL Playground</h1><p>Banco de dados simulado no navegador! Sem instalar nada. Escreva SQL e veja o resultado.</p></div></div><div class="container playground-wrap"><div style="display:grid;grid-template-columns:220px 1fr;gap:1.5rem;"><!-- SIDEBAR: DB VIEWER + HISTORY --><div><div class="db-viewer mb-2"><div class="db-viewer-header">Banco: escola</div><div id="dbViewer"></div></div><div class="card"><div class="card-header" style="font-size:.85rem;font-weight:700;padding:.7rem 1rem">Histórico</div><div style="padding:.5rem 1rem;max-height:200px;overflow-y:auto" id="historyList"><p class="text-xs text-muted">Nenhuma query ainda</p></div></div></div><!-- EDITOR + RESULT --><div><div class="sql-editor"><textarea id="sqlInput" placeholder="-- Digite seu SQL aqui...
+SELECT * FROM alunos;"></textarea><div class="sql-toolbar"><button class="run-sql" onclick="runSQL()">▶ Executar SQL</button><span class="sql-toolbar-label">Exemplos rápidos:</span><span class="example-chip" onclick="setSQL('SELECT * FROM alunos')">SELECT *</span><span class="example-chip" onclick="setSQL('SELECT * FROM alunos WHERE nota >= 7')">WHERE nota</span><span class="example-chip" onclick="setSQL('SELECT * FROM alunos ORDER BY nota DESC')">ORDER BY</span><span class="example-chip" onclick="setSQL(`INSERT INTO alunos (nome, email, nota, turma_id) VALUES ('Julia Costa', 'julia@email.com', 9.0, 1)`)">INSERT</span><span class="example-chip" onclick="setSQL('UPDATE alunos SET nota = 10.0 WHERE id = 1')">UPDATE</span><span class="example-chip" onclick="setSQL('DELETE FROM alunos WHERE id = 99')">DELETE</span><span class="example-chip" onclick="setSQL(`SELECT a.nome, a.nota, t.nome AS turma\nFROM alunos a\nINNER JOIN turmas t ON a.turma_id = t.id`)">JOIN</span><span class="example-chip" onclick="setSQL('SELECT COUNT(*) AS total, AVG(nota) AS media FROM alunos')">Funções</span><span class="example-chip" onclick="setSQL('SELECT turma_id, AVG(nota) as media FROM alunos GROUP BY turma_id')">GROUP BY</span><span class="example-chip" onclick="resetDB()">Reset BD</span></div></div><div class="result-area"><div class="result-header"><span id="resultTitle">Resultado</span></div><div id="resultArea"><div class="result-msg" style="color:var(--texto-suave)">▶ Execute uma query SQL para ver os resultados aqui</div></div></div><div class="callout callout-info mt-2"><div><div class="callout-title">Tabelas disponíveis: alunos, turmas, professores</div><p class="text-sm">Suporta: SELECT (com WHERE, ORDER BY, LIMIT, GROUP BY, HAVING, INNER/LEFT JOIN, funções COUNT/AVG/SUM/MAX/MIN), INSERT, UPDATE, DELETE. Banco resetável.</p></div></div></div></div></div><footer class="footer"><div class="container"><p><a href="../index.html">← Portal</a>| <a href="conteudo.html">Conteúdo SQL</a></p></div></footer><script>// ===== BANCO DE DADOS EM MEMÓRIA =====
+let DB = {};
+const history = [];
+
+function initDB() {
+ DB = {
+ turmas: {
+ columns: ['id','nome','ano'],
+ data: [
+ {id:1, nome:'3A', ano:2024},
+ {id:2, nome:'3B', ano:2024},
+ {id:3, nome:'3C', ano:2024}
+ ],
+ nextId: 4
+ },
+ alunos: {
+ columns: ['id','nome','email','nota','turma_id'],
+ data: [
+ {id:1, nome:'Ana Silva', email:'ana@email.com', nota:9.5, turma_id:1},
+ {id:2, nome:'Carlos Lima', email:'carlos@email.com', nota:6.0, turma_id:2},
+ {id:3, nome:'Maria Souza', email:'maria@email.com', nota:8.0, turma_id:1},
+ {id:4, nome:'Pedro Costa', email:'pedro@email.com', nota:4.5, turma_id:2},
+ {id:5, nome:'Fernanda Rocha', email:'fe@email.com', nota:7.5, turma_id:1},
+ {id:6, nome:'Lucas Alves', email:'lucas@email.com', nota:5.0, turma_id:3},
+ {id:7, nome:'Beatriz Nunes', email:'bi@email.com', nota:9.0, turma_id:1},
+ {id:8, nome:'Gabriel Melo', email:'ga@email.com', nota:3.5, turma_id:2}
+ ],
+ nextId: 9
+ },
+ professores: {
+ columns: ['id','nome','disciplina','salario'],
+ data: [
+ {id:1, nome:'Prof. João', disciplina:'Matemática', salario:4500},
+ {id:2, nome:'Prof. Ana Rodrigues', disciplina:'Português', salario:4200},
+ {id:3, nome:'Prof. Carlos Bento', disciplina:'Programação', salario:5000},
+ {id:4, nome:'Prof. Lucia Ferreira', disciplina:'Inglês', salario:4000}
+ ],
+ nextId: 5
+ }
+ };
+ renderDBViewer();
+}
+
+function resetDB() { initDB(); showMsg(' Banco de dados resetado para os dados originais!', 'success'); }
+
+function renderDBViewer() {
+ const viewer = document.getElementById('dbViewer');
+ viewer.innerHTML = Object.keys(DB).map(tname =>{
+ const tbl = DB[tname];
+ const cols = tbl.columns.map((c, i) =>{
+ const isPK = c === 'id';
+ const isFK = c.endsWith('_id') && c !== 'id';
+ return `<div class="db-col"><span class="${isPK?'pk':isFK?'fk':''}">${isPK?' ':isFK?' ':''}</span>${c}</div>`;
+ }).join('');
+ return `<div class="db-table-item"><div class="db-table-header" onclick="toggleDBTable('dbt-${tname}')">${tname} <span style="color:var(--texto-suave);font-size:.72rem">(${tbl.data.length} linhas)</span></div><div id="dbt-${tname}" class="db-table-cols">${cols}</div></div>`;
+ }).join('');
+}
+
+function toggleDBTable(id) {
+ const el = document.getElementById(id);
+ el.classList.toggle('open');
+}
+
+// ===== PARSER SQL SIMPLES =====
+function runSQL() {
+ const sql = document.getElementById('sqlInput').value.trim();
+ if (!sql) return;
+
+ addHistory(sql);
+ try {
+ const result = parseSQL(sql);
+ renderResult(result);
+ } catch(e) {
+ showMsg(' Erro SQL: ' + e.message, 'error');
+ }
+}
+
+function parseSQL(sql) {
+ const s = sql.trim().replace(/\s+/g,' ');
+ const upper = s.toUpperCase();
+
+ if (upper.startsWith('SELECT')) return execSelect(s);
+ if (upper.startsWith('INSERT')) return execInsert(s);
+ if (upper.startsWith('UPDATE')) return execUpdate(s);
+ if (upper.startsWith('DELETE')) return execDelete(s);
+ throw new Error('Comando não suportado. Use: SELECT, INSERT, UPDATE, DELETE');
+}
+
+function getTable(name) {
+ const n = name.toLowerCase().trim().replace(/;$/, '');
+ if (!DB[n]) throw new Error(`Tabela "${n}" não encontrada. Tabelas: ${Object.keys(DB).join(', ')}`);
+ return DB[n];
+}
+
+// SELECT
+function execSelect(sql) {
+ // Extrair partes
+ const upper = sql.toUpperCase();
+
+ // Detectar JOIN
+ const joinMatch = sql.match(/FROM\s+(\w+)(?:\s+(\w+))?\s+(INNER|LEFT|RIGHT)\s+JOIN\s+(\w+)(?:\s+(\w+))?\s+ON\s+(.+?)(?:\s+WHERE|\s+ORDER|\s+GROUP|\s+LIMIT|\s*;?\s*$)/i);
+ if (joinMatch) return execJoin(sql, joinMatch);
+
+ const fromMatch = sql.match(/FROM\s+(\w+)/i);
+ if (!fromMatch) throw new Error('Faltando FROM');
+ const tname = fromMatch[1];
+ const tbl = getTable(tname);
+
+ let rows = [...tbl.data];
+
+ // WHERE
+ const whereMatch = sql.match(/WHERE\s+(.+?)(?:\s+ORDER|\s+GROUP|\s+LIMIT|\s*;?\s*$)/i);
+ if (whereMatch) rows = applyWhere(rows, whereMatch[1]);
+
+ // GROUP BY
+ const groupMatch = sql.match(/GROUP\s+BY\s+(.+?)(?:\s+HAVING|\s+ORDER|\s+LIMIT|\s*;?\s*$)/i);
+ let grouped = false;
+ if (groupMatch) {
+ const groupCols = groupMatch[1].split(',').map(c =>c.trim());
+ rows = applyGroupBy(rows, groupCols, sql);
+ grouped = true;
+ }
+
+ // HAVING
+ const havingMatch = sql.match(/HAVING\s+(.+?)(?:\s+ORDER|\s+LIMIT|\s*;?\s*$)/i);
+ if (havingMatch && grouped) rows = applyWhere(rows, havingMatch[1]);
+
+ // ORDER BY
+ const orderMatch = sql.match(/ORDER\s+BY\s+(.+?)(?:\s+LIMIT|\s*;?\s*$)/i);
+ if (orderMatch) rows = applyOrderBy(rows, orderMatch[1]);
+
+ // LIMIT
+ const limitMatch = sql.match(/LIMIT\s+(\d+)/i);
+ if (limitMatch) rows = rows.slice(0, parseInt(limitMatch[1]));
+
+ // SELECT columns
+ const colsPart = sql.match(/^SELECT\s+(.+?)\s+FROM/i);
+ if (!colsPart) throw new Error('Erro na sintaxe do SELECT');
+ const colsStr = colsPart[1].trim();
+
+ if (colsStr === '*') {
+ return { type: 'table', columns: tbl.columns, rows };
+ }
+
+ const cols = parseSelectCols(colsStr, rows);
+ return { type: 'table', columns: cols.names, rows: cols.rows };
+}
+
+function parseSelectCols(colsStr, rows) {
+ const parts = colsStr.split(',').map(c =>c.trim());
+ const names = [];
+ const aggRows = {};
+ let isAgg = false;
+
+ parts.forEach(p =>{
+ const fnMatch = p.match(/^(COUNT|SUM|AVG|MAX|MIN)\s*\((.+?)\)(?:\s+AS\s+(\w+))?/i);
+ if (fnMatch) {
+ isAgg = true;
+ const fn = fnMatch[1].toUpperCase();
+ const col = fnMatch[2].trim();
+ const alias = fnMatch[3] || (fn + '_' + col).toLowerCase();
+ names.push(alias);
+ let val;
+ if (fn === 'COUNT') val = rows.length;
+ else if (fn === 'SUM') val = rows.reduce((s, r) =>s + (Number(r[col]) || 0), 0);
+ else if (fn === 'AVG') val = rows.length ? rows.reduce((s, r) =>s + (Number(r[col]) || 0), 0) / rows.length : 0;
+ else if (fn === 'MAX') val = Math.max(...rows.map(r =>Number(r[col]) || 0));
+ else if (fn === 'MIN') val = Math.min(...rows.map(r =>Number(r[col]) || 0));
+ aggRows[alias] = typeof val === 'number' ? Math.round(val * 100) / 100 : val;
+ } else {
+ const asMatch = p.match(/^(.+?)\s+AS\s+(\w+)$/i);
+ const col = asMatch ? asMatch[1].trim() : p;
+ const alias = asMatch ? asMatch[2] : p;
+ names.push(alias);
+ }
+ });
+
+ if (isAgg) {
+ const singleRow = {};
+ names.forEach(n =>{ singleRow[n] = aggRows[n] !== undefined ? aggRows[n] : rows[0]?.[n] ?? null; });
+ return { names, rows: [singleRow] };
+ }
+
+ const outRows = rows.map(r =>{
+ const row = {};
+ parts.forEach(p =>{
+ const asMatch = p.match(/^(.+?)\s+AS\s+(\w+)$/i);
+ const col = asMatch ? asMatch[1].trim() : p;
+ const alias = asMatch ? asMatch[2] : p;
+ row[alias] = r[col] !== undefined ? r[col] : null;
+ });
+ return row;
+ });
+
+ return { names, rows: outRows };
+}
+
+function applyGroupBy(rows, groupCols, fullSql) {
+ const groups = {};
+ rows.forEach(r =>{
+ const key = groupCols.map(c =>r[c]).join('|');
+ if (!groups[key]) groups[key] = { key: {}, rows: [] };
+ groupCols.forEach(c =>groups[key].key[c] = r[c]);
+ groups[key].rows.push(r);
+ });
+
+ // Parse SELECT agregações
+ const selMatch = fullSql.match(/^SELECT\s+(.+?)\s+FROM/i);
+ const parts = selMatch ? selMatch[1].split(',').map(c =>c.trim()) : [];
+
+ return Object.values(groups).map(g =>{
+ const row = { ...g.key };
+ parts.forEach(p =>{
+ const fnMatch = p.match(/^(COUNT|SUM|AVG|MAX|MIN)\s*\((.+?)\)(?:\s+AS\s+(\w+))?/i);
+ if (fnMatch) {
+ const fn = fnMatch[1].toUpperCase(), col = fnMatch[2].trim();
+ const alias = fnMatch[3] || fn.toLowerCase() + '_' + col;
+ if (fn === 'COUNT') row[alias] = g.rows.length;
+ else if (fn === 'SUM') row[alias] = Math.round(g.rows.reduce((s,r) =>s+(Number(r[col])||0),0)*100)/100;
+ else if (fn === 'AVG') row[alias] = Math.round((g.rows.reduce((s,r) =>s+(Number(r[col])||0),0)/g.rows.length)*100)/100;
+ else if (fn === 'MAX') row[alias] = Math.max(...g.rows.map(r=>Number(r[col])||0));
+ else if (fn === 'MIN') row[alias] = Math.min(...g.rows.map(r=>Number(r[col])||0));
+ }
+ });
+ return row;
+ });
+}
+
+function execJoin(sql, match) {
+ const [, t1Name, t1Alias, joinType, t2Name, t2Alias, onCond] = match;
+ const tbl1 = getTable(t1Name);
+ const tbl2 = getTable(t2Name);
+ const al1 = t1Alias || t1Name;
+ const al2 = t2Alias || t2Name;
+
+ const [leftPart, rightPart] = onCond.trim().split(/\s*=\s*/);
+ const getCol = (part) =>{ const p = part.trim().split('.'); return p.length >1 ? p[1] : p[0]; };
+ const lCol = getCol(leftPart), rCol = getCol(rightPart);
+
+ let joined = [];
+ tbl1.data.forEach(r1 =>{
+ const match2 = tbl2.data.find(r2 =>r1[lCol] == r2[rCol] || r1[rCol] == r2[lCol]);
+ if (match2) {
+ const row = {};
+ Object.keys(r1).forEach(k =>row[al1 + '.' + k] = r1[k]);
+ Object.keys(match2).forEach(k =>row[al2 + '.' + k] = match2[k]);
+ joined.push(row);
+ } else if (joinType.toUpperCase() === 'LEFT') {
+ const row = {};
+ Object.keys(r1).forEach(k =>row[al1 + '.' + k] = r1[k]);
+ tbl2.columns.forEach(k =>row[al2 + '.' + k] = null);
+ joined.push(row);
+ }
+ });
+ if (joinType.toUpperCase() === 'RIGHT') {
+ tbl2.data.forEach(r2 =>{
+ const found = tbl1.data.find(r1 =>r1[lCol] == r2[rCol] || r1[rCol] == r2[lCol]);
+ if (!found) {
+ const row = {};
+ tbl1.columns.forEach(k =>row[al1 + '.' + k] = null);
+ Object.keys(r2).forEach(k =>row[al2 + '.' + k] = r2[k]);
+ joined.push(row);
+ }
+ });
+ }
+
+ // WHERE após join
+ const whereMatch = sql.match(/WHERE\s+(.+?)(?:\s+ORDER|\s+LIMIT|\s*;?\s*$)/i);
+ if (whereMatch) joined = applyWhere(joined, whereMatch[1]);
+
+ // ORDER BY
+ const orderMatch = sql.match(/ORDER\s+BY\s+(.+?)(?:\s+LIMIT|\s*;?\s*$)/i);
+ if (orderMatch) joined = applyOrderBy(joined, orderMatch[1]);
+
+ // SELECT cols
+ const colsPart = sql.match(/^SELECT\s+(.+?)\s+FROM/i);
+ if (colsPart && colsPart[1].trim() !== '*') {
+ const parts = colsPart[1].split(',').map(c =>c.trim());
+ const names = parts.map(p =>{ const asM = p.match(/AS\s+(\w+)/i); return asM ? asM[1] : p.replace(/^\w+\./, ''); });
+ const outRows = joined.map(r =>{
+ const row = {};
+ parts.forEach((p, i) =>{ const asM = p.match(/^(.+?)\s+AS\s+(\w+)$/i); const col = asM ? asM[1].trim() : p; row[names[i]] = r[col] !== undefined ? r[col] : r[p.replace(/^\w+\./, '')] ?? null; });
+ return row;
+ });
+ return { type: 'table', columns: names, rows: outRows };
+ }
+
+ const cols = joined.length >0 ? Object.keys(joined[0]) : [];
+ return { type: 'table', columns: cols, rows: joined };
+}
+
+function applyWhere(rows, condition) {
+ return rows.filter(row =>{
+ try {
+ let c = condition
+ .replace(/\bLIKE\s+'%([^%]+)%'/gi, (_, pat) =>`.toLowerCase().includes('${pat.toLowerCase()}')`)
+ .replace(/\bLIKE\s+'([^']+)'/gi, (_, pat) =>`=== '${pat}'`);
+ c = c.replace(/\b([a-zA-Z_]\w*\.\w+|\w+)\b(?!\s*[\(])/g, (match) =>{
+ const simple = match.includes('.') ? match.split('.')[1] : match;
+ if (row[match] !== undefined) return JSON.stringify(row[match]);
+ if (row[simple] !== undefined) return JSON.stringify(row[simple]);
+ return match;
+ });
+ c = c.replace(/=(?!=)/g, '==').replace(/>==/, '>=').replace(/<==/, '<=').replace(/!==/, '!=').replace(/!==/, '!==');
+ c = c.replace(/==/g, '===').replace(/>==/g, '>=').replace(/<==/g, '<=').replace(/!===/g, '!==');
+ return !!Function('"use strict"; return (' + c + ')')();
+ } catch { return false; }
+ });
+}
+
+function applyOrderBy(rows, orderStr) {
+ const parts = orderStr.split(',').map(p =>{
+ const m = p.trim().match(/^(.+?)\s*(ASC|DESC)?$/i);
+ return { col: m[1].trim(), desc: m[2]?.toUpperCase() === 'DESC' };
+ });
+ return [...rows].sort((a, b) =>{
+ for (const { col, desc } of parts) {
+ const va = a[col], vb = b[col];
+ let cmp = 0;
+ if (typeof va === 'number' && typeof vb === 'number') cmp = va - vb;
+ else cmp = String(va ?? '').localeCompare(String(vb ?? ''));
+ if (cmp !== 0) return desc ? -cmp : cmp;
+ }
+ return 0;
+ });
+}
+
+// INSERT
+function execInsert(sql) {
+ const m = sql.match(/INSERT\s+INTO\s+(\w+)\s*\(([^)]+)\)\s*VALUES\s*\(([^)]+)\)/i);
+ if (!m) throw new Error('Sintaxe: INSERT INTO tabela (col1,col2) VALUES (v1,v2)');
+ const tbl = getTable(m[1]);
+ const cols = m[2].split(',').map(c =>c.trim());
+ const vals = m[3].split(',').map(v =>{
+ const t = v.trim();
+ if (t.startsWith("'") || t.startsWith('"')) return t.slice(1,-1);
+ if (t === 'NULL' || t === 'null') return null;
+ const n = Number(t);
+ return isNaN(n) ? t : n;
+ });
+ const row = { id: tbl.nextId++ };
+ cols.forEach((c,i) =>row[c] = vals[i]);
+ tbl.data.push(row);
+ renderDBViewer();
+ return { type: 'msg', success: true, msg: ` 1 linha inserida em "${m[1]}" com id=${row.id}` };
+}
+
+// UPDATE
+function execUpdate(sql) {
+ const m = sql.match(/UPDATE\s+(\w+)\s+SET\s+(.+?)(?:\s+WHERE\s+(.+))?$/i);
+ if (!m) throw new Error('Sintaxe: UPDATE tabela SET col=val WHERE condição');
+ const tbl = getTable(m[1]);
+ const setParts = m[2].split(',').map(p =>{
+ const [k,v] = p.split('=').map(x =>x.trim());
+ let val;
+ if (v.startsWith("'") || v.startsWith('"')) val = v.slice(1,-1);
+ else { const n = Number(v); val = isNaN(n) ? v : n; }
+ return {k, v: val, raw: v};
+ });
+
+ let count = 0;
+ tbl.data.forEach(row =>{
+ if (m[3] && !applyWhere([row], m[3]).length) return;
+ setParts.forEach(({k, v, raw}) =>{
+ if (raw.includes(k)) {
+ const numMatch = raw.match(/(\w+)\s*\+\s*([\d.]+)/);
+ if (numMatch) row[k] = Math.min(10, (Number(row[k]) || 0) + Number(numMatch[2]));
+ else if (raw.match(/(\w+)\s*-\s*([\d.]+)/)) { const nm = raw.match(/(\w+)\s*-\s*([\d.]+)/); row[k] = (Number(row[k]) || 0) - Number(nm[2]); }
+ else row[k] = v;
+ } else row[k] = v;
+ });
+ count++;
+ });
+ return { type: 'msg', success: true, msg: ` ${count} linha(s) atualizada(s) em "${m[1]}"` };
+}
+
+// DELETE
+function execDelete(sql) {
+ const m = sql.match(/DELETE\s+FROM\s+(\w+)(?:\s+WHERE\s+(.+))?$/i);
+ if (!m) throw new Error('Sintaxe: DELETE FROM tabela WHERE condição');
+ const tbl = getTable(m[1]);
+ if (!m[2]) {
+ const c = tbl.data.length;
+ tbl.data = [];
+ renderDBViewer();
+ return { type: 'msg', success: true, msg: ` ${c} linhas deletadas de "${m[1]}" (sem WHERE — tabela limpa!)` };
+ }
+ const before = tbl.data.length;
+ tbl.data = tbl.data.filter(row =>!applyWhere([row], m[2]).length);
+ const count = before - tbl.data.length;
+ renderDBViewer();
+ return { type: 'msg', success: true, msg: ` ${count} linha(s) deletada(s) de "${m[1]}"` };
+}
+
+// ===== RENDER =====
+function renderResult(result) {
+ const area = document.getElementById('resultArea');
+ const title = document.getElementById('resultTitle');
+ const countBadge = document.getElementById('resultCount');
+
+ if (result.type === 'msg') {
+ area.innerHTML = `<div class="result-msg result-${result.success?'success':'error'}">${result.msg}</div>`;
+ title.textContent = result.success ? 'Sucesso' : 'Erro';
+ countBadge.style.display = 'none';
+ return;
+ }
+
+ if (result.rows.length === 0) {
+ area.innerHTML = `<div class="result-msg" style="color:var(--texto-suave)">Nenhum resultado encontrado.</div>`;
+ title.textContent = 'Resultado'; countBadge.style.display = 'none';
+ return;
+ }
+
+ title.textContent = 'Resultado';
+ countBadge.textContent = result.rows.length + ' linha(s)';
+ countBadge.style.display = '';
+
+ const thead = result.columns.map(c =>`<th>${c}</th>`).join('');
+ const tbody = result.rows.map(r =>`<tr>${result.columns.map(c =>`<td>${r[c] === null ? '<em style="color:#aaa">NULL</em>' : r[c]}</td>`).join('')}</tr>`
+ ).join('');
+
+ area.innerHTML = `<div class="result-table"><table><thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody></table></div>`;
+}
+
+function showMsg(msg, type) {
+ document.getElementById('resultArea').innerHTML = `<div class="result-msg result-${type}">${msg}</div>`;
+ document.getElementById('resultTitle').textContent = type === 'error' ? 'Erro' : 'Info';
+ document.getElementById('resultCount').style.display = 'none';
+}
+
+function setSQL(sql) {
+ document.getElementById('sqlInput').value = sql;
+}
+
+function addHistory(sql) {
+ history.unshift(sql);
+ if (history.length >10) history.pop();
+ const el = document.getElementById('historyList');
+ el.innerHTML = history.map(q =>`<div class="history-item" onclick="setSQL(this.textContent)">${q.substring(0,60)}${q.length>60?'...':''}</div>`).join('');
+}
+
+// INIT
+initDB();
+</script></body></html>
+
+
+

@@ -1,0 +1,434 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Dia 2 — Orientação a Objetos</title><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>.analogy-box { background:linear-gradient(135deg,rgba(233,124,160,0.08),rgba(106,86,176,0.06)); border:1px solid rgba(233,124,160,0.3); border-radius:12px; padding:1rem 1.25rem; margin:.75rem 0; }
+ .analogy-box .ana-title { font-weight:700; color:var(--acento); font-size:.85rem; margin-bottom:.3rem; }
+ .uml-box { border:2px solid var(--primaria); border-radius:8px; overflow:hidden; display:inline-block; min-width:200px; font-family:'Fira Code',monospace; font-size:.85rem; margin:.75rem 0; }
+ .uml-class-name { background:var(--primaria); color:white; padding:.4rem .85rem; text-align:center; font-weight:700; }
+ .uml-attrs { border-bottom:2px solid var(--primaria); }
+ .uml-attrs div, .uml-methods div { padding:.25rem .85rem; font-size:.82rem; }
+ .uml-attrs div:hover, .uml-methods div:hover { background:rgba(106,86,176,0.05); }
+ .private-attr { color:var(--erro); }
+ .public-attr { color:var(--sucesso); }
+ .method-attr { color:var(--secundaria); }
+ .hierarchy-diagram { display:flex; flex-direction:column; align-items:center; gap:.5rem; margin:1rem 0; }
+ .hier-row { display:flex; gap:1.5rem; }
+ .hier-box { background:var(--bg-card); border:2px solid; border-radius:8px; padding:.5rem 1rem; text-align:center; font-size:.85rem; font-weight:600; min-width:110px; }
+ .hier-box.parent { border-color:var(--primaria); color:var(--primaria); }
+ .hier-box.child { border-color:var(--secundaria); color:var(--secundaria); }
+ .hier-arrow { font-size:1.4rem; color:var(--texto-suave); }
+ .comparison-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:1rem 0; }
+ .comparison-bad { background:rgba(224,92,122,0.06); border:1px solid rgba(224,92,122,0.3); border-radius:8px; padding:1rem; }
+ .comparison-good { background:rgba(93,175,142,0.06); border:1px solid rgba(93,175,142,0.3); border-radius:8px; padding:1rem; }
+ .comp-label { font-weight:700; font-size:.8rem; margin-bottom:.5rem; }
+ .bad-label { color:var(--erro); }
+ .good-label { color:var(--sucesso); }
+ .try-input { width:100%; padding:.6rem .85rem; border:2px solid var(--borda); border-radius:8px; font-family:'Fira Code',monospace; font-size:.85rem; background:#1e1e2e; color:#cdd6f4; margin-bottom:.5rem; resize:vertical; min-height:80px; }
+ .try-input:focus { outline:none; border-color:var(--primaria); }
+ .answer-block { display:none; }
+ .answer-block.show { display:block; }
+ @media(max-width:600px){ .comparison-grid{grid-template-columns:1fr;} }
+ </style></head><body><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="exercicios.html">Exercícios</a><a href="visualizador-classes.html">Visualizador</a><a href="../dia1-logica/conteudo.html">← Dia 1</a><a href="../dia3-banco/conteudo.html">Dia 3 →</a></div></div></nav><div class="page-header" style="background:linear-gradient(135deg,#E97CA0,#F4A03A)"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› Dia 2</div><h1>Dia 2 — Programação Orientada a Objetos</h1><p>Classes, objetos, encapsulamento, herança e polimorfismo — o coração do Java!</p></div></div><div class="container"><div class="content-layout"><aside class="sidebar"><div class="sidebar-title">Tópicos</div><nav class="sidebar-nav"><a href="#classes-objetos">Classes e Objetos</a><a href="#atributos-metodos">Atributos e Métodos</a><a href="#construtores">Construtores</a><a href="#encapsulamento">Encapsulamento</a><a href="#heranca">Herança</a><a href="#polimorfismo">Polimorfismo</a><a href="#checklist">Checklist</a></nav></aside><main><!-- CLASSES E OBJETOS --><div id="classes-objetos" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Classes e Objetos</h3><span class="badge badge-accent">Fundação da POO</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Forma de Bolo</div><p><strong>Classe</strong>= a <em>forma/molde</em>para fazer bolos. Define o formato.<br><strong>Objeto</strong>= o <em>bolo real</em>feito com a forma. Cada bolo pode ter sabor diferente (atributos diferentes), mas todos têm a mesma estrutura.</p></div><h4 class="mt-2">Criando sua primeira Classe</h4><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Classe Pessoa</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">// CLASSE = molde/template
+public class Pessoa {
+ // ATRIBUTOS = características (o que a pessoa TEM)
+ String nome;
+ int idade;
+ String email;
+
+ // MÉTODO = comportamento (o que a pessoa FAZ)
+ void apresentar() {
+ System.out.println("Olá! Sou " + nome + ", tenho " + idade + " anos.");
+ }
+
+ void fazerAniversario() {
+ idade++;
+ System.out.println("Feliz aniversário, " + nome + "! Agora tem " + idade + " anos.");
+ }
+}
+
+// OBJETO = instância da classe (o "bolo" feito com o molde)
+public class Main {
+ public static void main(String[] args) {
+ // Criar objetos com "new"
+ Pessoa p1 = new Pessoa();
+ p1.nome = "Ana";
+ p1.idade = 20;
+ p1.email = "ana@email.com";
+
+ Pessoa p2 = new Pessoa();
+ p2.nome = "Carlos";
+ p2.idade = 25;
+ p2.email = "carlos@email.com";
+
+ // Usar os objetos
+ p1.apresentar(); // Olá! Sou Ana, tenho 20 anos.
+ p2.apresentar(); // Olá! Sou Carlos, tenho 25 anos.
+ p1.fazerAniversario(); // Feliz aniversário, Ana! Agora tem 21 anos.
+ }
+}</code></pre></div><h4 class="mt-2">Diagrama UML da Classe Pessoa</h4><div class="uml-box"><div class="uml-class-name">Pessoa</div><div class="uml-attrs"><div class="public-attr">+ nome: String</div><div class="public-attr">+ idade: int</div><div class="public-attr">+ email: String</div></div><div class="uml-methods"><div class="method-attr">+ apresentar(): void</div><div class="method-attr">+ fazerAniversario(): void</div></div></div><p class="text-sm text-muted">+ = público | - = privado | # = protegido</p></div></div><!-- ATRIBUTOS E MÉTODOS --><div id="atributos-metodos" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Atributos e Métodos</h3><span class="badge badge-blue">Estado e Comportamento</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Carro</div><p><strong>Atributos</strong>= o que o carro <em>tem</em>: cor, marca, velocidade, combustível.<br><strong>Métodos</strong>= o que o carro <em>faz</em>: acelerar, frear, buzinar, ligar.</p></div><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Classe Carro Completa</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">public class Carro {
+ // === ATRIBUTOS (estado) ===
+ String marca;
+ String modelo;
+ int ano;
+ double velocidadeAtual; // começa em 0
+ boolean ligado; // começa em false
+
+ // === MÉTODOS (comportamento) ===
+ void ligar() {
+ if (!ligado) {
+ ligado = true;
+ System.out.println(marca + " " + modelo + ": vrum! ");
+ } else {
+ System.out.println("O carro já está ligado!");
+ }
+ }
+
+ void desligar() {
+ ligado = false;
+ velocidadeAtual = 0;
+ System.out.println(marca + " desligado.");
+ }
+
+ void acelerar(double km) {
+ if (ligado) {
+ velocidadeAtual += km;
+ System.out.println("Acelerando! Velocidade: " + velocidadeAtual + " km/h");
+ } else {
+ System.out.println("Liga o carro primeiro! ");
+ }
+ }
+
+ void frear(double km) {
+ velocidadeAtual = Math.max(0, velocidadeAtual - km);
+ System.out.println("Freando... Velocidade: " + velocidadeAtual + " km/h");
+ }
+
+ void buzinar() {
+ System.out.println("BI-BI! ");
+ }
+
+ void exibirStatus() {
+ System.out.println("=== " + marca + " " + modelo + " ===");
+ System.out.println("Ano: " + ano);
+ System.out.println("Ligado: " + (ligado ? "Sim " : "Não "));
+ System.out.println("Velocidade: " + velocidadeAtual + " km/h");
+ }
+}
+
+// Main
+Carro meuCarro = new Carro();
+meuCarro.marca = "Toyota";
+meuCarro.modelo = "Corolla";
+meuCarro.ano = 2023;
+
+meuCarro.ligar(); // Toyota Corolla: vrum! 
+meuCarro.acelerar(60); // Acelerando! Velocidade: 60.0 km/h
+meuCarro.acelerar(40); // Acelerando! Velocidade: 100.0 km/h
+meuCarro.buzinar(); // BI-BI! 
+meuCarro.frear(30); // Freando... Velocidade: 70.0 km/h
+meuCarro.exibirStatus();</code></pre></div><div class="uml-box mt-2"><div class="uml-class-name">Carro</div><div class="uml-attrs"><div class="public-attr">+ marca: String</div><div class="public-attr">+ modelo: String</div><div class="public-attr">+ ano: int</div><div class="public-attr">+ velocidadeAtual: double</div><div class="public-attr">+ ligado: boolean</div></div><div class="uml-methods"><div class="method-attr">+ ligar(): void</div><div class="method-attr">+ desligar(): void</div><div class="method-attr">+ acelerar(km: double): void</div><div class="method-attr">+ frear(km: double): void</div><div class="method-attr">+ buzinar(): void</div></div></div></div></div><!-- CONSTRUTORES --><div id="construtores" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Construtores</h3><span class="badge badge-warn">Inicialização</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Preencher ficha no hotel</div><p>Quando você faz check-in, preenche uma ficha (nome, data, quarto). O construtor faz isso automaticamente quando um objeto é criado — define os valores iniciais obrigatórios.</p></div><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Construtores</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">public class Produto {
+ String nome;
+ double preco;
+ int estoque;
+
+ // CONSTRUTOR PADRÃO (sem parâmetros)
+ public Produto() {
+ nome = "Sem nome";
+ preco = 0.0;
+ estoque = 0;
+ }
+
+ // CONSTRUTOR PARAMETRIZADO (recebe valores)
+ public Produto(String nome, double preco, int estoque) {
+ // "this" refere-se ao atributo da classe (não ao parâmetro)
+ this.nome = nome;
+ this.preco = preco;
+ this.estoque = estoque;
+ }
+
+ // SOBRECARGA: outro construtor (só nome e preço)
+ public Produto(String nome, double preco) {
+ this.nome = nome;
+ this.preco = preco;
+ this.estoque = 100; // estoque padrão
+ }
+
+ void exibir() {
+ System.out.printf("Produto: %-15s | R$ %6.2f | Estoque: %d%n", nome, preco, estoque);
+ }
+}
+
+// Usando os construtores
+Produto p1 = new Produto(); // construtor padrão
+Produto p2 = new Produto("Notebook", 3500.0, 10); // parametrizado
+Produto p3 = new Produto("Mouse", 89.90); // só nome e preço
+
+p1.exibir(); // Produto: Sem nome | R$ 0.00 | Estoque: 0
+p2.exibir(); // Produto: Notebook | R$3500.00 | Estoque: 10
+p3.exibir(); // Produto: Mouse | R$ 89.90 | Estoque: 100</code></pre></div></div></div><!-- ENCAPSULAMENTO --><div id="encapsulamento" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Encapsulamento</h3><span class="badge badge-primary">Proteção de Dados</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Conta Bancária</div><p>Você não acessa o saldo diretamente — você usa o caixa eletrônico (métodos). O banco controla quem pode ver e modificar o saldo. Isso é encapsulamento: <em>esconder o estado interno, expor apenas o necessário.</em></p></div><div class="comparison-grid"><div class="comparison-bad"><div class="comp-label bad-label">SEM encapsulamento (perigoso!)</div><div class="code-block" style="margin:0.5rem 0"><pre style="margin:0;padding:0.75rem;font-size:0.8rem;background:#1e1e2e"><code class="language-java">// Qualquer um pode
+// acessar diretamente!
+conta.saldo = -99999; // 
+conta.saldo = "abc"; // erro!</code></pre></div></div><div class="comparison-good"><div class="comp-label good-label">COM encapsulamento (seguro!)</div><div class="code-block" style="margin:0.5rem 0"><pre style="margin:0;padding:0.75rem;font-size:0.8rem;background:#1e1e2e"><code class="language-java">// Acesso controlado!
+conta.depositar(100); // OK
+conta.sacar(-50); // Erro tratado</code></pre></div></div></div><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — ContaBancaria com Encapsulamento</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">public class ContaBancaria {
+ // PRIVATE = só acessível dentro da classe
+ private String titular;
+ private double saldo;
+ private String numeroConta;
+
+ public ContaBancaria(String titular, String numero) {
+ this.titular = titular;
+ this.numeroConta = numero;
+ this.saldo = 0.0;
+ }
+
+ // GETTER = retorna o valor (leitura)
+ public String getTitular() { return titular; }
+ public double getSaldo() { return saldo; }
+ public String getNumeroConta() { return numeroConta; }
+
+ // SETTER = define o valor COM validação
+ public void setTitular(String titular) {
+ if (titular != null && !titular.isEmpty()) {
+ this.titular = titular;
+ } else {
+ System.out.println(" Nome inválido!");
+ }
+ }
+
+ // Métodos de negócio (controlam o saldo)
+ public void depositar(double valor) {
+ if (valor >0) {
+ saldo += valor;
+ System.out.printf(" Depósito de R$ %.2f. Saldo: R$ %.2f%n", valor, saldo);
+ } else {
+ System.out.println(" Valor inválido para depósito!");
+ }
+ }
+
+ public void sacar(double valor) {
+ if (valor <= 0) {
+ System.out.println(" Valor inválido!");
+ } else if (valor >saldo) {
+ System.out.println(" Saldo insuficiente! Saldo: R$ " + saldo);
+ } else {
+ saldo -= valor;
+ System.out.printf(" Saque de R$ %.2f. Saldo: R$ %.2f%n", valor, saldo);
+ }
+ }
+
+ public void extrato() {
+ System.out.println("=== EXTRATO ===");
+ System.out.println("Titular: " + titular);
+ System.out.println("Conta: " + numeroConta);
+ System.out.printf("Saldo: R$ %.2f%n", saldo);
+ }
+}
+
+// Usando
+ContaBancaria conta = new ContaBancaria("Ana Silva", "001-2345");
+conta.depositar(1000); // Depósito de R$ 1000.00. Saldo: R$ 1000.00
+conta.sacar(250); // Saque de R$ 250.00. Saldo: R$ 750.00
+conta.sacar(1000); // Saldo insuficiente!
+conta.extrato();</code></pre></div><div class="callout callout-tip mt-2"><div><div class="callout-title">Regra de ouro do Encapsulamento</div><p class="text-sm">Use <strong><code>private</code></strong>para todos os atributos. Exponha via <strong>getters/setters</strong>com validação. Isso protege o objeto de estados inválidos.</p></div></div></div></div><!-- HERANÇA --><div id="heranca" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Herança</h3><span class="badge badge-success">extends</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Família</div><p>Uma criança herda características dos pais (cor dos olhos, altura). Na POO, uma classe filha herda atributos e métodos da classe pai, podendo adicionar ou modificar comportamentos.</p></div><div class="hierarchy-diagram"><div class="hier-box parent">Animal<br><small>fazerSom(), mover()</small></div><div class="hier-arrow">↓</div><div class="hier-row"><div class="hier-box child">Cachorro<br><small>fazerSom() → "Au!"</small></div><div class="hier-box child">Gato<br><small>fazerSom() → "Miau"</small></div><div class="hier-box child">Pássaro<br><small>fazerSom() → "Piu"</small></div></div></div><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Herança Animal</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">// CLASSE PAI (superclasse)
+public class Animal {
+ protected String nome; // protected = acessível nas subclasses
+ protected int idade;
+
+ public Animal(String nome, int idade) {
+ this.nome = nome;
+ this.idade = idade;
+ }
+
+ public void fazerSom() {
+ System.out.println(nome + " faz um som genérico...");
+ }
+
+ public void mover() {
+ System.out.println(nome + " está se movendo!");
+ }
+
+ public void apresentar() {
+ System.out.println("Sou " + nome + ", tenho " + idade + " anos.");
+ }
+}
+
+// CLASSE FILHA (subclasse) — usa "extends"
+public class Cachorro extends Animal {
+ private String raca;
+
+ public Cachorro(String nome, int idade, String raca) {
+ super(nome, idade); // chama o construtor do pai!
+ this.raca = raca;
+ }
+
+ // @Override = sobrescrever o método do pai
+ @Override
+ public void fazerSom() {
+ System.out.println(nome + " diz: AU AU! ");
+ }
+
+ // Método específico do Cachorro
+ public void buscarBola() {
+ System.out.println(nome + " foi buscar a bolinha! ");
+ }
+}
+
+public class Gato extends Animal {
+ private boolean domestico;
+
+ public Gato(String nome, int idade, boolean domestico) {
+ super(nome, idade);
+ this.domestico = domestico;
+ }
+
+ @Override
+ public void fazerSom() {
+ System.out.println(nome + " diz: MIAU ");
+ }
+
+ public void arranhar() {
+ System.out.println(nome + " arranhou o sofá ");
+ }
+}
+
+// Testando herança
+Animal animal = new Animal("Animal genérico", 5);
+Cachorro rex = new Cachorro("Rex", 3, "Labrador");
+Gato mimi = new Gato("Mimi", 2, true);
+
+animal.fazerSom(); // Animal genérico faz um som genérico...
+rex.fazerSom(); // Rex diz: AU AU! 
+rex.buscarBola(); // Rex foi buscar a bolinha! 
+mimi.fazerSom(); // Mimi diz: MIAU 
+rex.apresentar(); // Sou Rex, tenho 3 anos. (herdado do pai!)</code></pre></div><div class="callout callout-info mt-2"><div><div class="callout-title">Palavras-chave da Herança</div><p class="text-sm"><strong>extends</strong>— a classe filha estende a classe pai<br><strong>super()</strong>— chama o construtor da classe pai<br><strong>@Override</strong>— indica que estamos sobrescrevendo um método<br><strong>protected</strong>— acessível na própria classe e nas subclasses</p></div></div></div></div><!-- POLIMORFISMO --><div id="polimorfismo" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Polimorfismo</h3><span class="badge badge-accent">Muitas Formas</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Instrumento Musical</div><p>Todos os instrumentos <em>tocam</em>, mas cada um toca de forma diferente. O violão vibra cordas, a bateria bate membranas, a flauta sopra ar. Polimorfismo = <strong>mesmo método, comportamentos diferentes</strong>.</p></div><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Polimorfismo</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">// A MÁGICA do Polimorfismo: mesma lista, comportamentos diferentes!
+Animal[] animais = {
+ new Cachorro("Rex", 3, "Labrador"),
+ new Gato("Mimi", 2, true),
+ new Animal("Passarinho", 1),
+ new Cachorro("Bolinha", 5, "Poodle")
+};
+
+System.out.println("=== Hora do barulho! ===");
+for (Animal a : animais) {
+ a.fazerSom(); // Java chama o método CORRETO para cada tipo!
+}
+// Saída:
+// Rex diz: AU AU! 
+// Mimi diz: MIAU 
+// Passarinho faz um som genérico...
+// Bolinha diz: AU AU! 
+
+// instanceOf — verificar o tipo real do objeto
+for (Animal a : animais) {
+ if (a instanceof Cachorro) {
+ Cachorro c = (Cachorro) a; // casting
+ c.buscarBola();
+ }
+}
+
+// INTERFACE — outro tipo de polimorfismo
+public interface Voador {
+ void voar(); // obriga implementar este método
+}
+
+public class Aviao implements Voador {
+ @Override
+ public void voar() {
+ System.out.println(" Avião decolando com turbinas!");
+ }
+}
+
+public class Passaro extends Animal implements Voador {
+ public Passaro(String nome) { super(nome, 1); }
+
+ @Override
+ public void voar() {
+ System.out.println(" " + nome + " voando com asas!");
+ }
+
+ @Override
+ public void fazerSom() {
+ System.out.println(nome + " diz: PUI PUI!");
+ }
+}</code></pre></div><div class="callout callout-tip mt-2"><div><div class="callout-title">Polimorfismo na prática</div><p class="text-sm">Com polimorfismo, você pode criar uma lista de <code>Animal</code>e colocar cachorros, gatos e pássaros juntos. O Java automaticamente chama o método correto de cada objeto. Isso é <strong>dispatch dinâmico</strong>!</p></div></div><div class="try-it mt-2"><div class="try-it-title">Desafio Final POO!</div><p class="text-sm mb-1">Crie uma classe <strong>Funcionario</strong>com nome e salário, e duas subclasses: <strong>Gerente</strong>(com bônus de 20%) e <strong>Desenvolvedor</strong>(com bônus de 15%). Cada um deve ter um método <code>calcularSalarioTotal()</code>:</p><textarea class="try-input" placeholder="class Funcionario {&#10; // ...&#10;}&#10;class Gerente extends Funcionario {&#10; // ...&#10;}"></textarea><button class="btn btn-sm btn-ghost" onclick="showAnswer('ans-poo')">Ver resposta</button><div id="ans-poo" class="answer-block"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">class Funcionario {
+ protected String nome;
+ protected double salario;
+
+ public Funcionario(String nome, double salario) {
+ this.nome = nome;
+ this.salario = salario;
+ }
+
+ public double calcularSalarioTotal() {
+ return salario; // sem bônus por padrão
+ }
+
+ public void exibirContracheque() {
+ System.out.printf("Funcionário: %-15s | Salário Total: R$ %.2f%n",
+ nome, calcularSalarioTotal());
+ }
+}
+
+class Gerente extends Funcionario {
+ public Gerente(String nome, double salario) {
+ super(nome, salario);
+ }
+
+ @Override
+ public double calcularSalarioTotal() {
+ return salario * 1.20; // 20% de bônus
+ }
+}
+
+class Desenvolvedor extends Funcionario {
+ public Desenvolvedor(String nome, double salario) {
+ super(nome, salario);
+ }
+
+ @Override
+ public double calcularSalarioTotal() {
+ return salario * 1.15; // 15% de bônus
+ }
+}
+
+// Main
+Funcionario[] equipe = {
+ new Gerente("Ana (Gerente)", 8000),
+ new Desenvolvedor("Bruno (Dev)", 6000),
+ new Desenvolvedor("Carla (Dev)", 5500)
+};
+
+System.out.println("=== FOLHA DE PAGAMENTO ===");
+double totalFolha = 0;
+for (Funcionario f : equipe) {
+ f.exibirContracheque();
+ totalFolha += f.calcularSalarioTotal();
+}
+System.out.printf("Total da folha: R$ %.2f%n", totalFolha);</code></pre></div></div></div></div></div><!-- CHECKLIST --><div id="checklist" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Checklist do Dia 2</h3></div></div><div class="topic-card-body"><ul class="checklist" id="checklistDia2"><li><input type="checkbox" id="d2c1" onchange="saveChecklist2()"><label for="d2c1">Sei a diferença entre Classe e Objeto</label></li><li><input type="checkbox" id="d2c2" onchange="saveChecklist2()"><label for="d2c2">Consigo criar uma classe com atributos e métodos</label></li><li><input type="checkbox" id="d2c3" onchange="saveChecklist2()"><label for="d2c3">Entendo para que serve o construtor (e o this)</label></li><li><input type="checkbox" id="d2c4" onchange="saveChecklist2()"><label for="d2c4">Sei usar private, public e getters/setters</label></li><li><input type="checkbox" id="d2c5" onchange="saveChecklist2()"><label for="d2c5">Consigo criar herança com extends e super()</label></li><li><input type="checkbox" id="d2c6" onchange="saveChecklist2()"><label for="d2c6">Sei sobrescrever métodos com @Override</label></li><li><input type="checkbox" id="d2c7" onchange="saveChecklist2()"><label for="d2c7">Entendo polimorfismo e interface</label></li><li><input type="checkbox" id="d2c8" onchange="saveChecklist2()"><label for="d2c8">Consigo criar um diagrama UML básico</label></li></ul><div class="mt-2"><div class="progress-label"><span>Progresso Dia 2</span><span id="check2Pct">0/8</span></div><div class="progress-bar"><div class="progress-fill" id="check2Fill" style="width:0%"></div></div></div><div class="flex gap-1 mt-2"><a href="exercicios.html" class="btn btn-primary">Exercícios →</a><a href="visualizador-classes.html" class="btn btn-secondary">Visualizador UML</a><a href="../dia3-banco/conteudo.html" class="btn btn-ghost">Dia 3 →</a></div></div></div></main></div></div><footer class="footer"><div class="container"><p><a href="../index.html">← Portal</a>| Dia 2 — POO | <a href="exercicios.html">Exercícios</a>| <a href="../dia3-banco/conteudo.html">Dia 3 →</a></p></div></footer><script>hljs.highlightAll();
+ function showAnswer(id) { const el = document.getElementById(id); el.classList.toggle('show'); hljs.highlightAll(); }
+ function copyCode(btn) {
+ const pre = btn.closest('.code-block').querySelector('pre code');
+ navigator.clipboard.writeText(pre.textContent).then(() =>{ btn.textContent = ' Copiado!'; setTimeout(() =>btn.textContent = 'Copiar', 2000); });
+ }
+ function toggleAccordion(btn) { btn.classList.toggle('active'); btn.nextElementSibling.classList.toggle('open'); }
+
+ function saveChecklist2() {
+ const checks = {};
+ for (let i = 1; i <= 8; i++) { const el = document.getElementById('d2c' + i); if (el) checks['d2c' + i] = el.checked; }
+ localStorage.setItem('dia2checklist', JSON.stringify(checks));
+ updateProgress2();
+ }
+ function loadChecklist2() {
+ const saved = JSON.parse(localStorage.getItem('dia2checklist') || '{}');
+ for (let i = 1; i <= 8; i++) { const el = document.getElementById('d2c' + i); if (el && saved['d2c' + i]) el.checked = true; }
+ updateProgress2();
+ }
+ function updateProgress2() {
+ let count = 0;
+ for (let i = 1; i <= 8; i++) { const el = document.getElementById('d2c' + i); if (el && el.checked) count++; }
+ document.getElementById('check2Pct').textContent = count + '/8';
+ document.getElementById('check2Fill').style.width = (count / 8 * 100) + '%';
+ }
+ loadChecklist2();
+</script></body></html>
+
+
+

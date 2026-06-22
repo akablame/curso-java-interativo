@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Flashcards — Revisão</title><link rel="stylesheet" href="../assets/style.css"/><style>.fc-controls{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-bottom:1.5rem;}
+ .theme-btn{padding:.35rem .85rem;border-radius:20px;border:2px solid var(--borda);background:var(--bg-card);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;}
+ .theme-btn.active{background:var(--primaria);color:white;border-color:var(--primaria);}
+ .fc-stats{margin-left:auto;display:flex;gap:.75rem;font-size:.85rem;}
+ .stat-c{color:var(--sucesso);font-weight:700;}
+ .stat-w{color:var(--acento);font-weight:700;}
+ .card-area{display:flex;justify-content:center;align-items:center;min-height:340px;perspective:1000px;margin-bottom:1.5rem;}
+ .flashcard{width:500px;max-width:calc(100vw - 2rem);height:280px;position:relative;transform-style:preserve-3d;transition:transform .55s;cursor:pointer;}
+ .flashcard.flipped{transform:rotateY(180deg);}
+ .fc-face{position:absolute;inset:0;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;}
+ .fc-front{background:linear-gradient(135deg,var(--primaria),var(--secundaria));box-shadow:0 8px 32px rgba(106,86,176,.35);}
+ .fc-back{background:var(--bg-card);border:2px solid var(--primaria);box-shadow:0 8px 32px rgba(106,86,176,.18);transform:rotateY(180deg);}
+ .fc-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;opacity:.7;margin-bottom:.5rem;}
+ .fc-front .fc-label{color:rgba(255,255,255,.8);}
+ .fc-back .fc-label{color:var(--primaria);}
+ .fc-question{font-size:1.15rem;font-weight:700;color:white;line-height:1.4;}
+ .fc-answer{font-size:1rem;color:var(--texto);line-height:1.5;}
+ .fc-code{font-family:'Fira Code',monospace;background:rgba(106,86,176,.08);border-radius:8px;padding:.5rem 1rem;font-size:.88rem;color:var(--primaria);margin-top:.5rem;text-align:left;width:100%;}
+ .fc-nav{display:flex;justify-content:center;align-items:center;gap:1rem;margin-bottom:1rem;}
+ .fc-counter{font-size:.9rem;color:var(--texto-suave);min-width:100px;text-align:center;}
+ .fc-vote{display:flex;gap:.75rem;justify-content:center;margin-top:.5rem;}
+ .empty-state{text-align:center;padding:4rem 2rem;color:var(--texto-suave);}
+ </style></head><body><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="quiz-geral.html">Quiz</a><a href="glossario.html">Glossário</a></div></div></nav><div class="page-header" style="background:linear-gradient(135deg,var(--primaria),#E97CA0)"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› Recursos</div><h1>Flashcards de Revisão</h1><p>75+ flashcards para reforçar os conceitos mais importantes do curso!</p></div></div><div class="container section"><div class="fc-controls"><button class="theme-btn active" onclick="setTheme('all')">Todos</button><button class="theme-btn" onclick="setTheme('logica')">Lógica</button><button class="theme-btn" onclick="setTheme('poo')">POO</button><button class="theme-btn" onclick="setTheme('sql')">SQL</button><button class="theme-btn" onclick="setTheme('web')">HTML/CSS</button><button class="theme-btn" onclick="setTheme('eng')">Engenharia</button><div class="fc-stats"><span class="stat-c"><span id="cCount">0</span></span><span class="stat-w"><span id="wCount">0</span></span></div></div><div class="card-area"><div class="flashcard" id="flashcard" onclick="flipCard()"><div class="fc-face fc-front"><div class="fc-label">Pergunta</div><div class="fc-question" id="fcQ">Carregando...</div></div><div class="fc-face fc-back"><div class="fc-label">Resposta</div><div class="fc-answer" id="fcA">—</div><div class="fc-code" id="fcCode" style="display:none"></div></div></div></div><div class="fc-nav"><button class="btn btn-outline btn-sm" onclick="prevCard()">← Anterior</button><span class="fc-counter" id="fcCounter">1 / 1</span><button class="btn btn-outline btn-sm" onclick="nextCard()">Próximo →</button></div><div class="fc-vote"><button class="btn btn-sm" style="background:rgba(93,175,142,.12);color:var(--sucesso);border:1px solid var(--sucesso)" onclick="vote(true)">Sabia!</button><button class="btn btn-sm" style="background:rgba(233,124,160,.12);color:var(--acento);border:1px solid var(--acento)" onclick="vote(false)">Errei</button><button class="btn btn-ghost btn-sm" onclick="shuffle()">Embaralhar</button></div></div><footer class="footer"><div class="container"><p><a href="../index.html">← Portal</a>| <a href="quiz-geral.html">Quiz</a>| <a href="glossario.html">Glossário</a></p></div></footer><script>const ALL_CARDS = [
+ // LÓGICA (15)
+ {t:'logica',q:'O que é uma variável em Java?',a:'Um espaço nomeado na memória para armazenar um valor que pode mudar durante a execução.',c:'int idade = 20;'},
+ {t:'logica',q:'Qual a diferença entre int e double?',a:'int armazena números inteiros (sem vírgula). double armazena números com ponto flutuante (decimais).',c:'int x=5; double y=5.0;'},
+ {t:'logica',q:'O que o operador % (módulo) faz?',a:'Retorna o RESTO da divisão inteira.',c:'10 % 3 → 1\n7 % 2 → 1\n8 % 4 → 0'},
+ {t:'logica',q:'Qual a diferença entre == e equals()?',a:'== compara referências (se são o mesmo objeto). equals() compara o conteúdo (valor).',c:'"abc".equals("abc") // true\n"abc" == "abc" // pode ser false!'},
+ {t:'logica',q:'Como funciona o loop for clássico?',a:'Três partes: inicialização; condição; incremento. Executa enquanto a condição for verdadeira.',c:'for(int i=0; i<5; i++) {\n System.out.println(i);\n}'},
+ {t:'logica',q:'O que é um array?',a:'Uma coleção de tamanho fixo de elementos do mesmo tipo, acessados por índice (começa em 0).',c:'int[] nums = {10, 20, 30};\nSystem.out.println(nums[0]); // 10'},
+ {t:'logica',q:'O que é casting em Java?',a:'Conversão explícita de um tipo para outro.',c:'double d = 9.7;\nint i = (int) d; // i = 9 (trunca!)'},
+ {t:'logica',q:'O que faz o break em um loop?',a:'Encerra o loop imediatamente, saltando para o código após o loop.',c:'for(int i=0; i<10; i++) {\n if(i==5) break;\n}'},
+ {t:'logica',q:'O que faz o continue em um loop?',a:'Pula para a próxima iteração do loop, sem executar o restante do bloco.',c:'for(int i=0; i<5; i++) {\n if(i==2) continue;\n System.out.println(i);\n}'},
+ {t:'logica',q:'Qual é o valor de boolean por padrão?',a:'false. Em Java, variáveis de instância são inicializadas com valores padrão: int=0, double=0.0, boolean=false, String=null.',c:'boolean ativo; // false por padrão'},
+ {t:'logica',q:'O que é sobrecarga de método?',a:'Criar vários métodos com o mesmo nome mas com parâmetros diferentes (tipo ou quantidade).',c:'void print(int n) {...}\nvoid print(String s) {...}\nvoid print(int a, int b) {...}'},
+ {t:'logica',q:'O que significa void em Java?',a:'void indica que o método não retorna nenhum valor.',c:'public void saudacao() {\n System.out.println("Olá!");\n // sem return\n}'},
+ {t:'logica',q:'Como concatenar Strings em Java?',a:'Com o operador + ou com StringBuilder para múltiplas concatenações.',c:'"Olá " + nome + "!"\n// ou\nnew StringBuilder().append("a").append("b")'},
+ {t:'logica',q:'O que é um método recursivo?',a:'Um método que chama a si mesmo. Precisa de uma condição de parada (base case) para não loop infinito.',c:'int fat(int n) {\n if(n<=1) return 1;\n return n * fat(n-1);\n}'},
+ {t:'logica',q:'O que faz o operador ternário ?:',a:'Um if/else abreviado em linha. condição ? valorSeVerdadeiro : valorSeFalso.',c:'int max = (a >b) ? a : b;'},
+
+ // POO (15)
+ {t:'poo',q:'O que é uma classe em Java?',a:'Uma classe é um "molde" que define atributos e comportamentos. Objetos são instâncias de classes.',c:'class Carro {\n String modelo;\n void ligar() {...}\n}'},
+ {t:'poo',q:'O que significa encapsulamento?',a:'Esconder o estado interno de um objeto, expondo somente o necessário via métodos públicos (getters/setters).',c:'private double saldo;\npublic double getSaldo() {\n return saldo;\n}'},
+ {t:'poo',q:'Para que serve o this em Java?',a:'this referencia o objeto atual. Usado para diferenciar atributos de parâmetros com mesmo nome.',c:'public void setNome(String nome) {\n this.nome = nome; // this.nome = atributo\n}'},
+ {t:'poo',q:'O que é herança em Java?',a:'Mecanismo que permite uma classe filha reutilizar atributos e métodos da classe pai. Usa extends.',c:'class Animal {...}\nclass Cachorro extends Animal {...}'},
+ {t:'poo',q:'Para que serve super() em Java?',a:'Chama o construtor da classe pai. Deve ser a primeira instrução no construtor da classe filha.',c:'public Cachorro(String nome) {\n super(nome); // chama construtor de Animal\n}'},
+ {t:'poo',q:'O que é polimorfismo?',a:'Capacidade de objetos de tipos diferentes responderem ao mesmo método de formas diferentes.',c:'Animal[] an = {new Cão(), new Gato()};\nfor(Animal a : an) a.fazerSom();'},
+ {t:'poo',q:'O que é uma interface?',a:'Um contrato que define métodos sem implementação. Classes que implement a interface DEVEM implementá-los.',c:'interface Voavel {\n void voar();\n}'},
+ {t:'poo',q:'Qual a diferença entre abstract class e interface?',a:'Abstract class pode ter implementação e estado. Interface é apenas contrato (pode ter default methods no Java 8+). Você pode implementar várias interfaces, mas herdar só uma classe.',c:'abstract class Shape { abstract double area(); }\ninterface Drawable { void draw(); }'},
+ {t:'poo',q:'O que faz @Override?',a:'Indica que o método está sobrescrevendo um método da superclasse. Ajuda o compilador a verificar erros.',c:'@Override\npublic String toString() {\n return "Objeto: " + nome;\n}'},
+ {t:'poo',q:'O que é um construtor?',a:'Um método especial executado ao criar um objeto com new. Tem o mesmo nome da classe e sem tipo de retorno.',c:'public Aluno(String nome, int idade) {\n this.nome = nome;\n this.idade = idade;\n}'},
+ {t:'poo',q:'O que é modificador static?',a:'Pertence à CLASSE, não ao objeto. Pode ser acessado sem instanciar a classe.',c:'static int contador;\nMeuObjeto.contador++;'},
+ {t:'poo',q:'O que é ArrayList?',a:'Uma lista dinâmica (tamanho cresce/diminui) de objetos. Pertence ao java.util.',c:'ArrayList<String>lista = new ArrayList<>();\nlista.add("Java");\nlista.get(0);'},
+ {t:'poo',q:'Qual a diferença entre == e equals() para objetos?',a:'== verifica se são o mesmo objeto na memória. equals() compara os atributos/conteúdo (se sobrescrito).',c:'Aluno a1 = new Aluno("Ana");\nAluno a2 = new Aluno("Ana");\na1 == a2 // false (objetos diferentes)\na1.equals(a2) // true (se equals sobrescrito)'},
+ {t:'poo',q:'O que é instanceof?',a:'Operador que verifica se um objeto é instância de uma classe ou interface.',c:'if(animal instanceof Cachorro) {\n ((Cachorro)animal).latir();\n}'},
+ {t:'poo',q:'O que é o padrão DAO?',a:'Data Access Object: separa a lógica de acesso ao banco de dados das classes de negócio. Cada entidade tem um DAO com CRUD.',c:'class AlunoDAO {\n void salvar(Aluno a);\n Aluno buscarPorId(int id);\n List<Aluno>listarTodos();\n}'},
+
+ // SQL (15)
+ {t:'sql',q:'O que faz o SELECT *?',a:'Seleciona TODAS as colunas de uma tabela.',c:'SELECT * FROM alunos;'},
+ {t:'sql',q:'Como filtrar registros em SQL?',a:'Com a cláusula WHERE após o SELECT.',c:'SELECT nome FROM alunos\nWHERE media >= 7;'},
+ {t:'sql',q:'O que é PRIMARY KEY?',a:'Chave primária: identifica unicamente cada linha de uma tabela. Não pode ser NULL nem duplicada.',c:'id INT PRIMARY KEY AUTO_INCREMENT'},
+ {t:'sql',q:'O que é FOREIGN KEY?',a:'Chave estrangeira: referencia a PK de outra tabela, criando um relacionamento entre elas.',c:'FOREIGN KEY (turma_id)\nREFERENCES turmas(id)'},
+ {t:'sql',q:'Qual a diferença entre INNER JOIN e LEFT JOIN?',a:'INNER JOIN: retorna só registros que têm correspondência nas duas tabelas. LEFT JOIN: retorna todos da esquerda, com NULL onde não há correspondência.',c:'SELECT a.nome, t.nome FROM alunos a\nLEFT JOIN turmas t ON a.turma_id = t.id;'},
+ {t:'sql',q:'O que faz o GROUP BY?',a:'Agrupa linhas com valores iguais em uma coluna, normalmente usado com funções de agregação.',c:'SELECT turma_id, AVG(nota) FROM alunos\nGROUP BY turma_id;'},
+ {t:'sql',q:'Qual a diferença entre WHERE e HAVING?',a:'WHERE filtra ANTES de agrupar. HAVING filtra APÓS o GROUP BY.',c:'SELECT turma_id, AVG(nota) AS media\nFROM alunos GROUP BY turma_id\nHAVING media >= 7;'},
+ {t:'sql',q:'O que é PreparedStatement?',a:'Uma query SQL pré-compilada com parâmetros (?) que previne SQL Injection e melhora performance.',c:'PreparedStatement ps = conn.prepareStatement(\n "SELECT * FROM alunos WHERE id = ?")\nps.setInt(1, 5);'},
+ {t:'sql',q:'O que fazem as funções COUNT, SUM, AVG?',a:'Funções de agregação: COUNT conta linhas, SUM soma valores, AVG calcula a média.',c:'SELECT COUNT(*) AS total,\n AVG(nota) AS media,\n SUM(nota) AS soma\nFROM alunos;'},
+ {t:'sql',q:'Como ordenar resultados em SQL?',a:'Com ORDER BY seguido do nome da coluna e ASC (crescente, padrão) ou DESC (decrescente).',c:'SELECT nome, nota FROM alunos\nORDER BY nota DESC;'},
+ {t:'sql',q:'O que faz LIKE em SQL?',a:'Filtra strings com padrões. % substitui zero ou mais caracteres, _ substitui exatamente um.',c:"SELECT * FROM alunos\nWHERE nome LIKE 'Ana%'; -- começa com Ana"},
+ {t:'sql',q:'Como inserir dados em SQL?',a:'Com a instrução INSERT INTO, listando colunas e valores correspondentes.',c:'INSERT INTO alunos (nome, nota)\nVALUES ("Maria", 8.5);'},
+ {t:'sql',q:'Como atualizar dados em SQL?',a:'Com UPDATE + SET + WHERE. CUIDADO: sem WHERE atualiza TODOS os registros!',c:'UPDATE alunos SET nota = 9.0\nWHERE id = 3;'},
+ {t:'sql',q:'Como deletar dados em SQL?',a:'Com DELETE FROM + WHERE. CUIDADO: sem WHERE deleta TODOS!',c:'DELETE FROM alunos WHERE id = 5;'},
+ {t:'sql',q:'O que é um índice (INDEX) em banco de dados?',a:'Estrutura que acelera buscas em colunas específicas, como o índice de um livro. Colunas muito buscadas devem ter índices.',c:'CREATE INDEX idx_cpf ON clientes(cpf);'},
+
+ // HTML/CSS (15)
+ {t:'web',q:'Para que serve a tag <div>?',a:'Container genérico para agrupar elementos HTML. Não tem significado semântico próprio.',c:'<div class="container">\n <p>Conteúdo aqui</p>\n</div>'},
+ {t:'web',q:'Qual a diferença entre id e class em HTML?',a:'id é único por página (um elemento). class pode ser reutilizada em múltiplos elementos.',c:'<div id="unico">\n<div class="card"><!-- muitos cards -->'},
+ {t:'web',q:'O que é o box model CSS?',a:'Modelo que descreve o espaço de cada elemento: content → padding → border → margin.',c:'box-sizing: border-box;\npadding: 10px;\nborder: 1px solid;\nmargin: 20px;'},
+ {t:'web',q:'O que é Flexbox?',a:'Sistema de layout CSS para organizar itens em uma direção (linha ou coluna) com controle de alinhamento.',c:'.container {\n display: flex;\n justify-content: center;\n align-items: center;\n}'},
+ {t:'web',q:'O que são media queries?',a:'Regras CSS que aplicam estilos condicionalmente baseado no tamanho da tela (responsivo).',c:'@media (max-width: 768px) {\n .menu { display: none; }\n}'},
+ {t:'web',q:'O que faz document.getElementById()?',a:'Retorna o elemento HTML com o id especificado, para manipulação via JavaScript.',c:'const btn = document.getElementById("meuBtn");\nbtn.addEventListener("click", fn);'},
+ {t:'web',q:'Como adicionar eventos em JavaScript?',a:'Com addEventListener(), passando o nome do evento e a função callback.',c:'document.querySelector("#btn")\n .addEventListener("click", () =>{\n alert("Clicado!");\n });'},
+ {t:'web',q:'O que é innerHTML vs textContent?',a:'innerHTML lê/escreve HTML (incluindo tags). textContent lê/escreve apenas texto puro (mais seguro).',c:'el.innerHTML = "<b>Negrito</b>"; // parseia HTML\nel.textContent = "<b>Texto</b>"; // mostra o texto literal'},
+ {t:'web',q:'O que é localStorage?',a:'API do navegador para armazenar dados chave-valor no cliente, persistindo mesmo após fechar o browser.',c:'localStorage.setItem("nome", "Ana");\nconst n = localStorage.getItem("nome");'},
+ {t:'web',q:'O que é position:absolute vs relative?',a:'relative posiciona relativo à posição normal. absolute posiciona relativo ao ancestral com position:relative.',c:'.pai { position: relative; }\n.filho {\n position: absolute;\n top: 0; right: 0;\n}'},
+ {t:'web',q:'O que é display:none vs visibility:hidden?',a:'display:none remove o elemento do layout (sem espaço). visibility:hidden esconde mas mantém o espaço.',c:'.oculto { display: none; }\n.invisivel { visibility: hidden; }'},
+ {t:'web',q:'Para que serve a tag <form>e o atributo action?',a:'<form>agrupa campos de entrada. action define URL para envio dos dados. method define GET ou POST.',c:'<form action="/cadastrar" method="POST">\n <input name="nome">\n <button type="submit">Enviar</button>\n</form>'},
+ {t:'web',q:'O que é CSS specificity?',a:'Peso que determina qual regra CSS prevalece. id >class >tag. Mais específico vence.',c:'#id { } /* peso 100 */\n.class { } /* peso 10 */\ntag { } /* peso 1 */'},
+ {t:'web',q:'O que é fetch() em JavaScript?',a:'API moderna para fazer requisições HTTP (GET, POST, etc.) de forma assíncrona, retornando Promises.',c:"fetch('/api/dados')\n .then(res =>res.json())\n .then(data =>console.log(data));"},
+ {t:'web',q:'O que é CSS Grid?',a:'Sistema de layout bidimensional (linhas E colunas) para criar layouts complexos.',c:'.grid {\n display: grid;\n grid-template-columns: repeat(3, 1fr);\n gap: 1rem;\n}'},
+
+ // ENGENHARIA (15)
+ {t:'eng',q:'O que é UML?',a:'Unified Modeling Language — linguagem padronizada para modelar sistemas de software com diagramas visuais.',c:'Tipos: Casos de Uso, Classes,\nSequência, Atividade, Componentes'},
+ {t:'eng',q:'O que é um Caso de Uso?',a:'Descreve uma funcionalidade do sistema do ponto de vista do usuário (ator). Responde: "quem faz o quê".',c:'Ator: Usuário\nCaso de Uso: Fazer Login\nRelacionamento: Ator usa UC'},
+ {t:'eng',q:'O que é um requisito funcional?',a:'Descreve O QUE o sistema deve fazer — funcionalidades específicas.',c:'RF01: O sistema deve autenticar\nusuários por login e senha.'},
+ {t:'eng',q:'O que é um requisito não-funcional?',a:'Descreve COMO o sistema deve se comportar — qualidade, desempenho, segurança.',c:'RNF01: Resposta < 2 segundos.\nRNF02: 99.9% de disponibilidade.'},
+ {t:'eng',q:'Qual o formato de uma User Story?',a:'Como [tipo de usuário], quero [ação] para [benefício].',c:'Como aluno, quero ver minhas\nnotas para saber se fui aprovado.'},
+ {t:'eng',q:'O que é MVC?',a:'Model-View-Controller: padrão arquitetural que separa dados (Model), interface (View) e lógica (Controller).',c:'Model: classes + DAO\nView: JFrame / HTML\nController: regras de negócio'},
+ {t:'eng',q:'O que é o padrão DAO?',a:'Data Access Object: concentra todo o acesso ao banco em classes específicas por entidade.',c:'class ProdutoDAO {\n void inserir(Produto p);\n Produto buscarPorId(int id);\n}'},
+ {t:'eng',q:'O que é Scrum?',a:'Metodologia ágil de desenvolvimento em ciclos curtos (Sprints) com entregas incrementais e feedback constante.',c:'Sprint → Planning → Daily\n→ Review → Retrospectiva'},
+ {t:'eng',q:'Quais são os papéis do Scrum?',a:'Product Owner (define o quê), Scrum Master (facilita o processo), Dev Team (desenvolve).',c:'PO: prioridade e backlog\nSM: remove impedimentos\nTeam: código'},
+ {t:'eng',q:'O que é um Sprint?',a:'Ciclo de desenvolvimento de 1 a 4 semanas com meta definida e entrega funcional ao final.',c:'Sprint 1 (1 semana):\n- US01: Login\n- US02: Cadastro\nMeta: autenticação funcionando'},
+ {t:'eng',q:'O que é um diagrama de sequência?',a:'Diagrama UML que mostra a ordem de mensagens trocadas entre objetos durante um processo.',c:'Usuário → Interface → Controller\n→ DAO → Banco → DAO\n→ Controller → Interface → Usuário'},
+ {t:'eng',q:'O que é acoplamento em software?',a:'Grau de dependência entre módulos/classes. Baixo acoplamento é desejável: mudança em um não quebra outros.',c:'// alto acoplamento (ruim):\nclass Pedido { new PagtoCartao(); }\n// baixo: usar interface'},
+ {t:'eng',q:'O que é coesão em software?',a:'Grau em que uma classe tem responsabilidades relacionadas. Alta coesão = classe faz UMA coisa bem.',c:'// alta coesão:\nclass EnvioEmail { ... } // só email\n// baixa: God Class faz tudo'},
+ {t:'eng',q:'O que é refatoração?',a:'Melhorar a estrutura interna do código sem alterar seu comportamento externo.',c:'Antes: método de 200 linhas\nDepois: 5 métodos de 40 linhas\nComportamento: idêntico'},
+ {t:'eng',q:'O que é um Product Backlog?',a:'Lista priorizada de todas as funcionalidades desejadas para o produto, gerenciada pelo Product Owner.',c:'US01: Login (8pts) → Sprint 1\nUS02: Cadastro (5pts) → Sprint 1\nUS03: Relatório (8pts) → Sprint 2'},
+];
+
+let deck = [...ALL_CARDS], current = 0, correct = 0, wrong = 0;
+
+function setTheme(theme) {
+ document.querySelectorAll('.theme-btn').forEach(b =>b.classList.remove('active'));
+ event.target.classList.add('active');
+ deck = theme === 'all' ? [...ALL_CARDS] : ALL_CARDS.filter(c =>c.t === theme);
+ current = 0;
+ showCard();
+}
+
+function showCard() {
+ if (deck.length === 0) return;
+ const card = deck[current];
+ document.getElementById('fcQ').textContent = card.q;
+ document.getElementById('fcA').textContent = card.a;
+ const codeEl = document.getElementById('fcCode');
+ if (card.c) { codeEl.textContent = card.c; codeEl.style.display = 'block'; }
+ else { codeEl.style.display = 'none'; }
+ document.getElementById('flashcard').classList.remove('flipped');
+ document.getElementById('fcCounter').textContent = (current + 1) + ' / ' + deck.length;
+}
+
+function flipCard() { document.getElementById('flashcard').classList.toggle('flipped'); }
+function nextCard() { current = (current + 1) % deck.length; showCard(); }
+function prevCard() { current = (current - 1 + deck.length) % deck.length; showCard(); }
+
+function vote(ok) {
+ if (ok) { correct++; document.getElementById('cCount').textContent = correct; }
+ else { wrong++; document.getElementById('wCount').textContent = wrong; }
+ nextCard();
+}
+
+function shuffle() {
+ for (let i = deck.length - 1; i >0; i--) {
+ const j = Math.floor(Math.random() * (i + 1));
+ [deck[i], deck[j]] = [deck[j], deck[i]];
+ }
+ current = 0; showCard();
+}
+
+showCard();
+</script></body></html>
+
+
+

@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Dia 6 — Guia de Projetos</title><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>.proj-tabs{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.5rem;}
+ .proj-tab{background:var(--bg-card);border:2px solid var(--borda);border-radius:10px;padding:.5rem 1rem;font-weight:600;font-size:.85rem;cursor:pointer;transition:all .2s;}
+ .proj-tab.active{background:var(--primaria);color:white;border-color:var(--primaria);}
+ .proj-content{display:none;} .proj-content.active{display:block;}
+ .proj-header{background:linear-gradient(135deg,rgba(106,86,176,.1),rgba(136,184,245,.08));border:1px solid rgba(106,86,176,.2);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;}
+ .proj-meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem;}
+ .er-box{background:#1e1e2e;border-radius:10px;padding:1rem;font-family:'Fira Code',monospace;font-size:.78rem;color:#cdd6f4;overflow-x:auto;margin:1rem 0;}
+ .er-table{display:inline-block;background:#313244;border-radius:8px;padding:.5rem .75rem;margin:.25rem;vertical-align:top;min-width:140px;}
+ .er-table-name{color:#cba6f7;font-weight:700;border-bottom:1px solid #45475a;padding-bottom:.3rem;margin-bottom:.3rem;font-size:.8rem;}
+ .er-field{color:#cdd6f4;font-size:.72rem;padding:.1rem 0;}
+ .er-pk{color:#f38ba8;}
+ .er-fk{color:#89b4fa;}
+ .step-list{counter-reset:steps;list-style:none;padding-left:0;}
+ .step-list li{counter-increment:steps;display:flex;gap:.75rem;margin-bottom:.6rem;align-items:flex-start;}
+ .step-list li::before{content:counter(steps);background:var(--primaria);color:white;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;margin-top:1px;}
+ .delivery-check input[type=checkbox]{accent-color:var(--primaria);width:15px;height:15px;}
+ .delivery-check label{font-size:.9rem;}
+ .done-pct{font-weight:700;color:var(--primaria);}
+ </style></head><body><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="checklist.html">Checklist Final</a><a href="../dia5-engenharia/conteudo.html">← Dia 5</a></div></div></nav><div class="page-header" style="background:linear-gradient(135deg,#E97CA0,var(--primaria))"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› Dia 6</div><h1>Dia 6 — Projetos Completos</h1><p>5 sistemas reais para aplicar tudo que você aprendeu — do banco de dados à tela!</p></div></div><div class="container section"><div class="proj-tabs" id="projTabs"><button class="proj-tab active" onclick="showProj('biblioteca')">Biblioteca</button><button class="proj-tab" onclick="showProj('escola')">Esc. Escolar</button><button class="proj-tab" onclick="showProj('concessionaria')">Concessionária</button><button class="proj-tab" onclick="showProj('estoque')">Estoque</button><button class="proj-tab" onclick="showProj('oficina')">Oficina</button></div><!-- ===== BIBLIOTECA ===== --><div id="proj-biblioteca" class="proj-content active"><div class="proj-header"><h2>Sistema de Biblioteca</h2><p>Um sistema completo de gerenciamento de biblioteca com empréstimos, devoluções e controle de usuários.</p><div class="proj-meta"><span class="badge badge-primary">Java + MySQL</span><span class="badge badge-blue">Dificuldade: </span><span class="badge badge-success">~3 dias de desenvolvimento</span></div></div><div class="grid grid-2 mb-2"><div class="card"><div class="card-header"><strong>Requisitos Funcionais</strong></div><div class="card-body"><ul style="padding-left:1.25rem;font-size:.88rem"><li>RF01: Cadastrar/editar/excluir livros</li><li>RF02: Cadastrar usuários (nome, CPF, e-mail)</li><li>RF03: Realizar empréstimo de livro</li><li>RF04: Registrar devolução</li><li>RF05: Listar livros disponíveis</li><li>RF06: Consultar histórico de empréstimos</li><li>RF07: Calcular multa por atraso (R$1/dia)</li></ul></div></div><div class="card"><div class="card-header"><strong>Tecnologias</strong></div><div class="card-body"><ul style="padding-left:1.25rem;font-size:.88rem"><li>Java SE 17 + JDBC</li><li>MySQL 8.0</li><li>JFrame (Swing)</li><li>Arquitetura MVC</li><li>DAO Pattern</li><li>PreparedStatement (segurança)</li></ul></div></div></div><h3>Diagrama ER</h3><div class="er-box"><div class="er-table"><div class="er-table-name">livros</div><div class="er-field er-pk">PK id INT AUTO_INCREMENT</div><div class="er-field">titulo VARCHAR(200)</div><div class="er-field">autor VARCHAR(100)</div><div class="er-field">isbn VARCHAR(20) UNIQUE</div><div class="er-field">ano_publicacao INT</div><div class="er-field">quantidade INT</div><div class="er-field">disponivel BOOLEAN</div></div><div class="er-table"><div class="er-table-name">usuarios</div><div class="er-field er-pk">PK id INT AUTO_INCREMENT</div><div class="er-field">nome VARCHAR(100)</div><div class="er-field">cpf VARCHAR(14) UNIQUE</div><div class="er-field">email VARCHAR(100)</div><div class="er-field">data_cadastro DATE</div></div><div class="er-table"><div class="er-table-name">emprestimos</div><div class="er-field er-pk">PK id INT AUTO_INCREMENT</div><div class="er-field er-fk">FK livro_id INT → livros.id</div><div class="er-field er-fk">FK usuario_id INT → usuarios.id</div><div class="er-field">data_emprestimo DATE</div><div class="er-field">data_devolucao DATE</div><div class="er-field">devolvido BOOLEAN</div><div class="er-field">multa DECIMAL(10,2)</div></div></div><h3>Script SQL</h3><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL — Biblioteca</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">CREATE DATABASE IF NOT EXISTS biblioteca DEFAULT CHARACTER SET utf8mb4;
+USE biblioteca;
+
+CREATE TABLE livros (
+ id INT AUTO_INCREMENT PRIMARY KEY,
+ titulo VARCHAR(200) NOT NULL,
+ autor VARCHAR(100) NOT NULL,
+ isbn VARCHAR(20) UNIQUE,
+ ano_publicacao INT,
+ quantidade INT DEFAULT 1,
+ disponivel BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE usuarios (
+ id INT AUTO_INCREMENT PRIMARY KEY,
+ nome VARCHAR(100) NOT NULL,
+ cpf VARCHAR(14) UNIQUE NOT NULL,
+ email VARCHAR(100),
+ data_cadastro DATE DEFAULT (CURRENT_DATE)
+);
+
+CREATE TABLE emprestimos (
+ id INT AUTO_INCREMENT PRIMARY KEY,
+ livro_id INT NOT NULL,
+ usuario_id INT NOT NULL,
+ data_emprestimo DATE NOT NULL,
+ data_devolucao DATE,
+ devolvido BOOLEAN DEFAULT FALSE,
+ multa DECIMAL(10,2) DEFAULT 0.00,
+ FOREIGN KEY (livro_id) REFERENCES livros(id),
+ FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+-- Dados de exemplo
+INSERT INTO livros (titulo, autor, isbn) VALUES
+('Clean Code', 'Robert C. Martin', '978-0132350884'),
+('Java: How to Program', 'Deitel', '978-0133807455'),
+('Design Patterns', 'GoF', '978-0201633610');
+
+INSERT INTO usuarios (nome, cpf, email) VALUES
+('Ana Paula', '123.456.789-00', 'ana@email.com'),
+('Bruno Lima', '987.654.321-00', 'bruno@email.com');</code></pre></div><h3>Estrutura das Classes Java</h3><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Classes MVC</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">// === MODEL ===
+public class Livro {
+ private int id;
+ private String titulo, autor, isbn;
+ private int anoPublicacao, quantidade;
+ private boolean disponivel;
+ // Construtores, getters e setters
+}
+
+public class Usuario {
+ private int id;
+ private String nome, cpf, email;
+ private LocalDate dataCadastro;
+}
+
+public class Emprestimo {
+ private int id;
+ private Livro livro;
+ private Usuario usuario;
+ private LocalDate dataEmprestimo, dataDevolucao;
+ private boolean devolvido;
+ private double multa;
+
+ public double calcularMulta() {
+ if (devolvido || dataDevolucao == null) return 0;
+ long diasAtraso = ChronoUnit.DAYS.between(dataDevolucao, LocalDate.now());
+ return diasAtraso >0 ? diasAtraso * 1.0 : 0;
+ }
+}
+
+// === DAO ===
+public class LivroDAO {
+ private Connection conn;
+ public LivroDAO(Connection conn) { this.conn = conn; }
+
+ public void inserir(Livro l) throws SQLException {
+ String sql = "INSERT INTO livros(titulo,autor,isbn,ano_publicacao,quantidade) VALUES(?,?,?,?,?)";
+ PreparedStatement ps = conn.prepareStatement(sql);
+ ps.setString(1, l.getTitulo());
+ ps.setString(2, l.getAutor());
+ ps.setString(3, l.getIsbn());
+ ps.setInt(4, l.getAnoPublicacao());
+ ps.setInt(5, l.getQuantidade());
+ ps.executeUpdate();
+ }
+
+ public List&lt;Livro&gt; listarDisponiveis() throws SQLException {
+ List&lt;Livro&gt; lista = new ArrayList&lt;&gt;();
+ String sql = "SELECT * FROM livros WHERE disponivel = TRUE";
+ ResultSet rs = conn.createStatement().executeQuery(sql);
+ while (rs.next()) {
+ Livro l = new Livro();
+ l.setId(rs.getInt("id"));
+ l.setTitulo(rs.getString("titulo"));
+ l.setAutor(rs.getString("autor"));
+ lista.add(l);
+ }
+ return lista;
+ }
+}
+
+// === CONTROLLER ===
+public class EmprestimoController {
+ private LivroDAO livroDAO;
+ private EmprestimoDAO empDAO;
+
+ public void realizarEmprestimo(int livroId, int usuarioId, LocalDate devPrev) throws Exception {
+ Livro livro = livroDAO.buscarPorId(livroId);
+ if (!livro.isDisponivel()) throw new Exception("Livro indisponível!");
+
+ Emprestimo emp = new Emprestimo();
+ emp.setLivro(livro);
+ emp.setDataEmprestimo(LocalDate.now());
+ emp.setDataDevolucao(devPrev);
+ empDAO.inserir(emp);
+
+ livroDAO.setDisponivel(livroId, false);
+ }
+}</code></pre></div><h3>Guia de Implementação (10 passos)</h3><ol class="step-list mt-1"><li>Criar banco de dados e executar o script SQL acima</li><li>Criar projeto Java no IDE, adicionar driver MySQL (JAR) no classpath</li><li>Criar classe <code>Conexao.java</code>com método estático <code>getConnection()</code></li><li>Implementar classes Model: <code>Livro</code>, <code>Usuario</code>, <code>Emprestimo</code></li><li>Implementar DAOs: <code>LivroDAO</code>, <code>UsuarioDAO</code>, <code>EmprestimoDAO</code></li><li>Implementar Controllers com validações de negócio</li><li>Criar JFrame principal com menu (JMenuBar) de navegação</li><li>Criar telas: CadastroLivro, CadastroUsuario, RealizarEmprestimo, Devolução</li><li>Conectar telas aos controllers (botões chamam métodos do controller)</li><li>Testar fluxo completo: cadastro → empréstimo → devolução → multa</li></ol><div class="callout callout-tip mt-2"><div><div class="callout-title">Checklist de Entrega</div><div class="delivery-check mt-1" id="checkBib"><div><input type="checkbox" id="b1" onchange="saveDelivery('bib')"><label for="b1">Banco de dados criado e populado</label></div><div><input type="checkbox" id="b2" onchange="saveDelivery('bib')"><label for="b2">Classes Model implementadas</label></div><div><input type="checkbox" id="b3" onchange="saveDelivery('bib')"><label for="b3">DAOs com CRUD completo</label></div><div><input type="checkbox" id="b4" onchange="saveDelivery('bib')"><label for="b4">Controllers com validações</label></div><div><input type="checkbox" id="b5" onchange="saveDelivery('bib')"><label for="b5">Telas JFrame funcionando</label></div><div><input type="checkbox" id="b6" onchange="saveDelivery('bib')"><label for="b6">Cálculo de multa implementado</label></div><div><input type="checkbox" id="b7" onchange="saveDelivery('bib')"><label for="b7">Fluxo completo testado</label></div></div></div></div></div><!-- ===== ESCOLA ===== --><div id="proj-escola" class="proj-content"><div class="proj-header"><h2>Sistema Escolar</h2><p>Sistema de gerenciamento escolar com turmas, alunos, professores e notas com cálculo de média automático.</p><div class="proj-meta"><span class="badge badge-primary">Java + MySQL</span><span class="badge badge-blue">Dificuldade: </span><span class="badge badge-success">~4 dias de desenvolvimento</span></div></div><h3>Diagrama ER</h3><div class="er-box"><div class="er-table"><div class="er-table-name">alunos</div><div class="er-field er-pk">PK id INT</div><div class="er-field">nome VARCHAR(100)</div><div class="er-field">matricula VARCHAR(20)</div><div class="er-field">email VARCHAR(100)</div><div class="er-field er-fk">FK turma_id → turmas.id</div></div><div class="er-table"><div class="er-table-name">turmas</div><div class="er-field er-pk">PK id INT</div><div class="er-field">nome VARCHAR(50)</div><div class="er-field">ano INT</div><div class="er-field">semestre INT</div><div class="er-field er-fk">FK professor_id → prof.id</div></div><div class="er-table"><div class="er-table-name">professores</div><div class="er-field er-pk">PK id INT</div><div class="er-field">nome VARCHAR(100)</div><div class="er-field">disciplina VARCHAR(80)</div><div class="er-field">email VARCHAR(100)</div></div><div class="er-table"><div class="er-table-name">notas</div><div class="er-field er-pk">PK id INT</div><div class="er-field er-fk">FK aluno_id → alunos.id</div><div class="er-field er-fk">FK disciplina_id → disc.id</div><div class="er-field">nota1 DECIMAL(4,2)</div><div class="er-field">nota2 DECIMAL(4,2)</div><div class="er-field">media DECIMAL(4,2)</div><div class="er-field">situacao VARCHAR(20)</div></div></div><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL — Sistema Escolar (queries principais)</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">-- Boletim do aluno com médias
+SELECT a.nome, d.nome AS disciplina,
+ n.nota1, n.nota2,
+ (n.nota1 + n.nota2) / 2 AS media,
+ CASE WHEN (n.nota1 + n.nota2) / 2 >= 7 THEN 'Aprovado'
+ WHEN (n.nota1 + n.nota2) / 2 >= 5 THEN 'Recuperação'
+ ELSE 'Reprovado' END AS situacao
+FROM notas n
+JOIN alunos a ON n.aluno_id = a.id
+JOIN disciplinas d ON n.disciplina_id = d.id
+WHERE a.id = ?
+ORDER BY d.nome;
+
+-- Ranking da turma
+SELECT a.nome, AVG((n.nota1 + n.nota2)/2) AS media_geral
+FROM alunos a
+JOIN notas n ON n.aluno_id = a.id
+WHERE a.turma_id = ?
+GROUP BY a.id, a.nome
+ORDER BY media_geral DESC;
+
+-- Trigger para calcular situação automaticamente
+DELIMITER //
+CREATE TRIGGER calcular_situacao
+BEFORE INSERT ON notas
+FOR EACH ROW BEGIN
+ SET NEW.media = (NEW.nota1 + NEW.nota2) / 2;
+ SET NEW.situacao = CASE
+ WHEN NEW.media >= 7.0 THEN 'Aprovado'
+ WHEN NEW.media >= 5.0 THEN 'Recuperação'
+ ELSE 'Reprovado'
+ END;
+END //
+DELIMITER ;</code></pre></div><h3>Guia de Implementação</h3><ol class="step-list mt-1"><li>Criar banco com script: tabelas turmas, professores, alunos, disciplinas, notas</li><li>Implementar Models: Aluno, Professor, Turma, Disciplina, Nota</li><li>Criar DAOs com PreparedStatement para cada entidade</li><li>Controller <code>NotaController</code>com <code>lancarNota()</code>que calcula média e situação</li><li>Tela principal com JTabbedPane (abas: Alunos, Turmas, Notas, Relatórios)</li><li>Tela de lançamento de notas com JTable mostrando lista de alunos</li><li>Tela de boletim: gerar relatório por aluno com tabela de notas</li><li>Tela de turma: listar alunos com suas médias e situação</li><li>Implementar filtros e buscas por matrícula/nome</li><li>Testar: cadastrar turma → professores → alunos → notas → visualizar boletim</li></ol></div><!-- ===== CONCESSIONÁRIA ===== --><div id="proj-concessionaria" class="proj-content"><div class="proj-header"><h2>Sistema de Concessionária</h2><p>Gerenciamento de veículos, clientes, vendas e financiamentos com controle de estoque de veículos.</p><div class="proj-meta"><span class="badge badge-primary">Java + MySQL</span><span class="badge badge-blue">Dificuldade: </span><span class="badge badge-success">~4 dias</span></div></div><h3>Diagrama ER</h3><div class="er-box"><div class="er-table"><div class="er-table-name">veiculos</div><div class="er-field er-pk">PK id INT</div><div class="er-field">marca VARCHAR(50)</div><div class="er-field">modelo VARCHAR(80)</div><div class="er-field">placa VARCHAR(10) UNIQUE</div><div class="er-field">ano INT</div><div class="er-field">preco DECIMAL(12,2)</div><div class="er-field">disponivel BOOLEAN</div><div class="er-field">quilometragem INT</div></div><div class="er-table"><div class="er-table-name">clientes</div><div class="er-field er-pk">PK id INT</div><div class="er-field">nome VARCHAR(100)</div><div class="er-field">cpf VARCHAR(14) UNIQUE</div><div class="er-field">telefone VARCHAR(20)</div><div class="er-field">email VARCHAR(100)</div><div class="er-field">renda_mensal DECIMAL(12,2)</div></div><div class="er-table"><div class="er-table-name">vendas</div><div class="er-field er-pk">PK id INT</div><div class="er-field er-fk">FK veiculo_id → veiculos.id</div><div class="er-field er-fk">FK cliente_id → clientes.id</div><div class="er-field">data_venda DATE</div><div class="er-field">valor_final DECIMAL(12,2)</div><div class="er-field">desconto DECIMAL(5,2)</div><div class="er-field">forma_pag VARCHAR(30)</div></div></div><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Controller de Vendas</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">public class VendaController {
+ private VeiculoDAO veicDAO;
+ private ClienteDAO cliDAO;
+ private VendaDAO vendaDAO;
+
+ public Venda realizarVenda(int veicId, int cliId, double descPct, String forma) throws Exception {
+ Veiculo v = veicDAO.buscarPorId(veicId);
+ if (!v.isDisponivel()) throw new Exception("Veículo já vendido!");
+
+ Cliente c = cliDAO.buscarPorId(cliId);
+
+ double valorFinal = v.getPreco() * (1 - descPct / 100.0);
+
+ // Validação: desconto máximo 15%
+ if (descPct >15) throw new Exception("Desconto máximo é 15%!");
+
+ Venda venda = new Venda(v, c, LocalDate.now(), valorFinal, descPct, forma);
+ vendaDAO.inserir(venda);
+
+ veicDAO.marcarComoVendido(veicId);
+ return venda;
+ }
+
+ public double calcularFaturamentoMes(int mes, int ano) throws SQLException {
+ return vendaDAO.somarVendasPorMes(mes, ano);
+ }
+}</code></pre></div><h3>Guia de Implementação</h3><ol class="step-list mt-1"><li>Criar banco com tabelas: veiculos, clientes, vendas, financiamentos</li><li>Implementar Models com herança: <code>Veiculo</code>→ <code>CarroNovo</code>, <code>CarroUsado</code></li><li>DAO com busca por filtros: marca, modelo, faixa de preço, disponível</li><li>Controller com regras: desconto máximo, validar CPF, verificar disponibilidade</li><li>Tela de catálogo: JTable com veículos, filtros por marca/preço</li><li>Tela de venda: selecionar veículo + cliente, informar desconto, forma de pagamento</li><li>Tela de relatório: vendas por mês, faturamento, veículo mais vendido</li><li>Implementar busca de cliente por CPF na tela de venda</li><li>Adicionar JComboBox para marca e modelo com dados do banco</li><li>Testar: cadastrar veículo → cliente → venda → verificar disponibilidade atualizada</li></ol></div><!-- ===== ESTOQUE ===== --><div id="proj-estoque" class="proj-content"><div class="proj-header"><h2>Sistema de Controle de Estoque</h2><p>Controle de produtos, entradas e saídas, alertas de estoque mínimo e relatórios de movimentação.</p><div class="proj-meta"><span class="badge badge-primary">Java + MySQL</span><span class="badge badge-blue">Dificuldade: </span><span class="badge badge-success">~3 dias</span></div></div><h3>Diagrama ER</h3><div class="er-box"><div class="er-table"><div class="er-table-name">produtos</div><div class="er-field er-pk">PK id INT</div><div class="er-field">codigo VARCHAR(20) UNIQUE</div><div class="er-field">nome VARCHAR(100)</div><div class="er-field">categoria VARCHAR(50)</div><div class="er-field">preco_compra DECIMAL(10,2)</div><div class="er-field">preco_venda DECIMAL(10,2)</div><div class="er-field">qtd_estoque INT</div><div class="er-field">qtd_minima INT</div></div><div class="er-table"><div class="er-table-name">movimentacoes</div><div class="er-field er-pk">PK id INT</div><div class="er-field er-fk">FK produto_id → produtos.id</div><div class="er-field">tipo ENUM('entrada','saida')</div><div class="er-field">quantidade INT</div><div class="er-field">data_mov DATETIME</div><div class="er-field">observacao VARCHAR(200)</div><div class="er-field">usuario VARCHAR(50)</div></div></div><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL — Queries de Estoque</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">-- Produtos abaixo do estoque mínimo (ALERTA!)
+SELECT codigo, nome, qtd_estoque, qtd_minima,
+ (qtd_minima - qtd_estoque) AS precisa_repor
+FROM produtos
+WHERE qtd_estoque <= qtd_minima
+ORDER BY precisa_repor DESC;
+
+-- Relatório de movimentação do mês
+SELECT p.nome, m.tipo, SUM(m.quantidade) AS total,
+ COUNT(*) AS num_movimentos
+FROM movimentacoes m
+JOIN produtos p ON m.produto_id = p.id
+WHERE MONTH(m.data_mov) = MONTH(CURRENT_DATE)
+ AND YEAR(m.data_mov) = YEAR(CURRENT_DATE)
+GROUP BY p.id, p.nome, m.tipo
+ORDER BY p.nome;
+
+-- Procedure para registrar saída (com validação)
+DELIMITER //
+CREATE PROCEDURE registrar_saida(IN p_id INT, IN p_qtd INT, IN p_usuario VARCHAR(50))
+BEGIN
+ DECLARE estoque_atual INT;
+ SELECT qtd_estoque INTO estoque_atual FROM produtos WHERE id = p_id;
+ IF estoque_atual < p_qtd THEN
+ SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Estoque insuficiente!';
+ END IF;
+ UPDATE produtos SET qtd_estoque = qtd_estoque - p_qtd WHERE id = p_id;
+ INSERT INTO movimentacoes(produto_id, tipo, quantidade, data_mov, usuario)
+ VALUES(p_id, 'saida', p_qtd, NOW(), p_usuario);
+END //
+DELIMITER ;</code></pre></div><h3>Guia de Implementação</h3><ol class="step-list mt-1"><li>Criar banco com tabelas produtos e movimentacoes</li><li>Implementar Model: Produto, Movimentacao</li><li>DAOs com método <code>buscarAbaixoMinimo()</code></li><li>Controller com validação de quantidade antes de dar saída</li><li>Tela de cadastro de produtos com código gerado automaticamente</li><li>Tela de movimentação: entrada/saída com busca por código de barras</li><li>Painel de alertas: lista produtos em falta destacados em vermelho</li><li>Relatório de movimentação filtrado por período</li><li>Gráfico simples (barras HTML ou JPanel customizado) de estoque por categoria</li><li>Testar fluxo: cadastrar → entrada → saída → verificar alerta mínimo</li></ol></div><!-- ===== OFICINA ===== --><div id="proj-oficina" class="proj-content"><div class="proj-header"><h2>Sistema de Oficina Mecânica</h2><p>Ordens de serviço, controle de veículos, peças e faturamento de serviços mecânicos.</p><div class="proj-meta"><span class="badge badge-primary">Java + MySQL</span><span class="badge badge-blue">Dificuldade: </span><span class="badge badge-accent">~5 dias — Projeto Integrador</span></div></div><h3>Diagrama ER</h3><div class="er-box"><div class="er-table"><div class="er-table-name">clientes</div><div class="er-field er-pk">PK id INT</div><div class="er-field">nome, cpf, telefone</div></div><div class="er-table"><div class="er-table-name">veiculos_cli</div><div class="er-field er-pk">PK id INT</div><div class="er-field er-fk">FK cliente_id</div><div class="er-field">placa, modelo, ano, km</div></div><div class="er-table"><div class="er-table-name">ordens_servico</div><div class="er-field er-pk">PK id INT</div><div class="er-field er-fk">FK veiculo_id</div><div class="er-field">data_entrada, data_saida</div><div class="er-field">status, problema_relatado</div><div class="er-field">valor_total DECIMAL</div></div><div class="er-table"><div class="er-table-name">itens_os</div><div class="er-field er-pk">PK id INT</div><div class="er-field er-fk">FK os_id, FK peca_id</div><div class="er-field">quantidade INT</div><div class="er-field">preco_unitario DECIMAL</div><div class="er-field">tipo ENUM(peça,serviço)</div></div></div><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Ordem de Serviço (Controller principal)</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">public class OrdemServicoController {
+
+ public OrdemServico abrirOS(int veiculoId, String problemaRelatado) throws SQLException {
+ OrdemServico os = new OrdemServico();
+ os.setVeiculo(veiculoDAO.buscarPorId(veiculoId));
+ os.setDataEntrada(LocalDate.now());
+ os.setStatus("Aguardando Diagnóstico");
+ os.setProblemaRelatado(problemaRelatado);
+ osDAO.inserir(os);
+ return os;
+ }
+
+ public void adicionarItem(int osId, int pecaId, int qtd, String tipo) throws Exception {
+ Peca peca = pecaDAO.buscarPorId(pecaId);
+ if (tipo.equals("peça") && peca.getEstoque() < qtd) {
+ throw new Exception("Estoque insuficiente: " + peca.getNome());
+ }
+ ItemOS item = new ItemOS(osId, pecaId, qtd, peca.getPreco(), tipo);
+ itemDAO.inserir(item);
+ if (tipo.equals("peça")) pecaDAO.reduzirEstoque(pecaId, qtd);
+ }
+
+ public double calcularTotal(int osId) throws SQLException {
+ return itemDAO.somarItensPorOS(osId);
+ }
+
+ public void fecharOS(int osId) throws SQLException {
+ double total = calcularTotal(osId);
+ osDAO.atualizar(osId, "Pronto", LocalDate.now(), total);
+ }
+}</code></pre></div><h3>Guia de Implementação (10 passos)</h3><ol class="step-list mt-1"><li>Criar banco: clientes, veiculos_cliente, pecas, ordens_servico, itens_os, funcionarios</li><li>Models: Cliente, Veiculo, Peca, OrdemServico, ItemOS</li><li>DAOs com CRUD completo para cada entidade</li><li>Controller <code>OrdemServicoController</code>: abrir OS, adicionar itens, fechar OS</li><li>Tela de recepção: cadastrar cliente + veículo e abrir OS</li><li>Tela de OS: adicionar peças e serviços com busca por código</li><li>Painel de acompanhamento: lista OSs com status (cores diferentes por status)</li><li>Tela de faturamento: fechar OS, gerar orçamento/nota em JTextArea</li><li>Relatório: faturamento por mês, mecânico com mais serviços</li><li>Testar: abrir OS → adicionar peças → adicionar mão de obra → fechar → imprimir</li></ol><div class="callout callout-info mt-2"><div><div class="callout-title">Projeto Integrador — Inclui tudo!</div><p class="text-sm">Este projeto usa <strong>todos os conceitos do curso</strong>: Java POO (herança, encapsulamento), banco de dados (JOINs, aggregates), JFrame avançado, MVC, DAO e regras de negócio complexas. Ideal para portfólio!</p></div></div></div></div><footer class="footer"><div class="container"><p><a href="../index.html">← Portal</a>| <a href="checklist.html">Checklist Final</a></p></div></footer><script>hljs.highlightAll();
+ function showProj(key) {
+ document.querySelectorAll('.proj-content').forEach(c =>c.classList.remove('active'));
+ document.querySelectorAll('.proj-tab').forEach(t =>t.classList.remove('active'));
+ document.getElementById('proj-' + key).classList.add('active');
+ event.target.classList.add('active');
+ hljs.highlightAll();
+ }
+ function copyCode(btn) {
+ const pre = btn.closest('.code-block').querySelector('pre code');
+ navigator.clipboard.writeText(pre.textContent).then(() =>{ btn.textContent = ' Copiado!'; setTimeout(() =>btn.textContent = 'Copiar', 2000); });
+ }
+ function saveDelivery(proj) {
+ const checks = {};
+ document.querySelectorAll('#checkBib input[type=checkbox]').forEach((cb, i) =>{ checks[i] = cb.checked; });
+ localStorage.setItem('delivery_' + proj, JSON.stringify(checks));
+ }
+ // Load saved delivery checklist
+ const saved = JSON.parse(localStorage.getItem('delivery_bib') || '{}');
+ Object.keys(saved).forEach(i =>{
+ const el = document.querySelectorAll('#checkBib input[type=checkbox]')[parseInt(i)];
+ if (el && saved[i]) el.checked = true;
+ });
+</script></body></html>
+
+
+

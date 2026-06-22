@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Exercícios SQL — Dia 3</title><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>.exercise-card{background:var(--bg-card);border-radius:16px;border:1px solid var(--borda);box-shadow:var(--sombra);margin-bottom:2rem;overflow:hidden;}
+ .exercise-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;background:linear-gradient(135deg,rgba(93,175,142,0.07),rgba(136,184,245,0.05));border-bottom:1px solid var(--borda);}
+ .ex-number{background:linear-gradient(135deg,#5DAF8E,var(--secundaria));color:white;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0;}
+ .ex-title{flex:1;margin:0 .75rem;font-size:1.05rem;font-weight:700;}
+ .exercise-body{padding:1.5rem;}
+ .sol-block{display:none;}
+ .sol-block.show{display:block;}
+ .done-btn.done{background:var(--sucesso)!important;color:white!important;border-color:var(--sucesso)!important;}
+ </style></head><body><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="conteudo.html">Conteúdo</a><a href="sql-playground.html">SQL Play</a></div></div></nav><div class="page-header" style="background:linear-gradient(135deg,#5DAF8E,var(--secundaria))"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› <a href="conteudo.html">Dia 3</a>› Exercícios</div><h1>Exercícios — Dia 3: SQL</h1><p>Pratique SELECT, INSERT, UPDATE, DELETE e JOIN</p></div></div><div class="container section"><div class="callout callout-tip mb-3"><div><div class="callout-title">Dica: Teste no SQL Playground!</div><p class="text-sm">Abra o <a href="sql-playground.html">SQL Playground</a>em outra aba para testar suas queries antes de ver a solução. Aprender fazendo é muito mais eficaz!</p></div></div><!-- EX 1 --><div class="exercise-card"><div class="exercise-header"><div class="ex-number">1</div><div class="ex-title">Criar Tabela de Produtos</div><span class="badge badge-success">CREATE TABLE</span></div><div class="exercise-body"><p>Crie uma tabela <strong>produtos</strong>com: id (PK auto), nome (VARCHAR 100, obrigatório), preco (DECIMAL 8,2), categoria (VARCHAR 50), estoque (INT, padrão 0), ativo (BOOLEAN, padrão true).</p><div class="flex gap-1 mt-2"><button class="btn btn-outline btn-sm" onclick="toggleEl('s1')">Solução</button><button class="btn btn-sm done-btn" id="done1" onclick="markDone(1)">Feito</button></div><div id="s1" class="sol-block mt-2"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">CREATE TABLE produtos (
+ id INT PRIMARY KEY AUTO_INCREMENT,
+ nome VARCHAR(100) NOT NULL,
+ preco DECIMAL(8,2),
+ categoria VARCHAR(50),
+ estoque INT DEFAULT 0,
+ ativo BOOLEAN DEFAULT TRUE
+);
+
+-- Verificar estrutura criada:
+DESCRIBE produtos;</code></pre></div></div></div></div><!-- EX 2 --><div class="exercise-card"><div class="exercise-header"><div class="ex-number">2</div><div class="ex-title">Inserir e Consultar Produtos</div><span class="badge badge-blue">INSERT + SELECT</span></div><div class="exercise-body"><p>Insira 5 produtos na tabela criada. Depois escreva SELECTs para: 1) listar todos, 2) filtrar por categoria "Eletrônicos", 3) listar os 3 mais caros, 4) calcular média de preços.</p><div class="flex gap-1 mt-2"><button class="btn btn-outline btn-sm" onclick="toggleEl('s2')">Solução</button><button class="btn btn-sm done-btn" id="done2" onclick="markDone(2)">Feito</button></div><div id="s2" class="sol-block mt-2"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">-- Inserir produtos
+INSERT INTO produtos (nome, preco, categoria, estoque) VALUES
+ ('Notebook Dell', 3500.00, 'Eletrônicos', 10),
+ ('Mouse Logitech', 89.90, 'Eletrônicos', 50),
+ ('Cadeira Gamer', 1200.00, 'Móveis', 5),
+ ('Teclado Mecânico', 350.00, 'Eletrônicos', 30),
+ ('Mesa de Escritório', 800.00, 'Móveis', 8);
+
+-- 1. Listar todos
+SELECT * FROM produtos;
+
+-- 2. Filtrar por categoria
+SELECT nome, preco FROM produtos
+WHERE categoria = 'Eletrônicos'
+ORDER BY preco DESC;
+
+-- 3. Top 3 mais caros
+SELECT nome, preco FROM produtos
+ORDER BY preco DESC LIMIT 3;
+
+-- 4. Estatísticas
+SELECT
+ COUNT(*) AS total_produtos,
+ AVG(preco) AS media_preco,
+ MAX(preco) AS mais_caro,
+ MIN(preco) AS mais_barato
+FROM produtos;</code></pre></div></div></div></div><!-- EX 3 --><div class="exercise-card"><div class="exercise-header"><div class="ex-number">3</div><div class="ex-title">UPDATE e DELETE com Cuidado</div><span class="badge badge-warn">UPDATE + DELETE</span></div><div class="exercise-body"><p>1. Atualize o preço do Notebook para R$ 3200. 2. Dê 10% de desconto em todos os Eletrônicos. 3. Desative (ativo = false) produtos com estoque = 0. 4. Delete o produto com id = 5.</p><div class="flex gap-1 mt-2"><button class="btn btn-outline btn-sm" onclick="toggleEl('s3')">Solução</button><button class="btn btn-sm done-btn" id="done3" onclick="markDone(3)">Feito</button></div><div id="s3" class="sol-block mt-2"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">-- 1. Atualizar preço específico
+UPDATE produtos SET preco = 3200.00 WHERE nome = 'Notebook Dell';
+
+-- 2. Desconto de 10% em Eletrônicos
+UPDATE produtos SET preco = preco * 0.90
+WHERE categoria = 'Eletrônicos';
+
+-- 3. Desativar sem estoque
+UPDATE produtos SET ativo = FALSE WHERE estoque = 0;
+
+-- 4. Deletar por ID (sempre prefira por ID!)
+-- Primeiro verificar o que vai ser deletado:
+SELECT * FROM produtos WHERE id = 5;
+-- Depois deletar:
+DELETE FROM produtos WHERE id = 5;</code></pre></div></div></div></div><!-- EX 4 --><div class="exercise-card"><div class="exercise-header"><div class="ex-number">4</div><div class="ex-title">JOIN — Pedidos e Clientes</div><span class="badge badge-accent">JOIN</span></div><div class="exercise-body"><p>Crie tabelas <strong>clientes</strong>e <strong>pedidos</strong>. Insira dados de exemplo e escreva um JOIN que mostre: nome do cliente, produto do pedido e valor total.</p><div class="flex gap-1 mt-2"><button class="btn btn-outline btn-sm" onclick="toggleEl('s4')">Solução</button><button class="btn btn-sm done-btn" id="done4" onclick="markDone(4)">Feito</button></div><div id="s4" class="sol-block mt-2"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">-- Criar tabelas
+CREATE TABLE clientes (
+ id INT PRIMARY KEY AUTO_INCREMENT,
+ nome VARCHAR(100) NOT NULL,
+ email VARCHAR(150) UNIQUE
+);
+
+CREATE TABLE pedidos (
+ id INT PRIMARY KEY AUTO_INCREMENT,
+ cliente_id INT NOT NULL,
+ produto VARCHAR(100),
+ valor DECIMAL(8,2),
+ data_pedido DATE DEFAULT (CURRENT_DATE),
+ FOREIGN KEY (cliente_id) REFERENCES clientes(id)
+);
+
+-- Inserir dados
+INSERT INTO clientes (nome, email) VALUES
+ ('Ana Silva', 'ana@email.com'),
+ ('Carlos Lima', 'carlos@email.com'),
+ ('Maria Costa', 'maria@email.com');
+
+INSERT INTO pedidos (cliente_id, produto, valor) VALUES
+ (1, 'Notebook', 3500.00),
+ (1, 'Mouse', 89.90),
+ (2, 'Teclado', 350.00),
+ (3, 'Monitor', 1200.00);
+
+-- JOIN: clientes com seus pedidos
+SELECT
+ c.nome AS cliente,
+ p.produto,
+ p.valor,
+ p.data_pedido
+FROM pedidos p
+INNER JOIN clientes c ON p.cliente_id = c.id
+ORDER BY c.nome;
+
+-- Total gasto por cliente
+SELECT c.nome, COUNT(p.id) AS total_pedidos, SUM(p.valor) AS total_gasto
+FROM clientes c
+LEFT JOIN pedidos p ON c.id = p.cliente_id
+GROUP BY c.id, c.nome
+ORDER BY total_gasto DESC;</code></pre></div></div></div></div><!-- EX 5 --><div class="exercise-card"><div class="exercise-header"><div class="ex-number">5</div><div class="ex-title">Java + MySQL: DAO de Produtos</div><span class="badge badge-primary">Java JDBC</span></div><div class="exercise-body"><p>Crie uma classe <strong>ProdutoDAO</strong>em Java com os métodos: <code>inserir()</code>, <code>buscarTodos()</code>, <code>buscarPorId()</code>, <code>atualizar()</code>e <code>deletar()</code>usando JDBC.</p><div class="flex gap-1 mt-2"><button class="btn btn-outline btn-sm" onclick="toggleEl('s5')">Solução</button><button class="btn btn-sm done-btn" id="done5" onclick="markDone(5)">Feito</button></div><div id="s5" class="sol-block mt-2"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProdutoDAO {
+
+ public void inserir(String nome, double preco, String categoria) {
+ String sql = "INSERT INTO produtos (nome, preco, categoria) VALUES (?, ?, ?)";
+ try (Connection c = Conexao.conectar();
+ PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+ ps.setString(1, nome);
+ ps.setDouble(2, preco);
+ ps.setString(3, categoria);
+ ps.executeUpdate();
+ ResultSet keys = ps.getGeneratedKeys();
+ if (keys.next()) System.out.println(" Inserido com id=" + keys.getInt(1));
+ } catch (SQLException e) { e.printStackTrace(); }
+ }
+
+ public List<String>buscarTodos() {
+ List<String>lista = new ArrayList<>();
+ String sql = "SELECT * FROM produtos ORDER BY nome";
+ try (Connection c = Conexao.conectar();
+ PreparedStatement ps = c.prepareStatement(sql);
+ ResultSet rs = ps.executeQuery()) {
+ while (rs.next()) {
+ lista.add(String.format("ID:%d | %s | R$%.2f | %s",
+ rs.getInt("id"), rs.getString("nome"),
+ rs.getDouble("preco"), rs.getString("categoria")));
+ }
+ } catch (SQLException e) { e.printStackTrace(); }
+ return lista;
+ }
+
+ public void atualizar(int id, double novoPreco) {
+ String sql = "UPDATE produtos SET preco = ? WHERE id = ?";
+ try (Connection c = Conexao.conectar();
+ PreparedStatement ps = c.prepareStatement(sql)) {
+ ps.setDouble(1, novoPreco);
+ ps.setInt(2, id);
+ int rows = ps.executeUpdate();
+ System.out.println(" " + rows + " produto(s) atualizado(s)");
+ } catch (SQLException e) { e.printStackTrace(); }
+ }
+
+ public void deletar(int id) {
+ String sql = "DELETE FROM produtos WHERE id = ?";
+ try (Connection c = Conexao.conectar();
+ PreparedStatement ps = c.prepareStatement(sql)) {
+ ps.setInt(1, id);
+ ps.executeUpdate();
+ System.out.println(" Produto id=" + id + " removido");
+ } catch (SQLException e) { e.printStackTrace(); }
+ }
+
+ // Main para testar
+ public static void main(String[] args) {
+ ProdutoDAO dao = new ProdutoDAO();
+ dao.inserir("Notebook", 3500.00, "Eletrônicos");
+ dao.inserir("Mouse", 89.90, "Eletrônicos");
+ dao.buscarTodos().forEach(System.out::println);
+ dao.atualizar(1, 3200.00);
+ }
+}</code></pre></div></div></div></div><div class="card"><div class="card-body text-center"><h3>SQL Dominado!</h3><p class="text-muted mt-1 mb-2">Continue praticando no playground ou avance para o Front-end!</p><div class="flex gap-1 justify-between flex-wrap"><a href="sql-playground.html" class="btn btn-secondary">SQL Playground</a><a href="../dia4-frontend/conteudo.html" class="btn btn-primary">Dia 4: Front-end →</a></div></div></div></div><footer class="footer"><div class="container"><p><a href="../index.html">← Portal</a>| <a href="conteudo.html">Conteúdo</a>| <a href="../dia4-frontend/conteudo.html">Dia 4 →</a></p></div></footer><script>hljs.highlightAll();
+ function toggleEl(id) { const el=document.getElementById(id); el.classList.toggle('show'); if(el.classList.contains('show')) hljs.highlightAll(); }
+ function copyCode(btn) { const pre=btn.closest('.code-block').querySelector('pre code'); navigator.clipboard.writeText(pre.textContent).then(()=>{btn.textContent=' Copiado!';setTimeout(()=>btn.textContent='Copiar',2000);}); }
+ function markDone(n) {
+ const saved=JSON.parse(localStorage.getItem('dia3ex')||'{}');
+ saved[n]=!saved[n]; localStorage.setItem('dia3ex',JSON.stringify(saved));
+ const btn=document.getElementById('done'+n);
+ if(saved[n]){btn.textContent=' Feito!';btn.classList.add('done');}
+ else{btn.textContent=' Feito';btn.classList.remove('done');}
+ }
+ function init(){const saved=JSON.parse(localStorage.getItem('dia3ex')||'{}');for(let i=1;i<=5;i++){if(saved[i]){const btn=document.getElementById('done'+i);btn.textContent=' Feito!';btn.classList.add('done');}}} init();
+</script></body></html>
+
+
+

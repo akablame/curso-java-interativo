@@ -1,0 +1,323 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Visualizador de Classes UML</title><link rel="stylesheet" href="../assets/style.css"/><style>.viz-layout { display: grid; grid-template-columns: 300px 1fr; gap: 1.5rem; padding: 1.5rem 0; }
+ .canvas-area { background: var(--bg-surface); border: 2px dashed var(--borda); border-radius: 16px; min-height: 500px; position: relative; overflow: hidden; cursor: default; }
+ .canvas-area.drag-over { border-color: var(--primaria); background: rgba(106,86,176,0.04); }
+ .uml-card {
+ position: absolute; background: var(--bg-card); border: 2px solid var(--primaria);
+ border-radius: 8px; min-width: 180px; box-shadow: 0 4px 16px rgba(106,86,176,0.15);
+ cursor: move; user-select: none; font-family: 'Fira Code', monospace; font-size: 0.82rem;
+ }
+ .uml-card-title { background: var(--primaria); color: white; padding: 0.4rem 0.75rem; font-weight: 700; font-size: 0.88rem; display: flex; justify-content: space-between; align-items: center; border-radius: 5px 5px 0 0; }
+ .uml-card-section { border-top: 1px solid var(--borda); padding: 0.25rem 0; }
+ .uml-card-row { padding: 0.2rem 0.75rem; font-size: 0.78rem; cursor: pointer; }
+ .uml-card-row:hover { background: rgba(106,86,176,0.06); }
+ .uml-private { color: #e05c7a; }
+ .uml-public { color: #5daf8e; }
+ .uml-method { color: var(--secundaria); }
+ .uml-delete { background: none; border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 1rem; padding: 0; }
+ .uml-delete:hover { color: white; }
+ .form-panel { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--borda); padding: 1.25rem; box-shadow: var(--sombra); }
+ .form-panel h4 { margin-bottom: 0.75rem; color: var(--primaria); }
+ .mini-input { width: 100%; padding: 0.45rem 0.65rem; border: 1.5px solid var(--borda); border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 0.82rem; margin-bottom: 0.4rem; }
+ .mini-input:focus { outline: none; border-color: var(--primaria); }
+ .mini-select { width: 60px; padding: 0.35rem 0.4rem; border: 1.5px solid var(--borda); border-radius: 6px; font-size: 0.8rem; margin-right: 0.25rem; }
+ .mini-select:focus { outline: none; border-color: var(--primaria); }
+ .add-row { display: flex; gap: 0.3rem; margin-bottom: 0.3rem; }
+ .add-row input { flex: 1; }
+ .examples-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+ .ex-badge { background: rgba(106,86,176,0.1); color: var(--primaria); border: 1px solid var(--borda); border-radius: 99px; padding: 0.2rem 0.65rem; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+ .ex-badge:hover { background: var(--primaria); color: white; }
+ .arrow-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+ .empty-msg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: var(--texto-suave); pointer-events: none; }
+ .export-area { margin-top: 1rem; }
+ @media(max-width:700px){ .viz-layout{grid-template-columns:1fr;} }
+ </style></head><body><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="conteudo.html">Conteúdo</a><a href="exercicios.html">Exercícios</a></div></div></nav><div class="page-header" style="background:linear-gradient(135deg,#E97CA0,#F4A03A)"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› <a href="conteudo.html">Dia 2</a>› Visualizador</div><h1>Visualizador de Classes UML</h1><p>Crie diagramas de classe interativos arrastando e editando!</p></div></div><div class="container"><div class="viz-layout"><!-- PAINEL DE CONTROLES --><div><div class="form-panel"><h4>Nova Classe</h4><input class="mini-input" id="className" placeholder="Nome da classe (ex: Pessoa)"/><p style="font-size:0.78rem;color:var(--texto-suave);margin:.5rem 0 .25rem">Atributos:</p><div id="attrsContainer"><div class="add-row"><select class="mini-select"><option value="-">- priv</option><option value="+">+ pub</option><option value="#"># prot</option></select><input class="mini-input" style="margin:0" placeholder="nome: String"/></div></div><button class="btn btn-ghost btn-sm mb-2 mt-1" onclick="addAttrRow()">+ Atributo</button><p style="font-size:0.78rem;color:var(--texto-suave);margin:.5rem 0 .25rem">Métodos:</p><div id="methodsContainer"><div class="add-row"><select class="mini-select"><option value="+">+ pub</option><option value="-">- priv</option></select><input class="mini-input" style="margin:0" placeholder="getNome(): String"/></div></div><button class="btn btn-ghost btn-sm mb-2 mt-1" onclick="addMethodRow()">+ Método</button><button class="btn btn-primary w-full" onclick="addClass()">Adicionar Classe</button></div><div class="form-panel mt-2"><h4>Herança</h4><p class="text-sm text-muted mb-1">Conectar duas classes com seta de herança:</p><select class="mini-input" id="srcClass" style="font-family:'Inter',sans-serif"></select><p class="text-xs text-muted text-center">extends ↑</p><select class="mini-input" id="tgtClass" style="font-family:'Inter',sans-serif"></select><button class="btn btn-secondary w-full mt-1" onclick="addArrow()">Adicionar Herança</button></div><div class="form-panel mt-2"><h4>Exemplos Prontos</h4><div class="examples-row"><span class="ex-badge" onclick="loadExample('pessoa')">Pessoa</span><span class="ex-badge" onclick="loadExample('conta')">Conta Bancária</span><span class="ex-badge" onclick="loadExample('produto')">Produto</span><span class="ex-badge" onclick="loadExample('animal')">Animal/Herança</span></div></div><div class="form-panel mt-2"><h4>Ações</h4><button class="btn btn-ghost btn-sm w-full mb-1" onclick="clearAll()">Limpar tudo</button><button class="btn btn-ghost btn-sm w-full mb-1" onclick="exportText()">Exportar como texto</button><div id="exportResult" class="export-area" style="display:none"><textarea id="exportText" class="mini-input" style="min-height:120px;font-size:0.75rem" readonly></textarea></div></div></div><!-- CANVAS --><div><div class="canvas-area" id="canvas"><svg class="arrow-svg" id="arrowSvg"></svg><div class="empty-msg" id="emptyMsg"><div style="font-size:3rem;margin-bottom:.5rem"></div><p>Adicione uma classe usando o painel<br>ou carregue um exemplo!</p></div></div><p class="text-xs text-muted mt-1 text-center">Arraste as classes para reposicioná-las. Clique no para remover.</p></div></div></div><footer class="footer"><div class="container"><p><a href="../index.html">← Portal</a>| <a href="conteudo.html">Conteúdo POO</a></p></div></footer><script>let classes = [];
+let arrows = [];
+let nextId = 1;
+let dragEl = null, dragOffX = 0, dragOffY = 0;
+
+function addAttrRow() {
+ const c = document.getElementById('attrsContainer');
+ const d = document.createElement('div'); d.className = 'add-row';
+ d.innerHTML = `<select class="mini-select"><option value="-">- priv</option><option value="+">+ pub</option><option value="#"># prot</option></select><input class="mini-input" style="margin:0" placeholder="nome: Tipo"/>`;
+ c.appendChild(d);
+}
+
+function addMethodRow() {
+ const c = document.getElementById('methodsContainer');
+ const d = document.createElement('div'); d.className = 'add-row';
+ d.innerHTML = `<select class="mini-select"><option value="+">+ pub</option><option value="-">- priv</option></select><input class="mini-input" style="margin:0" placeholder="metodo(): void"/>`;
+ c.appendChild(d);
+}
+
+function addClass() {
+ const name = document.getElementById('className').value.trim();
+ if (!name) { alert('Digite o nome da classe!'); return; }
+
+ const attrs = [];
+ document.getElementById('attrsContainer').querySelectorAll('.add-row').forEach(row =>{
+ const vis = row.querySelector('select').value;
+ const txt = row.querySelector('input').value.trim();
+ if (txt) attrs.push({ vis, txt });
+ });
+
+ const methods = [];
+ document.getElementById('methodsContainer').querySelectorAll('.add-row').forEach(row =>{
+ const vis = row.querySelector('select').value;
+ const txt = row.querySelector('input').value.trim();
+ if (txt) methods.push({ vis, txt });
+ });
+
+ const canvas = document.getElementById('canvas');
+ const x = 20 + (classes.length % 3) * 220;
+ const y = 20 + Math.floor(classes.length / 3) * 200;
+
+ const cls = { id: nextId++, name, attrs, methods, x, y };
+ classes.push(cls);
+ renderClass(cls);
+ updateSelects();
+ document.getElementById('className').value = '';
+ document.getElementById('emptyMsg').style.display = 'none';
+}
+
+function renderClass(cls) {
+ const el = document.createElement('div');
+ el.className = 'uml-card';
+ el.id = 'cls-' + cls.id;
+ el.style.left = cls.x + 'px';
+ el.style.top = cls.y + 'px';
+
+ let attrsHtml = (cls.attrs || []).map(a =>{
+ const col = a.vis === '-' ? 'uml-private' : a.vis === '+' ? 'uml-public' : '';
+ return `<div class="uml-card-row ${col}">${a.vis} ${a.txt}</div>`;
+ }).join('');
+
+ let methodsHtml = (cls.methods || []).map(m =>{
+ return `<div class="uml-card-row uml-method">${m.vis} ${m.txt}</div>`;
+ }).join('');
+
+ el.innerHTML = `
+ <div class="uml-card-title">«class» ${cls.name}
+ <button class="uml-delete" onclick="removeClass(${cls.id})"></button></div><div class="uml-card-section">${attrsHtml || '<div class="uml-card-row" style="color:#aaa;font-style:italic">— sem atributos —</div>'}</div><div class="uml-card-section">${methodsHtml || '<div class="uml-card-row" style="color:#aaa;font-style:italic">— sem métodos —</div>'}</div>`;
+
+ el.addEventListener('mousedown', startDrag);
+ el.addEventListener('touchstart', startDragTouch, {passive:false});
+
+ document.getElementById('canvas').appendChild(el);
+}
+
+function removeClass(id) {
+ classes = classes.filter(c =>c.id !== id);
+ arrows = arrows.filter(a =>a.src !== id && a.tgt !== id);
+ const el = document.getElementById('cls-' + id);
+ if (el) el.remove();
+ updateSelects();
+ drawArrows();
+ if (classes.length === 0) document.getElementById('emptyMsg').style.display = '';
+}
+
+function addArrow() {
+ const src = parseInt(document.getElementById('srcClass').value);
+ const tgt = parseInt(document.getElementById('tgtClass').value);
+ if (!src || !tgt || src === tgt) { alert('Selecione duas classes diferentes!'); return; }
+ arrows.push({ src, tgt });
+ drawArrows();
+}
+
+function drawArrows() {
+ const svg = document.getElementById('arrowSvg');
+ svg.innerHTML = '';
+ // Arrowhead marker
+ svg.innerHTML = `<defs><marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="${getComputedStyle(document.documentElement).getPropertyValue('--primaria').trim() || 'var(--primaria)'}"/></marker></defs>`;
+
+ arrows.forEach(ar =>{
+ const srcEl = document.getElementById('cls-' + ar.src);
+ const tgtEl = document.getElementById('cls-' + ar.tgt);
+ if (!srcEl || !tgtEl) return;
+ const s = { x: parseInt(srcEl.style.left) + srcEl.offsetWidth/2, y: parseInt(srcEl.style.top) };
+ const t = { x: parseInt(tgtEl.style.left) + tgtEl.offsetWidth/2, y: parseInt(tgtEl.style.top) + tgtEl.offsetHeight };
+ const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+ line.setAttribute('x1', s.x); line.setAttribute('y1', s.y);
+ line.setAttribute('x2', t.x); line.setAttribute('y2', t.y);
+ line.setAttribute('stroke', 'var(--primaria)'); line.setAttribute('stroke-width', '2');
+ line.setAttribute('stroke-dasharray', '6,3');
+ line.setAttribute('marker-end', 'url(#arrowhead)');
+ svg.appendChild(line);
+
+ // Label "extends"
+ const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+ txt.setAttribute('x', (s.x + t.x)/2 + 5); txt.setAttribute('y', (s.y + t.y)/2);
+ txt.setAttribute('fill', 'var(--primaria)'); txt.setAttribute('font-size', '11');
+ txt.setAttribute('font-family', 'Fira Code, monospace');
+ txt.textContent = 'extends';
+ svg.appendChild(txt);
+ });
+}
+
+function updateSelects() {
+ ['srcClass','tgtClass'].forEach(id =>{
+ const sel = document.getElementById(id);
+ const val = sel.value;
+ sel.innerHTML = '<option value="">— selecione —</option>';
+ classes.forEach(c =>{ const o = document.createElement('option'); o.value = c.id; o.textContent = c.name; sel.appendChild(o); });
+ sel.value = val;
+ });
+}
+
+// DRAG
+function startDrag(e) {
+ if (e.target.classList.contains('uml-delete')) return;
+ dragEl = e.currentTarget;
+ dragOffX = e.clientX - dragEl.getBoundingClientRect().left;
+ dragOffY = e.clientY - dragEl.getBoundingClientRect().top;
+ dragEl.style.zIndex = 1000;
+ document.addEventListener('mousemove', onDrag);
+ document.addEventListener('mouseup', endDrag);
+ e.preventDefault();
+}
+
+function startDragTouch(e) {
+ if (e.target.classList.contains('uml-delete')) return;
+ const t = e.touches[0];
+ dragEl = e.currentTarget;
+ dragOffX = t.clientX - dragEl.getBoundingClientRect().left;
+ dragOffY = t.clientY - dragEl.getBoundingClientRect().top;
+ document.addEventListener('touchmove', onDragTouch, {passive:false});
+ document.addEventListener('touchend', endDragTouch);
+ e.preventDefault();
+}
+
+function onDrag(e) {
+ if (!dragEl) return;
+ const canvas = document.getElementById('canvas');
+ const rect = canvas.getBoundingClientRect();
+ const x = Math.max(0, Math.min(e.clientX - rect.left - dragOffX, canvas.offsetWidth - dragEl.offsetWidth));
+ const y = Math.max(0, Math.min(e.clientY - rect.top - dragOffY, canvas.offsetHeight - dragEl.offsetHeight));
+ dragEl.style.left = x + 'px';
+ dragEl.style.top = y + 'px';
+ const id = parseInt(dragEl.id.replace('cls-', ''));
+ const cls = classes.find(c =>c.id === id);
+ if (cls) { cls.x = x; cls.y = y; }
+ drawArrows();
+}
+
+function onDragTouch(e) {
+ if (!dragEl) return;
+ const t = e.touches[0];
+ const canvas = document.getElementById('canvas');
+ const rect = canvas.getBoundingClientRect();
+ const x = Math.max(0, Math.min(t.clientX - rect.left - dragOffX, canvas.offsetWidth - dragEl.offsetWidth));
+ const y = Math.max(0, Math.min(t.clientY - rect.top - dragOffY, canvas.offsetHeight - dragEl.offsetHeight));
+ dragEl.style.left = x + 'px'; dragEl.style.top = y + 'px';
+ const id = parseInt(dragEl.id.replace('cls-', ''));
+ const cls = classes.find(c =>c.id === id);
+ if (cls) { cls.x = x; cls.y = y; }
+ drawArrows(); e.preventDefault();
+}
+
+function endDrag() { dragEl = null; document.removeEventListener('mousemove', onDrag); document.removeEventListener('mouseup', endDrag); }
+function endDragTouch() { dragEl = null; document.removeEventListener('touchmove', onDragTouch); document.removeEventListener('touchend', endDragTouch); }
+
+// EXEMPLOS
+const EXAMPLES = {
+ pessoa: {
+ classes: [
+ { name: 'Pessoa', x: 40, y: 30,
+ attrs: [{vis:'-',txt:'nome: String'},{vis:'-',txt:'idade: int'},{vis:'-',txt:'email: String'}],
+ methods: [{vis:'+',txt:'getNome(): String'},{vis:'+',txt:'setNome(n: String): void'},{vis:'+',txt:'apresentar(): void'}]
+ }
+ ], arrows: []
+ },
+ conta: {
+ classes: [
+ { name: 'ContaBancaria', x: 40, y: 30,
+ attrs: [{vis:'-',txt:'titular: String'},{vis:'-',txt:'saldo: double'},{vis:'-',txt:'numero: String'}],
+ methods: [{vis:'+',txt:'depositar(v: double): void'},{vis:'+',txt:'sacar(v: double): boolean'},{vis:'+',txt:'getSaldo(): double'}]
+ }
+ ], arrows: []
+ },
+ produto: {
+ classes: [
+ { name: 'Produto', x: 40, y: 30,
+ attrs: [{vis:'-',txt:'nome: String'},{vis:'-',txt:'preco: double'},{vis:'-',txt:'estoque: int'}],
+ methods: [{vis:'+',txt:'getNome(): String'},{vis:'+',txt:'getPreco(): double'},{vis:'+',txt:'vender(qtd: int): void'}]
+ }
+ ], arrows: []
+ },
+ animal: {
+ classes: [
+ { name: 'Animal', x: 160, y: 20,
+ attrs: [{vis:'#',txt:'nome: String'},{vis:'#',txt:'idade: int'}],
+ methods: [{vis:'+',txt:'fazerSom(): void'},{vis:'+',txt:'mover(): void'},{vis:'+',txt:'apresentar(): void'}]
+ },
+ { name: 'Cachorro', x: 20, y: 220,
+ attrs: [{vis:'-',txt:'raca: String'}],
+ methods: [{vis:'+',txt:'fazerSom(): void'},{vis:'+',txt:'buscarBola(): void'}]
+ },
+ { name: 'Gato', x: 250, y: 220,
+ attrs: [{vis:'-',txt:'domestico: boolean'}],
+ methods: [{vis:'+',txt:'fazerSom(): void'},{vis:'+',txt:'arranhar(): void'}]
+ }
+ ],
+ arrows: [{srcName:'Cachorro',tgtName:'Animal'},{srcName:'Gato',tgtName:'Animal'}]
+ }
+};
+
+function loadExample(key) {
+ clearAll();
+ const ex = EXAMPLES[key];
+ ex.classes.forEach(c =>{
+ const cls = { id: nextId++, name: c.name, attrs: c.attrs, methods: c.methods, x: c.x, y: c.y };
+ classes.push(cls);
+ renderClass(cls);
+ });
+ updateSelects();
+ document.getElementById('emptyMsg').style.display = 'none';
+
+ // Resolver setas por nome
+ if (ex.arrows) {
+ ex.arrows.forEach(ar =>{
+ const src = classes.find(c =>c.name === ar.srcName);
+ const tgt = classes.find(c =>c.name === ar.tgtName);
+ if (src && tgt) arrows.push({ src: src.id, tgt: tgt.id });
+ });
+ setTimeout(drawArrows, 50);
+ }
+}
+
+function clearAll() {
+ classes = []; arrows = [];
+ document.getElementById('canvas').querySelectorAll('.uml-card').forEach(el =>el.remove());
+ document.getElementById('arrowSvg').innerHTML = '';
+ document.getElementById('emptyMsg').style.display = '';
+ updateSelects();
+}
+
+function exportText() {
+ let text = '';
+ classes.forEach(cls =>{
+ text += `// ============\n// Classe: ${cls.name}\n// ============\npublic class ${cls.name} {\n`;
+ cls.attrs.forEach(a =>{
+ const vis = a.vis === '-' ? 'private' : a.vis === '+' ? 'public' : 'protected';
+ const parts = a.txt.split(':');
+ const name = parts[0]?.trim() || 'campo';
+ const type = parts[1]?.trim() || 'Object';
+ text += ` ${vis} ${type} ${name};\n`;
+ });
+ text += '\n';
+ cls.methods.forEach(m =>{
+ const vis = m.vis === '+' ? 'public' : 'private';
+ text += ` ${vis} ${m.txt.replace('(', '(').split(':')[0].trim()} {\n // implementar\n }\n`;
+ });
+ text += '}\n\n';
+ });
+ const area = document.getElementById('exportText');
+ area.value = text;
+ document.getElementById('exportResult').style.display = 'block';
+}
+
+// Carregar exemplo inicial
+loadExample('animal');
+</script></body></html>
+
+
+

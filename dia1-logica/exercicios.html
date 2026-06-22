@@ -1,0 +1,277 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Dia 1 — Exercícios de Lógica</title><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>.exercise-card {
+ background: var(--bg-card); border-radius: 16px;
+ border: 1px solid var(--borda); box-shadow: var(--sombra);
+ margin-bottom: 2rem; overflow: hidden;
+ }
+ .exercise-header {
+ display: flex; align-items: center; justify-content: space-between;
+ padding: 1rem 1.5rem;
+ background: linear-gradient(135deg, rgba(106,86,176,0.07), rgba(136,184,245,0.05));
+ border-bottom: 1px solid var(--borda);
+ }
+ .ex-number {
+ background: var(--primaria); color: white;
+ width: 36px; height: 36px; border-radius: 50%;
+ display: flex; align-items: center; justify-content: center;
+ font-weight: 700; font-size: 0.9rem; flex-shrink: 0;
+ }
+ .ex-title { flex: 1; margin: 0 0.75rem; font-size: 1.05rem; font-weight: 700; }
+ .ex-tag { font-size: 0.75rem; }
+ .exercise-body { padding: 1.5rem; }
+ .hint-block { display: none; }
+ .hint-block.show { display: block; }
+ .solution-block { display: none; }
+ .solution-block.show { display: block; }
+ .done-btn.done { background: var(--sucesso) !important; color: white !important; border-color: var(--sucesso) !important; }
+ .step-explain { counter-reset: step; }
+ .step-explain p { position: relative; padding-left: 2rem; margin-bottom: 0.4rem; }
+ .step-explain p::before {
+ counter-increment: step;
+ content: counter(step);
+ position: absolute; left: 0; top: 0.1rem;
+ background: var(--primaria); color: white;
+ width: 18px; height: 18px; border-radius: 50%;
+ font-size: 0.7rem; font-weight: 700;
+ display: flex; align-items: center; justify-content: center;
+ }
+ .progress-exercises { position: sticky; top: 80px; }
+ </style></head><body><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="conteudo.html">Conteúdo</a><a href="playground.html">Playground</a></div></div></nav><div class="page-header"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› <a href="conteudo.html">Dia 1</a>› Exercícios</div><h1>Exercícios — Dia 1: Lógica de Programação</h1><p>5 exercícios progressivos. Tente resolver antes de ver a solução! </p></div></div><div class="container"><div style="display:grid;grid-template-columns:1fr 220px;gap:2rem;padding:2rem 0;align-items:start;"><div><!-- EXERCÍCIO 1 --><div class="exercise-card" id="ex1"><div class="exercise-header"><div class="ex-number">1</div><div class="ex-title">Calculadora Simples</div><span class="badge badge-success ex-tag">Iniciante</span></div><div class="exercise-body"><p><strong>Enunciado:</strong>Complete o código abaixo para criar uma calculadora que receba dois números e uma operação (+, -, *, /) e exiba o resultado.</p><div class="callout callout-info mt-1 mb-2"><div><div class="callout-title">Código Base (complete as lacunas)</div><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Complete!</span></div><pre><code class="language-java">double num1 = 15;
+double num2 = 4;
+String operacao = "+";
+double resultado = 0;
+
+if (operacao.equals(___)) {
+ resultado = num1 ___ num2;
+} else if (operacao.equals("-")) {
+ resultado = ____;
+} else if (operacao.equals("*")) {
+ resultado = ____;
+} else if (operacao.equals("/")) {
+ if (num2 != 0) {
+ resultado = ____;
+ } else {
+ System.out.println("Erro: ____");
+ }
+}
+
+System.out.println(num1 + " " + operacao + " " + num2 + " = " + resultado);</code></pre></div></div></div><div class="flex gap-1 flex-wrap"><button class="btn btn-ghost btn-sm" onclick="toggleHint('h1')">Precisa de uma dica?</button><button class="btn btn-outline btn-sm" onclick="toggleSolution('s1')">Ver solução completa</button><button class="btn btn-sm done-btn" id="done1" onclick="markDone(1)">Marcar como feito</button></div><div id="h1" class="hint-block callout callout-tip mt-2"><div><div class="callout-title">Dica</div><p class="text-sm">Use <code>.equals()</code>para comparar Strings (não <code>==</code>). Para cada operação, use o operador aritmético correspondente entre <code>num1</code>e <code>num2</code>.</p></div></div><div id="s1" class="solution-block mt-2"><h4>Solução Completa</h4><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">double num1 = 15;
+double num2 = 4;
+String operacao = "+";
+double resultado = 0;
+
+// .equals() compara o CONTEÚDO da String (não o endereço de memória)
+if (operacao.equals("+")) {
+ resultado = num1 + num2; // 15 + 4 = 19
+} else if (operacao.equals("-")) {
+ resultado = num1 - num2; // 15 - 4 = 11
+} else if (operacao.equals("*")) {
+ resultado = num1 * num2; // 15 * 4 = 60
+} else if (operacao.equals("/")) {
+ if (num2 != 0) {
+ resultado = num1 / num2; // 15 / 4 = 3.75
+ } else {
+ System.out.println("Erro: divisão por zero! ");
+ }
+}
+
+System.out.println(num1 + " " + operacao + " " + num2 + " = " + resultado);
+// Output: 15.0 + 4.0 = 19.0</code></pre></div><div class="callout callout-info mt-1"><div><div class="callout-title">Explicação linha por linha</div><div class="step-explain text-sm"><p>Declaramos as variáveis com os valores a calcular</p><p><code>.equals()</code>é o método certo para comparar Strings (nunca use <code>==</code>com String)</p><p>Cada bloco <code>else if</code>corresponde a uma operação diferente</p><p>Verificamos divisão por zero antes de dividir (boa prática!)</p><p>Imprimimos o resultado formatado com concatenação de strings</p></div></div></div></div></div></div><!-- EXERCÍCIO 2 --><div class="exercise-card" id="ex2"><div class="exercise-header"><div class="ex-number">2</div><div class="ex-title">Tabuada Completa</div><span class="badge badge-blue ex-tag">Loops</span></div><div class="exercise-body"><p><strong>Enunciado:</strong>Crie um programa que gere a tabuada completa de um número (de 1 a 10) fornecido. A saída deve ser formatada como: <code>5 x 3 = 15</code></p><div class="flex gap-1 flex-wrap mt-2"><button class="btn btn-ghost btn-sm" onclick="toggleHint('h2')">Dica</button><button class="btn btn-outline btn-sm" onclick="toggleSolution('s2')">Ver solução</button><button class="btn btn-sm done-btn" id="done2" onclick="markDone(2)">Marcar como feito</button></div><div id="h2" class="hint-block callout callout-tip mt-2"><div><div class="callout-title">Dica</div><p class="text-sm">Use um loop <code>for</code>que vai de 1 até 10 (inclusive). O multiplicador muda a cada iteração. O resultado é <code>numero * i</code>.</p></div></div><div id="s2" class="solution-block mt-2"><h4>Solução</h4><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">int numero = 7; // Troque para qualquer número!
+
+System.out.println("=== Tabuada do " + numero + " ===");
+
+// O for repete de 1 até 10
+for (int i = 1; i <= 10; i++) {
+ int resultado = numero * i;
+ // \t é uma tabulação para alinhar a saída
+ System.out.printf("%d x %2d = %3d%n", numero, i, resultado);
+}
+
+/* Saída:
+=== Tabuada do 7 ===
+7 x 1 = 7
+7 x 2 = 14
+7 x 3 = 21
+...
+7 x 10 = 70
+*/
+
+// DESAFIO EXTRA: Tabuada de TODOS os números (1-10)
+System.out.println("\n=== Tabuada Completa ===");
+for (int n = 1; n <= 10; n++) {
+ System.out.print("Tabuada do " + n + ": ");
+ for (int i = 1; i <= 10; i++) {
+ System.out.print(n * i + " ");
+ }
+ System.out.println(); // quebra de linha
+}</code></pre></div></div></div></div><!-- EXERCÍCIO 3 --><div class="exercise-card" id="ex3"><div class="exercise-header"><div class="ex-number">3</div><div class="ex-title">Média de Notas e Situação</div><span class="badge badge-warn ex-tag">Intermediário</span></div><div class="exercise-body"><p><strong>Enunciado:</strong>Crie um programa que receba 3 notas de um aluno, calcule a média e exiba a situação: <strong>Aprovado</strong>(média ≥ 7), <strong>Recuperação</strong>(média ≥ 5) ou <strong>Reprovado</strong>(média &lt; 5).</p><div class="flex gap-1 flex-wrap mt-2"><button class="btn btn-ghost btn-sm" onclick="toggleHint('h3')">Dica</button><button class="btn btn-outline btn-sm" onclick="toggleSolution('s3')">Ver solução</button><button class="btn btn-sm done-btn" id="done3" onclick="markDone(3)">Marcar como feito</button></div><div id="h3" class="hint-block callout callout-tip mt-2"><div><div class="callout-title">Dica</div><p class="text-sm">Some as 3 notas e divida por 3.0 (ponto flutuante!). Depois use if/else if/else com as condições de aprovação.</p></div></div><div id="s3" class="solution-block mt-2"><h4>Solução</h4><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">// Notas do aluno
+double nota1 = 6.5;
+double nota2 = 8.0;
+double nota3 = 7.5;
+
+// Calcular média (divida por 3.0 para resultado decimal)
+double media = (nota1 + nota2 + nota3) / 3.0;
+
+// Formatar e exibir
+System.out.println("=== BOLETIM ESCOLAR ===");
+System.out.printf("Nota 1: %.1f%n", nota1);
+System.out.printf("Nota 2: %.1f%n", nota2);
+System.out.printf("Nota 3: %.1f%n", nota3);
+System.out.printf("Média: %.2f%n", media);
+System.out.print("Situação: ");
+
+// Verificar situação
+if (media >= 7.0) {
+ System.out.println(" APROVADO!");
+} else if (media >= 5.0) {
+ System.out.println(" RECUPERAÇÃO");
+} else {
+ System.out.println(" REPROVADO");
+}
+
+/* Saída:
+=== BOLETIM ESCOLAR ===
+Nota 1: 6.5
+Nota 2: 8.0
+Nota 3: 7.5
+Média: 7.33
+Situação: APROVADO!
+*/</code></pre></div></div></div></div><!-- EXERCÍCIO 4 --><div class="exercise-card" id="ex4"><div class="exercise-header"><div class="ex-number">4</div><div class="ex-title">Verificador de Palíndromo</div><span class="badge badge-accent ex-tag">Avançado</span></div><div class="exercise-body"><p><strong>Enunciado:</strong>Verifique se uma palavra é um palíndromo (lida ao contrário é igual ao original). Exemplos: <em>arara</em>, <em>radar</em>, <em>racecar</em>.</p><div class="callout callout-info mt-1 mb-1"><div><div class="callout-title">Dica de lógica</div><p class="text-sm">Compare o primeiro caractere com o último, o segundo com o penúltimo, e assim por diante. Ou inverta a String inteira e compare com a original.</p></div></div><div class="flex gap-1 flex-wrap"><button class="btn btn-ghost btn-sm" onclick="toggleHint('h4')">Dica de código</button><button class="btn btn-outline btn-sm" onclick="toggleSolution('s4')">Ver solução</button><button class="btn btn-sm done-btn" id="done4" onclick="markDone(4)">Marcar como feito</button></div><div id="h4" class="hint-block callout callout-tip mt-2"><div><div class="callout-title">Dica</div><p class="text-sm">Use <code>new StringBuilder(palavra).reverse().toString()</code>para inverter uma String em Java. Depois compare com <code>.equals()</code>. Converta tudo para minúsculas com <code>.toLowerCase()</code>.</p></div></div><div id="s4" class="solution-block mt-2"><h4>Solução</h4><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">String palavra = "Arara";
+
+// Converter para minúsculas para ignorar maiúsculas/minúsculas
+String palavraNormal = palavra.toLowerCase();
+
+// Inverter a string usando StringBuilder
+String palavraInvertida = new StringBuilder(palavraNormal).reverse().toString();
+
+System.out.println("Palavra: " + palavra);
+System.out.println("Invertida: " + palavraInvertida);
+
+if (palavraNormal.equals(palavraInvertida)) {
+ System.out.println(" É um PALÍNDROMO!");
+} else {
+ System.out.println(" Não é palíndromo.");
+}
+// Saída: É um PALÍNDROMO!
+
+// MÉTODO ALTERNATIVO (manual com loop)
+static boolean ehPalindromo(String s) {
+ s = s.toLowerCase();
+ int inicio = 0, fim = s.length() - 1;
+ while (inicio < fim) {
+ if (s.charAt(inicio) != s.charAt(fim)) {
+ return false;
+ }
+ inicio++;
+ fim--;
+ }
+ return true;
+}</code></pre></div></div></div></div><!-- EXERCÍCIO 5 --><div class="exercise-card" id="ex5"><div class="exercise-header"><div class="ex-number">5</div><div class="ex-title">Sistema de Login Simples</div><span class="badge badge-primary ex-tag">Prático</span></div><div class="exercise-body"><p><strong>Enunciado:</strong>Crie um sistema de login que compare login e senha com valores fixos no código. O usuário tem 3 tentativas. Após 3 falhas, exibe "Conta bloqueada".</p><div class="flex gap-1 flex-wrap mt-2"><button class="btn btn-ghost btn-sm" onclick="toggleHint('h5')">Dica</button><button class="btn btn-outline btn-sm" onclick="toggleSolution('s5')">Ver solução</button><button class="btn btn-sm done-btn" id="done5" onclick="markDone(5)">Marcar como feito</button></div><div id="h5" class="hint-block callout callout-tip mt-2"><div><div class="callout-title">Dica</div><p class="text-sm">Use um loop <code>for</code>com contador de tentativas (máximo 3). Use <code>Scanner</code>para ler entrada. Quebre o loop com <code>break</code>se o login for correto.</p></div></div><div id="s5" class="solution-block mt-2"><h4>Solução Completa</h4><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">import java.util.Scanner;
+
+public class SistemaLogin {
+ public static void main(String[] args) {
+ // Credenciais corretas (em produção, NUNCA faça isso!)
+ final String LOGIN_CORRETO = "akira";
+ final String SENHA_CORRETA = "java2024";
+
+ Scanner sc = new Scanner(System.in);
+ boolean logado = false;
+ int maxTentativas = 3;
+
+ System.out.println("=== SISTEMA DE LOGIN ===");
+
+ for (int tentativa = 1; tentativa <= maxTentativas; tentativa++) {
+ System.out.print("Login: ");
+ String login = sc.nextLine().trim();
+
+ System.out.print("Senha: ");
+ String senha = sc.nextLine().trim();
+
+ // Comparar com .equals() — case sensitive!
+ if (login.equals(LOGIN_CORRETO) && senha.equals(SENHA_CORRETA)) {
+ logado = true;
+ System.out.println("\n Login realizado com sucesso!");
+ System.out.println("Bem-vindo(a), " + login + "! ");
+ break; // Sai do loop
+ } else {
+ int restantes = maxTentativas - tentativa;
+ if (restantes >0) {
+ System.out.println(" Login ou senha incorretos. " + restantes + " tentativa(s) restante(s).\n");
+ }
+ }
+ }
+
+ if (!logado) {
+ System.out.println("\n Conta BLOQUEADA após 3 tentativas inválidas!");
+ System.out.println("Entre em contato com o suporte.");
+ }
+
+ sc.close();
+ }
+}
+
+/* Saída (com dados errados e depois certos):
+=== SISTEMA DE LOGIN ===
+Login: teste
+Senha: 1234
+ Login ou senha incorretos. 2 tentativa(s) restante(s).
+
+Login: akira
+Senha: java2024
+ Login realizado com sucesso!
+Bem-vindo(a), akira! 
+*/</code></pre></div></div></div></div><div class="card mt-2"><div class="card-body text-center"><h3>Completou os exercícios?</h3><p class="text-muted mt-1 mb-2">Agora pratique no playground ou avance para o Dia 2!</p><div class="flex gap-1 justify-between flex-wrap"><a href="playground.html" class="btn btn-secondary">Playground Java</a><a href="../dia2-poo/conteudo.html" class="btn btn-primary">Dia 2: POO →</a></div></div></div></div><!-- SIDEBAR PROGRESSO --><aside class="progress-exercises"><div class="card"><div class="card-header"><h3 style="font-size:0.95rem">Progresso</h3></div><div class="card-body"><div class="progress-label"><span>Exercícios</span><span id="exDoneCount">0/5</span></div><div class="progress-bar mb-2"><div class="progress-fill" id="exProgressFill" style="width:0%"></div></div><div style="display:flex;flex-direction:column;gap:0.4rem" id="exList"><div id="exItem1" class="text-sm" style="color:var(--texto-suave)">○ Ex.1 Calculadora</div><div id="exItem2" class="text-sm" style="color:var(--texto-suave)">○ Ex.2 Tabuada</div><div id="exItem3" class="text-sm" style="color:var(--texto-suave)">○ Ex.3 Média</div><div id="exItem4" class="text-sm" style="color:var(--texto-suave)">○ Ex.4 Palíndromo</div><div id="exItem5" class="text-sm" style="color:var(--texto-suave)">○ Ex.5 Login</div></div></div></div><div class="card mt-2"><div class="card-body"><p class="text-sm fw-bold mb-1">Navegação</p><a href="conteudo.html" class="btn btn-ghost btn-sm w-full mb-1">Conteúdo</a><a href="playground.html" class="btn btn-ghost btn-sm w-full mb-1">Playground</a><a href="../dia2-poo/exercicios.html" class="btn btn-ghost btn-sm w-full">Dia 2 →</a></div></div></aside></div></div><footer class="footer"><div class="container"><p><a href="../index.html">← Portal</a>| <a href="conteudo.html">Conteúdo</a>| <a href="../dia2-poo/conteudo.html">Dia 2 →</a></p></div></footer><script>hljs.highlightAll();
+
+ function toggleHint(id) {
+ const el = document.getElementById(id);
+ el.classList.toggle('show');
+ }
+
+ function toggleSolution(id) {
+ const el = document.getElementById(id);
+ el.classList.toggle('show');
+ if (el.classList.contains('show')) hljs.highlightAll();
+ }
+
+ function copyCode(btn) {
+ const pre = btn.closest('.code-block').querySelector('pre code');
+ navigator.clipboard.writeText(pre.textContent).then(() =>{
+ btn.textContent = ' Copiado!';
+ setTimeout(() =>btn.textContent = 'Copiar', 2000);
+ });
+ }
+
+ const NAMES = ['Calculadora','Tabuada','Média','Palíndromo','Login'];
+
+ function markDone(n) {
+ const saved = JSON.parse(localStorage.getItem('dia1ex') || '{}');
+ saved[n] = !saved[n];
+ localStorage.setItem('dia1ex', JSON.stringify(saved));
+ renderProgress();
+ }
+
+ function renderProgress() {
+ const saved = JSON.parse(localStorage.getItem('dia1ex') || '{}');
+ let count = 0;
+ for (let i = 1; i <= 5; i++) {
+ const btn = document.getElementById('done' + i);
+ const item = document.getElementById('exItem' + i);
+ if (saved[i]) {
+ count++;
+ btn.textContent = ' Feito!';
+ btn.classList.add('done');
+ item.innerHTML = `<span style="color:var(--sucesso)">Ex.${i} ${NAMES[i-1]}</span>`;
+ } else {
+ btn.textContent = ' Marcar como feito';
+ btn.classList.remove('done');
+ item.innerHTML = `<span style="color:var(--texto-suave)">○ Ex.${i} ${NAMES[i-1]}</span>`;
+ }
+ }
+ document.getElementById('exDoneCount').textContent = count + '/5';
+ document.getElementById('exProgressFill').style.width = (count / 5 * 100) + '%';
+ }
+
+ renderProgress();
+</script></body></html>
+
+
+

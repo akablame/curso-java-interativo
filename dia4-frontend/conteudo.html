@@ -1,0 +1,324 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Dia 4 — Front-end</title><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>.analogy-box{background:linear-gradient(135deg,rgba(244,160,58,0.08),rgba(233,124,160,0.06));border:1px solid rgba(244,160,58,0.3);border-radius:12px;padding:1rem 1.25rem;margin:.75rem 0;}
+ .analogy-box .ana-title{font-weight:700;color:var(--aviso);font-size:.85rem;margin-bottom:.3rem;}
+ .box-model{display:flex;align-items:center;justify-content:center;margin:1rem 0;}
+ .bm-margin{background:rgba(244,160,58,0.15);border:2px dashed var(--aviso);padding:12px;border-radius:4px;position:relative;}
+ .bm-border{background:rgba(136,184,245,0.15);border:3px solid var(--secundaria);padding:10px;border-radius:2px;}
+ .bm-padding{background:rgba(93,175,142,0.15);padding:10px;}
+ .bm-content{background:rgba(106,86,176,0.2);padding:12px 20px;text-align:center;font-size:.82rem;font-weight:700;color:var(--primaria);}
+ .bm-label{position:absolute;top:-1.1rem;left:50%;transform:translateX(-50%);font-size:.7rem;font-weight:700;white-space:nowrap;}
+ .tag-ref{display:inline-block;background:rgba(106,86,176,0.08);border:1px solid var(--borda);border-radius:6px;padding:.15rem .5rem;font-family:'Fira Code',monospace;font-size:.82rem;margin:.15rem;}
+ .flex-demo{background:rgba(136,184,245,0.06);border:2px solid var(--secundaria);border-radius:8px;padding:.5rem;margin:.5rem 0;}
+ .flex-item{background:var(--secundaria);color:white;border-radius:4px;padding:.35rem .65rem;font-size:.8rem;font-weight:700;}
+ .answer-block{display:none;} .answer-block.show{display:block;}
+ </style></head><body><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="exercicios.html">Exercícios</a><a href="editor-ao-vivo.html">Editor Ao Vivo</a><a href="../dia3-banco/conteudo.html">← Dia 3</a><a href="../dia5-engenharia/conteudo.html">Dia 5 →</a></div></div></nav><div class="page-header" style="background:linear-gradient(135deg,#F4A03A,#E97CA0)"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› Dia 4</div><h1>Dia 4 — Front-end</h1><p>HTML, CSS, JavaScript e JFrame no NetBeans — construindo interfaces visuais!</p></div></div><div class="container"><div class="content-layout"><aside class="sidebar"><div class="sidebar-title">Tópicos</div><nav class="sidebar-nav"><a href="#html">HTML</a><a href="#css">CSS</a><a href="#js">JavaScript</a><a href="#jframe">JFrame NetBeans</a><a href="#checklist">Checklist</a></nav></aside><main><!-- HTML --><div id="html" class="topic-card fade-in"><div class="topic-card-header"><div><h3>HTML — Estrutura das Páginas</h3><span class="badge badge-warn">HyperText Markup Language</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Esqueleto de uma casa</div><p>HTML é a <strong>estrutura</strong>de uma casa — as paredes, telhado e fundação. CSS é a <strong>decoração</strong>(pintura, cortinas). JavaScript é a <strong>eletricidade</strong>— deixa tudo funcionar (luzes, interruptores).</p></div><h4>Estrutura Básica HTML5</h4><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+ &lt;meta charset="UTF-8"&gt;
+ &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+ &lt;title&gt;Minha Página&lt;/title&gt;
+ &lt;link rel="stylesheet" href="estilo.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+ &lt;!-- Conteúdo visível da página --&gt;
+ &lt;header&gt;
+ &lt;h1&gt;Bem-vinda! &lt;/h1&gt;
+ &lt;nav&gt;
+ &lt;a href="#"&gt;Início&lt;/a&gt;
+ &lt;a href="#"&gt;Sobre&lt;/a&gt;
+ &lt;a href="#"&gt;Contato&lt;/a&gt;
+ &lt;/nav&gt;
+ &lt;/header&gt;
+ &lt;main&gt;
+ &lt;section&gt;
+ &lt;h2&gt;Sobre mim&lt;/h2&gt;
+ &lt;p&gt;Estudante de programação apaixonada por Java!&lt;/p&gt;
+ &lt;/section&gt;
+ &lt;/main&gt;
+ &lt;footer&gt;
+ &lt;p&gt;© 2024 — Feito com &lt;/p&gt;
+ &lt;/footer&gt;
+ &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><h4 class="mt-2">Tags Essenciais</h4><div class="tabs mt-1"><div class="tab-list"><button class="tab-btn active" onclick="switchTab('ht','texto',this)">Texto</button><button class="tab-btn" onclick="switchTab('ht','listas',this)">Listas</button><button class="tab-btn" onclick="switchTab('ht','formulario',this)">Formulário</button><button class="tab-btn" onclick="switchTab('ht','semantica',this)">Semântica</button></div><div id="ht-texto" class="tab-panel active"><div style="display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0"><span class="tag-ref">&lt;h1&gt;–&lt;h6&gt;</span><span class="tag-ref">&lt;p&gt;</span><span class="tag-ref">&lt;strong&gt;</span><span class="tag-ref">&lt;em&gt;</span><span class="tag-ref">&lt;br&gt;</span><span class="tag-ref">&lt;span&gt;</span><span class="tag-ref">&lt;div&gt;</span><span class="tag-ref">&lt;a&gt;</span><span class="tag-ref">&lt;img&gt;</span></div><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-html">&lt;h1&gt;Título Principal&lt;/h1&gt;
+&lt;h2&gt;Subtítulo&lt;/h2&gt;
+&lt;p&gt;Um parágrafo com &lt;strong&gt;negrito&lt;/strong&gt; e &lt;em&gt;itálico&lt;/em&gt;.&lt;/p&gt;
+&lt;a href="https://google.com" target="_blank"&gt;Abrir Google&lt;/a&gt;
+&lt;img src="foto.jpg" alt="Descrição da imagem" width="300"&gt;</code></pre></div></div><div id="ht-listas" class="tab-panel"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-html">&lt;!-- Lista não ordenada (bolinhas) --&gt;
+&lt;ul&gt;
+ &lt;li&gt;HTML&lt;/li&gt;
+ &lt;li&gt;CSS&lt;/li&gt;
+ &lt;li&gt;JavaScript&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- Lista ordenada (números) --&gt;
+&lt;ol&gt;
+ &lt;li&gt;Primeiro&lt;/li&gt;
+ &lt;li&gt;Segundo&lt;/li&gt;
+ &lt;li&gt;Terceiro&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!-- Tabela --&gt;
+&lt;table border="1"&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;&lt;th&gt;Nome&lt;/th&gt;&lt;th&gt;Nota&lt;/th&gt;&lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;&lt;td&gt;Ana&lt;/td&gt;&lt;td&gt;9.5&lt;/td&gt;&lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;</code></pre></div></div><div id="ht-formulario" class="tab-panel"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-html">&lt;form action="#" method="post"&gt;
+ &lt;!-- Texto --&gt;
+ &lt;label for="nome"&gt;Nome:&lt;/label&gt;
+ &lt;input type="text" id="nome" name="nome" placeholder="Seu nome" required&gt;
+
+ &lt;!-- Email --&gt;
+ &lt;input type="email" placeholder="seu@email.com"&gt;
+
+ &lt;!-- Senha --&gt;
+ &lt;input type="password" placeholder="Senha"&gt;
+
+ &lt;!-- Select --&gt;
+ &lt;select name="curso"&gt;
+ &lt;option&gt;Java&lt;/option&gt;
+ &lt;option&gt;Front-end&lt;/option&gt;
+ &lt;/select&gt;
+
+ &lt;!-- Checkbox --&gt;
+ &lt;input type="checkbox" id="termos"&gt;
+ &lt;label for="termos"&gt;Aceito os termos&lt;/label&gt;
+
+ &lt;!-- Textarea --&gt;
+ &lt;textarea rows="4" placeholder="Sua mensagem..."&gt;&lt;/textarea&gt;
+
+ &lt;button type="submit"&gt;Enviar&lt;/button&gt;
+&lt;/form&gt;</code></pre></div></div><div id="ht-semantica" class="tab-panel"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">HTML — Tags Semânticas HTML5</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-html">&lt;header&gt; &lt;!-- cabeçalho da página --&gt;
+&lt;nav&gt; &lt;!-- menu de navegação --&gt;
+&lt;main&gt; &lt;!-- conteúdo principal --&gt;
+&lt;section&gt; &lt;!-- seção de conteúdo --&gt;
+&lt;article&gt; &lt;!-- artigo independente --&gt;
+&lt;aside&gt; &lt;!-- barra lateral --&gt;
+&lt;footer&gt; &lt;!-- rodapé --&gt;</code></pre></div><div class="callout callout-tip mt-1"><div><p class="text-sm">Tags semânticas ajudam na <strong>acessibilidade</strong>e no <strong>SEO</strong>(Google entende melhor). Prefira <code>&lt;nav&gt;</code>a <code>&lt;div class="nav"&gt;</code>.</p></div></div></div></div></div></div><!-- CSS --><div id="css" class="topic-card fade-in"><div class="topic-card-header"><div><h3>CSS — Estilização Visual</h3><span class="badge badge-blue">Cascading Style Sheets</span></div></div><div class="topic-card-body"><h4>Seletores CSS</h4><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">CSS</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-css">/* Seletor de TAG (aplica a TODOS os h1) */
+h1 { color: purple; }
+
+/* Seletor de CLASSE (aplica a todos com class="btn") */
+.btn { padding: 0.5rem 1rem; }
+
+/* Seletor de ID (aplica só ao id="header") */
+#header { background: navy; }
+
+/* Pseudo-classes */
+a:hover { color: red; } /* quando passar o mouse */
+input:focus { border: blue; } /* quando estiver selecionado */
+button:active { opacity: 0.8; } /* quando clicar */
+
+/* Descendente (p dentro de .card) */
+.card p { font-size: 0.9rem; }
+
+/* Combinando */
+.btn.primary { background: purple; color: white; }</code></pre></div><h4 class="mt-2">Box Model — O Modelo de Caixa</h4><div class="box-model"><div class="bm-margin" style="position:relative"><span class="bm-label" style="color:var(--aviso)">margin (espaço externo)</span><div class="bm-border" style="position:relative"><span style="position:absolute;top:-.9rem;left:50%;transform:translateX(-50%);font-size:.65rem;font-weight:700;color:var(--secundaria)">border (borda)</span><div class="bm-padding" style="position:relative"><span style="position:absolute;top:-.9rem;left:50%;transform:translateX(-50%);font-size:.65rem;font-weight:700;color:var(--sucesso)">padding (espaço interno)</span><div class="bm-content">CONTEÚDO</div></div></div></div></div><h4 class="mt-2">Flexbox — Layout Moderno</h4><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">CSS — Flexbox</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-css">.container {
+ display: flex; /* ativa o flexbox */
+ flex-direction: row; /* direção: row (padrão) ou column */
+ justify-content: center; /* alinhamento horizontal: flex-start, center, flex-end, space-between */
+ align-items: center; /* alinhamento vertical: flex-start, center, flex-end */
+ flex-wrap: wrap; /* quebrar linha se necessário */
+ gap: 1rem; /* espaço entre os itens */
+}</code></pre></div><div class="flex-demo" style="display:flex;gap:.4rem;justify-content:center"><div class="flex-item">Item 1</div><div class="flex-item">Item 2</div><div class="flex-item">Item 3</div></div><h4 class="mt-2">Responsividade com Media Queries</h4><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">CSS — Responsividade</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-css">/* Estilos padrão (desktop) */
+.container {
+ display: grid;
+ grid-template-columns: repeat(3, 1fr);
+ gap: 1.5rem;
+}
+
+/* Tablet (até 768px) */
+@media (max-width: 768px) {
+ .container {
+ grid-template-columns: repeat(2, 1fr);
+ }
+ h1 { font-size: 1.5rem; }
+}
+
+/* Celular (até 480px) */
+@media (max-width: 480px) {
+ .container {
+ grid-template-columns: 1fr; /* coluna única */
+ }
+ nav { flex-direction: column; }
+}</code></pre></div></div></div><!-- JAVASCRIPT --><div id="js" class="topic-card fade-in"><div class="topic-card-header"><div><h3>JavaScript — Interatividade</h3><span class="badge badge-warn">ECMAScript</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Eletricidade da casa</div><p>Se HTML é a estrutura e CSS é a decoração, JavaScript é a <strong>eletricidade</strong>— faz os interruptores funcionarem, acende as luzes, move as coisas.</p></div><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">JavaScript — DOM e Eventos</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-javascript">// 1. Selecionar elementos HTML
+const titulo = document.getElementById('titulo');
+const botoes = document.querySelectorAll('.btn');
+const input = document.querySelector('input[type="text"]');
+
+// 2. Modificar conteúdo
+titulo.textContent = 'Novo Título!';
+titulo.innerHTML = '&lt;strong&gt;Negrito&lt;/strong&gt;';
+titulo.style.color = 'purple';
+titulo.classList.add('ativo');
+titulo.classList.remove('inativo');
+
+// 3. Ler valores
+const valor = input.value; // texto digitado
+console.log('Digitou:', valor);
+
+// 4. Eventos
+const btn = document.getElementById('meuBotao');
+
+btn.addEventListener('click', function() {
+ alert('Clicou no botão!');
+});
+
+// Evento em input
+input.addEventListener('input', function() {
+ console.log('Digitando:', this.value);
+});
+
+// 5. Criar elementos dinamicamente
+const li = document.createElement('li');
+li.textContent = 'Novo item';
+document.getElementById('lista').appendChild(li);
+
+// 6. Fetch (requisição básica)
+fetch('https://api.exemplo.com/dados')
+ .then(response =>response.json())
+ .then(data =>console.log(data))
+ .catch(error =>console.error('Erro:', error));</code></pre></div><h4 class="mt-2">Exemplo Prático: Formulário com Validação</h4><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">JavaScript</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-javascript">function validarFormulario() {
+ const nome = document.getElementById('nome').value.trim();
+ const email = document.getElementById('email').value.trim();
+ const msgEl = document.getElementById('mensagem');
+
+ // Limpar mensagem anterior
+ msgEl.textContent = '';
+ msgEl.className = '';
+
+ // Validações
+ if (nome.length < 3) {
+ msgEl.textContent = ' Nome deve ter pelo menos 3 caracteres!';
+ msgEl.style.color = 'red';
+ return false;
+ }
+
+ if (!email.includes('@') || !email.includes('.')) {
+ msgEl.textContent = ' E-mail inválido!';
+ msgEl.style.color = 'red';
+ return false;
+ }
+
+ // Tudo ok!
+ msgEl.textContent = ' Cadastro realizado com sucesso!';
+ msgEl.style.color = 'green';
+ return true;
+}</code></pre></div></div></div><!-- JFRAME --><div id="jframe" class="topic-card fade-in"><div class="topic-card-header"><div><h3>JFrame no NetBeans — GUI Java</h3><span class="badge badge-primary">Swing</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Janela de Aplicativo</div><p>JFrame é como uma <strong>janela</strong>de programa (como o Word ou Calculadora do Windows). Você coloca botões, campos de texto e labels nessa janela visualmente no NetBeans.</p></div><h4>Componentes principais do Swing</h4><div class="table-wrapper mt-1 mb-2"><table><thead><tr><th>Componente</th><th>Para que serve</th><th>Exemplo de uso</th></tr></thead><tbody><tr><td><code>JFrame</code></td><td>Janela principal</td><td>Tela do sistema</td></tr><tr><td><code>JLabel</code></td><td>Texto estático</td><td>Rótulos de campos</td></tr><tr><td><code>JTextField</code></td><td>Campo de texto linha única</td><td>Nome, CPF</td></tr><tr><td><code>JPasswordField</code></td><td>Campo de senha (oculto)</td><td>Login</td></tr><tr><td><code>JButton</code></td><td>Botão clicável</td><td>Salvar, Buscar</td></tr><tr><td><code>JComboBox</code></td><td>Lista suspensa (dropdown)</td><td>Selecionar turma</td></tr><tr><td><code>JTable</code></td><td>Tabela de dados</td><td>Listagem de alunos</td></tr><tr><td><code>JTextArea</code></td><td>Área de texto multilinha</td><td>Observações</td></tr></tbody></table></div><h4>Formulário de Cadastro com JFrame</h4><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — JFrame Completo</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class TelaCadastro extends JFrame {
+
+ // Componentes
+ private JLabel lblNome, lblEmail, lblTurma;
+ private JTextField txtNome, txtEmail;
+ private JComboBox&lt;String&gt; cmbTurma;
+ private JButton btnSalvar, btnLimpar;
+ private JTextArea txaLista;
+
+ public TelaCadastro() {
+ // Configurar janela
+ setTitle(" Cadastro de Alunos");
+ setSize(500, 400);
+ setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+ setLocationRelativeTo(null); // centralizar na tela
+ setLayout(new GridLayout(0, 2, 8, 8));
+ setBackground(new Color(248, 246, 252));
+
+ // Criar componentes
+ lblNome = new JLabel("Nome:");
+ txtNome = new JTextField();
+
+ lblEmail = new JLabel("E-mail:");
+ txtEmail = new JTextField();
+
+ lblTurma = new JLabel("Turma:");
+ String[] turmas = {"3A", "3B", "3C", "4A", "4B"};
+ cmbTurma = new JComboBox&lt;&gt;(turmas);
+
+ btnSalvar = new JButton(" Salvar");
+ btnSalvar.setBackground(new Color(124, 92, 191));
+ btnSalvar.setForeground(Color.WHITE);
+ btnSalvar.setFont(new Font("Arial", Font.BOLD, 12));
+
+ btnLimpar = new JButton(" Limpar");
+
+ // Adicionar à janela
+ add(lblNome); add(txtNome);
+ add(lblEmail); add(txtEmail);
+ add(lblTurma); add(cmbTurma);
+ add(btnLimpar); add(btnSalvar);
+
+ // ActionListener — o que acontece ao clicar
+ btnSalvar.addActionListener(new ActionListener() {
+ @Override
+ public void actionPerformed(ActionEvent e) {
+ String nome = txtNome.getText().trim();
+ String email = txtEmail.getText().trim();
+ String turma = (String) cmbTurma.getSelectedItem();
+
+ if (nome.isEmpty() || email.isEmpty()) {
+ JOptionPane.showMessageDialog(null,
+ " Preencha todos os campos!",
+ "Atenção",
+ JOptionPane.WARNING_MESSAGE);
+ } else {
+ JOptionPane.showMessageDialog(null,
+ " Aluno cadastrado!\n" + nome + " | " + email + " | " + turma,
+ "Sucesso",
+ JOptionPane.INFORMATION_MESSAGE);
+ txtNome.setText("");
+ txtEmail.setText("");
+ }
+ }
+ });
+
+ btnLimpar.addActionListener(e ->{
+ txtNome.setText("");
+ txtEmail.setText("");
+ });
+ }
+
+ public static void main(String[] args) {
+ // Usar Look and Feel do sistema
+ try {
+ UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+ } catch (Exception e) { }
+
+ SwingUtilities.invokeLater(() ->{
+ new TelaCadastro().setVisible(true);
+ });
+ }
+}</code></pre></div><div class="callout callout-tip mt-2"><div><div class="callout-title">NetBeans Form Builder</div><p class="text-sm">No NetBeans, você pode criar JFrames visualmente: <strong>Novo Arquivo → Swing GUI → JFrame Form</strong>. Arraste componentes do painel "Palette" para o design. O NetBeans gera o código automaticamente!</p></div></div></div></div><!-- CHECKLIST --><div id="checklist" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Checklist do Dia 4</h3></div></div><div class="topic-card-body"><ul class="checklist" id="checklistDia4"><li><input type="checkbox" id="d4c1" onchange="saveC4()"><label for="d4c1">Sei criar a estrutura básica de um HTML</label></li><li><input type="checkbox" id="d4c2" onchange="saveC4()"><label for="d4c2">Conheço as tags essenciais (h1-h6, p, a, img, form, input)</label></li><li><input type="checkbox" id="d4c3" onchange="saveC4()"><label for="d4c3">Sei usar seletores CSS (tag, .class, #id)</label></li><li><input type="checkbox" id="d4c4" onchange="saveC4()"><label for="d4c4">Entendo o Box Model (margin, border, padding)</label></li><li><input type="checkbox" id="d4c5" onchange="saveC4()"><label for="d4c5">Sei usar Flexbox para layouts</label></li><li><input type="checkbox" id="d4c6" onchange="saveC4()"><label for="d4c6">Sei manipular o DOM com JavaScript</label></li><li><input type="checkbox" id="d4c7" onchange="saveC4()"><label for="d4c7">Consigo adicionar eventos com addEventListener</label></li><li><input type="checkbox" id="d4c8" onchange="saveC4()"><label for="d4c8">Sei criar um JFrame básico com botões e campos</label></li></ul><div class="mt-2"><div class="progress-label"><span>Progresso Dia 4</span><span id="c4pct">0/8</span></div><div class="progress-bar"><div class="progress-fill" id="c4fill" style="width:0%"></div></div></div><div class="flex gap-1 mt-2"><a href="exercicios.html" class="btn btn-primary">Exercícios →</a><a href="editor-ao-vivo.html" class="btn btn-secondary">Editor Ao Vivo</a><a href="../dia5-engenharia/conteudo.html" class="btn btn-ghost">Dia 5 →</a></div></div></div></main></div></div><footer class="footer"><div class="container"><p><a href="../index.html">← Portal</a>| Dia 4 — Front-end | <a href="editor-ao-vivo.html">Editor Ao Vivo</a></p></div></footer><script>hljs.highlightAll();
+ function switchTab(g, id, btn) {
+ document.querySelectorAll(`[id^="${g}-"]`).forEach(p =>p.classList.remove('active'));
+ btn.closest('.tabs').querySelectorAll('.tab-btn').forEach(b =>b.classList.remove('active'));
+ document.getElementById(`${g}-${id}`).classList.add('active');
+ btn.classList.add('active');
+ }
+ function copyCode(btn) {
+ const pre = btn.closest('.code-block').querySelector('pre code');
+ navigator.clipboard.writeText(pre.textContent).then(() =>{ btn.textContent = ' Copiado!'; setTimeout(() =>btn.textContent = 'Copiar', 2000); });
+ }
+ function saveC4() {
+ const checks = {};
+ for (let i = 1; i <= 8; i++) { const el = document.getElementById('d4c' + i); if (el) checks[i] = el.checked; }
+ localStorage.setItem('dia4checklist', JSON.stringify(checks));
+ let count = Object.values(checks).filter(Boolean).length;
+ document.getElementById('c4pct').textContent = count + '/8';
+ document.getElementById('c4fill').style.width = (count / 8 * 100) + '%';
+ }
+ function loadC4() {
+ const saved = JSON.parse(localStorage.getItem('dia4checklist') || '{}');
+ let count = 0;
+ for (let i = 1; i <= 8; i++) { const el = document.getElementById('d4c' + i); if (el && saved[i]) { el.checked = true; count++; } }
+ document.getElementById('c4pct').textContent = count + '/8';
+ document.getElementById('c4fill').style.width = (count / 8 * 100) + '%';
+ }
+ loadC4();
+</script></body></html>
+
+
+

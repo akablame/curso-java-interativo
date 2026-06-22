@@ -1,0 +1,328 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Dia 3 — Banco de Dados</title><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>.analogy-box{background:linear-gradient(135deg,rgba(93,175,142,0.08),rgba(136,184,245,0.06));border:1px solid rgba(93,175,142,0.3);border-radius:12px;padding:1rem 1.25rem;margin:.75rem 0;}
+ .analogy-box .ana-title{font-weight:700;color:var(--sucesso);font-size:.85rem;margin-bottom:.3rem;}
+ .sql-table{width:100%;border-collapse:collapse;font-family:'Fira Code',monospace;font-size:.82rem;margin:.75rem 0;}
+ .sql-table th{background:var(--primaria);color:white;padding:.4rem .75rem;text-align:left;}
+ .sql-table td{padding:.35rem .75rem;border-bottom:1px solid var(--borda);}
+ .sql-table tr:hover td{background:rgba(106,86,176,0.04);}
+ .sql-table tr:last-child td{border-bottom:none;}
+ .before-after{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.75rem 0;}
+ .before-after h5{font-size:.82rem;margin-bottom:.35rem;}
+ .before-label{color:var(--texto-suave);}
+ .after-label{color:var(--sucesso);}
+ .er-diagram{background:var(--bg-card);border:1px solid var(--borda);border-radius:12px;padding:1.25rem;overflow-x:auto;}
+ .er-entity{display:inline-block;border:2px solid var(--primaria);border-radius:8px;min-width:150px;margin:.5rem;vertical-align:top;}
+ .er-name{background:var(--primaria);color:white;padding:.35rem .75rem;font-weight:700;font-size:.85rem;text-align:center;}
+ .er-attrs{font-family:'Fira Code',monospace;font-size:.78rem;}
+ .er-attrs div{padding:.2rem .75rem;border-bottom:1px solid var(--borda);}
+ .er-attrs div:last-child{border-bottom:none;}
+ .er-pk{color:var(--aviso);font-weight:700;}
+ .er-fk{color:var(--acento);}
+ .answer-block{display:none;}
+ .answer-block.show{display:block;}
+ @media(max-width:600px){.before-after{grid-template-columns:1fr;}}
+ </style></head><body><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="exercicios.html">Exercícios</a><a href="sql-playground.html">SQL Play</a><a href="../dia2-poo/conteudo.html">← Dia 2</a><a href="../dia4-frontend/conteudo.html">Dia 4 →</a></div></div></nav><div class="page-header" style="background:linear-gradient(135deg,#5DAF8E,var(--secundaria))"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› Dia 3</div><h1>Dia 3 — Banco de Dados</h1><p>SQL do zero: criando, consultando, atualizando e deletando dados com MySQL.</p></div></div><div class="container"><div class="content-layout"><aside class="sidebar"><div class="sidebar-title">Tópicos</div><nav class="sidebar-nav"><a href="#conceitos">O que é BD?</a><a href="#select">SELECT</a><a href="#insert">INSERT</a><a href="#update">UPDATE</a><a href="#delete">DELETE</a><a href="#chaves">Chaves</a><a href="#join">JOIN</a><a href="#modelagem">Modelagem ER</a><a href="#java-conn">Java + MySQL</a><a href="#checklist">Checklist</a></nav></aside><main><!-- CONCEITOS --><div id="conceitos" class="topic-card fade-in"><div class="topic-card-header"><div><h3>O que é um Banco de Dados?</h3><span class="badge badge-success">Fundação</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Planilha do Excel x Banco de Dados</div><p>Um banco de dados é como várias <strong>planilhas do Excel interligadas</strong>. Mas muito mais poderoso: suporta milhões de linhas, acesso simultâneo de vários usuários, busca ultra-rápida e relacionamentos complexos.</p></div><div class="table-wrapper mt-2"><table><thead><tr><th>Conceito</th><th>Analogia</th><th>SQL</th></tr></thead><tbody><tr><td><strong>Banco de Dados</strong></td><td>Arquivo do Excel</td><td><code>DATABASE escola</code></td></tr><tr><td><strong>Tabela</strong></td><td>Uma aba/planilha</td><td><code>TABLE alunos</code></td></tr><tr><td><strong>Coluna</strong></td><td>Cabeçalho da coluna</td><td><code>nome, email, nota</code></td></tr><tr><td><strong>Linha/Registro</strong></td><td>Uma linha de dados</td><td><code>1 registro = 1 aluno</code></td></tr><tr><td><strong>SGBD</strong></td><td>Programa que gerencia</td><td>MySQL, PostgreSQL, SQLite</td></tr></tbody></table></div><h4 class="mt-2">Criando um banco e tabela</h4><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">-- Criar banco de dados
+CREATE DATABASE escola;
+
+-- Usar o banco
+USE escola;
+
+-- Criar tabela de alunos
+CREATE TABLE alunos (
+ id INT PRIMARY KEY AUTO_INCREMENT,
+ nome VARCHAR(100) NOT NULL,
+ email VARCHAR(150) UNIQUE,
+ nota DECIMAL(4,2) DEFAULT 0.0,
+ turma VARCHAR(10),
+ criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</code></pre></div></div></div><!-- SELECT --><div id="select" class="topic-card fade-in"><div class="topic-card-header"><div><h3>SELECT — Consultando Dados</h3><span class="badge badge-blue">Read</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Filtro da planilha</div><p>SELECT é como usar o filtro da planilha — você escolhe <em>quais colunas</em>ver e <em>quais linhas</em>(com WHERE), e pode ordenar ou limitar resultados.</p></div><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">-- Tudo de todos os alunos
+SELECT * FROM alunos;
+
+-- Só nome e nota
+SELECT nome, nota FROM alunos;
+
+-- Com filtro (WHERE)
+SELECT nome, nota FROM alunos WHERE nota >= 7.0;
+
+-- Com ordenação (ORDER BY)
+SELECT nome, nota FROM alunos ORDER BY nota DESC;
+
+-- Limitar resultados (os 5 melhores)
+SELECT nome, nota FROM alunos ORDER BY nota DESC LIMIT 5;
+
+-- Busca com LIKE (contém "Silva")
+SELECT * FROM alunos WHERE nome LIKE '%Silva%';
+
+-- Múltiplas condições
+SELECT * FROM alunos WHERE nota >= 5 AND turma = '3A';
+
+-- Funções de agregação
+SELECT COUNT(*) AS total FROM alunos;
+SELECT AVG(nota) AS media FROM alunos;
+SELECT MAX(nota) AS maior, MIN(nota) AS menor FROM alunos;
+
+-- GROUP BY (média por turma)
+SELECT turma, AVG(nota) AS media, COUNT(*) AS qtd
+FROM alunos
+GROUP BY turma
+HAVING AVG(nota) >= 6.0
+ORDER BY media DESC;</code></pre></div><h4 class="mt-2">Exemplo Visual — Tabela alunos</h4><div class="table-wrapper"><table class="sql-table"><thead><tr><th>id</th><th>nome</th><th>email</th><th>nota</th><th>turma</th></tr></thead><tbody><tr><td>1</td><td>Ana Silva</td><td>ana@email.com</td><td>9.5</td><td>3A</td></tr><tr><td>2</td><td>Carlos Lima</td><td>carlos@email.com</td><td>6.0</td><td>3B</td></tr><tr><td>3</td><td>Maria Souza</td><td>maria@email.com</td><td>8.0</td><td>3A</td></tr><tr><td>4</td><td>Pedro Costa</td><td>pedro@email.com</td><td>4.5</td><td>3B</td></tr></tbody></table></div><p class="text-sm text-muted">Resultado de <code>SELECT * FROM alunos WHERE nota &gt;= 7 ORDER BY nota DESC</code>: Ana (9.5) e Maria (8.0).</p></div></div><!-- INSERT --><div id="insert" class="topic-card fade-in"><div class="topic-card-header"><div><h3>INSERT — Inserindo Dados</h3><span class="badge badge-success">Create</span></div></div><div class="topic-card-body"><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">-- Inserir um aluno (especificando colunas)
+INSERT INTO alunos (nome, email, nota, turma)
+VALUES ('Fernanda Rocha', 'fe@email.com', 8.5, '3A');
+
+-- Inserir sem especificar todas as colunas
+INSERT INTO alunos (nome, nota) VALUES ('Lucas', 7.0);
+
+-- Inserir múltiplos registros de uma vez
+INSERT INTO alunos (nome, email, nota, turma) VALUES
+ ('Beatriz', 'bi@email.com', 9.0, '3A'),
+ ('Gabriel', 'ga@email.com', 6.5, '3B'),
+ ('Helena', 'he@email.com', 7.8, '3A');</code></pre></div><div class="before-after mt-2"><div><h5 class="before-label">Antes do INSERT:</h5><table class="sql-table"><thead><tr><th>id</th><th>nome</th><th>nota</th></tr></thead><tbody><tr><td>1</td><td>Ana</td><td>9.5</td></tr><tr><td>2</td><td>Carlos</td><td>6.0</td></tr></tbody></table></div><div><h5 class="after-label">Depois do INSERT:</h5><table class="sql-table"><thead><tr><th>id</th><th>nome</th><th>nota</th></tr></thead><tbody><tr><td>1</td><td>Ana</td><td>9.5</td></tr><tr><td>2</td><td>Carlos</td><td>6.0</td></tr><tr style="background:rgba(93,175,142,0.08)"><td>3</td><td>Fernanda</td><td>8.5</td></tr></tbody></table></div></div></div></div><!-- UPDATE --><div id="update" class="topic-card fade-in"><div class="topic-card-header"><div><h3>UPDATE — Atualizando Dados</h3><span class="badge badge-warn">Update</span></div></div><div class="topic-card-body"><div class="callout callout-danger"><div><div class="callout-title">SEMPRE use WHERE no UPDATE!</div><p class="text-sm">Um UPDATE sem WHERE atualiza TODOS os registros! Sempre filtre com WHERE para modificar apenas os registros desejados.</p></div></div><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">-- Atualizar nota de um aluno específico
+UPDATE alunos SET nota = 10.0 WHERE id = 1;
+
+-- Atualizar múltiplas colunas
+UPDATE alunos SET nota = 9.5, turma = '3A' WHERE nome = 'Carlos Lima';
+
+-- Atualizar com cálculo (dar +1 ponto para todos da turma 3A)
+UPDATE alunos SET nota = nota + 1.0 WHERE turma = '3A' AND nota <= 9.0;
+
+-- PERIGOSO — sem WHERE, atualiza TODOS!
+-- UPDATE alunos SET nota = 10; -- NUNCA FAÇA ISSO SEM QUERER!</code></pre></div></div></div><!-- DELETE --><div id="delete" class="topic-card fade-in"><div class="topic-card-header"><div><h3>DELETE — Deletando Dados</h3><span class="badge badge-accent">Delete</span></div></div><div class="topic-card-body"><div class="callout callout-danger"><div><div class="callout-title">SEMPRE use WHERE no DELETE!</div><p class="text-sm">Um DELETE sem WHERE apaga TODA A TABELA! Teste sua cláusula WHERE com SELECT antes de deletar.</p></div></div><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">-- Deletar aluno por ID (mais seguro!)
+DELETE FROM alunos WHERE id = 4;
+
+-- Deletar por condição
+DELETE FROM alunos WHERE nota < 4.0;
+
+-- Deletar com múltiplas condições
+DELETE FROM alunos WHERE nota < 5 AND turma = '3B';
+
+-- Dica: TESTE ANTES com SELECT!
+SELECT * FROM alunos WHERE nota < 4.0; -- ver o que vai ser deletado
+DELETE FROM alunos WHERE nota < 4.0; -- aí sim deletar</code></pre></div></div></div><!-- CHAVES --><div id="chaves" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Chaves Primárias e Estrangeiras</h3><span class="badge badge-primary">Relacionamentos</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: CPF e Matrícula</div><p><strong>PRIMARY KEY (PK)</strong>= CPF — identificador único de cada pessoa. Nunca se repete, nunca é nulo.<br><strong>FOREIGN KEY (FK)</strong>= matrícula na turma — referência a outra tabela. Liga as tabelas.</p></div><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL — Chaves e Relacionamentos</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">-- Tabela TURMAS (pai)
+CREATE TABLE turmas (
+ id INT PRIMARY KEY AUTO_INCREMENT,
+ nome VARCHAR(10) NOT NULL, -- ex: '3A', '3B'
+ ano INT NOT NULL
+);
+
+-- Tabela ALUNOS (filho) com FK para turmas
+CREATE TABLE alunos (
+ id INT PRIMARY KEY AUTO_INCREMENT,
+ nome VARCHAR(100) NOT NULL,
+ email VARCHAR(150) UNIQUE NOT NULL,
+ nota DECIMAL(4,2) DEFAULT 0.0,
+ turma_id INT,
+ FOREIGN KEY (turma_id) REFERENCES turmas(id)
+ -- ON DELETE SET NULL -- se turma for deletada, turma_id vira NULL
+ -- ON DELETE CASCADE -- se turma for deletada, alunos também são deletados
+);
+
+-- Inserir dados
+INSERT INTO turmas (nome, ano) VALUES ('3A', 2024), ('3B', 2024);
+INSERT INTO alunos (nome, email, nota, turma_id) VALUES
+ ('Ana Silva', 'ana@email.com', 9.5, 1),
+ ('Carlos Lima', 'carlos@email.com', 6.0, 2);</code></pre></div><h4 class="mt-2">Diagrama de Relacionamento</h4><div class="er-diagram"><div style="display:flex;gap:3rem;flex-wrap:wrap;justify-content:center;align-items:flex-start"><div class="er-entity"><div class="er-name">turmas</div><div class="er-attrs"><div class="er-pk">id (PK)</div><div>nome: VARCHAR</div><div>ano: INT</div></div></div><div style="align-self:center;font-size:2rem;color:var(--texto-suave)">1:N →</div><div class="er-entity"><div class="er-name">alunos</div><div class="er-attrs"><div class="er-pk">id (PK)</div><div>nome: VARCHAR</div><div>email: VARCHAR</div><div>nota: DECIMAL</div><div class="er-fk">turma_id (FK)</div></div></div></div><p class="text-sm text-muted text-center mt-2">Uma turma pode ter N alunos. Um aluno pertence a 1 turma.</p></div></div></div><!-- JOIN --><div id="join" class="topic-card fade-in"><div class="topic-card-header"><div><h3>JOIN — Unindo Tabelas</h3><span class="badge badge-blue">Consulta Avançada</span></div></div><div class="topic-card-body"><div class="tabs"><div class="tab-list"><button class="tab-btn active" onclick="switchTab('join','inner',this)">INNER JOIN</button><button class="tab-btn" onclick="switchTab('join','left',this)">LEFT JOIN</button><button class="tab-btn" onclick="switchTab('join','right',this)">RIGHT JOIN</button></div><div id="join-inner" class="tab-panel active"><p class="text-sm text-muted mb-1"><strong>INNER JOIN</strong>: retorna somente os registros que têm correspondência em ambas as tabelas.</p><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">-- Alunos COM suas turmas (só quem tem turma cadastrada)
+SELECT a.nome, a.nota, t.nome AS turma
+FROM alunos a
+INNER JOIN turmas t ON a.turma_id = t.id
+ORDER BY a.nota DESC;
+
+-- Resultado:
+-- Ana Silva | 9.5 | 3A
+-- Carlos Lima | 6.0 | 3B</code></pre></div></div><div id="join-left" class="tab-panel"><p class="text-sm text-muted mb-1"><strong>LEFT JOIN</strong>: retorna todos da tabela da ESQUERDA + correspondências da direita (NULL se não houver).</p><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">-- TODOS os alunos, mesmo sem turma cadastrada
+SELECT a.nome, a.nota, t.nome AS turma
+FROM alunos a
+LEFT JOIN turmas t ON a.turma_id = t.id;
+
+-- Resultado inclui alunos sem turma (NULL):
+-- Ana Silva | 9.5 | 3A
+-- Carlos Lima | 6.0 | 3B
+-- Lucas | 7.0 | NULL (sem turma!)</code></pre></div></div><div id="join-right" class="tab-panel"><p class="text-sm text-muted mb-1"><strong>RIGHT JOIN</strong>: retorna todos da tabela da DIREITA + correspondências da esquerda.</p><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">-- TODAS as turmas, mesmo as sem alunos
+SELECT a.nome, a.nota, t.nome AS turma
+FROM alunos a
+RIGHT JOIN turmas t ON a.turma_id = t.id;
+
+-- Inclui turmas sem nenhum aluno:
+-- Ana | 9.5 | 3A
+-- Carlos | 6.0 | 3B
+-- NULL | NULL | 3C (turma vazia!)</code></pre></div></div></div></div></div><!-- MODELAGEM ER --><div id="modelagem" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Modelagem ER — Diagrama Entidade-Relacionamento</h3><span class="badge badge-accent">Projeto</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">O que é modelagem?</div><p>Antes de criar as tabelas, você faz um "mapa" do banco de dados: quais entidades existem, quais são seus atributos, e como elas se relacionam. Isso evita retrabalho!</p></div><h4>Exemplo: Sistema de Biblioteca</h4><div class="er-diagram mt-1"><div style="display:flex;gap:2rem;flex-wrap:wrap;justify-content:center;align-items:flex-start"><div class="er-entity"><div class="er-name">usuarios</div><div class="er-attrs"><div class="er-pk">id</div><div>nome</div><div>email</div><div>telefone</div></div></div><div style="align-self:center;color:var(--texto-suave);font-size:1.5rem">⟵ N:N →<br><small style="font-size:.7rem">emprestimos</small></div><div class="er-entity"><div class="er-name">livros</div><div class="er-attrs"><div class="er-pk">id</div><div>titulo</div><div>isbn</div><div class="er-fk">autor_id</div></div></div><div style="align-self:center;color:var(--texto-suave);font-size:1.5rem">⟵ N:1 →</div><div class="er-entity"><div class="er-name">autores</div><div class="er-attrs"><div class="er-pk">id</div><div>nome</div><div>nacionalidade</div></div></div></div></div><div class="code-block mt-2"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL — Script Completo Biblioteca</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">CREATE DATABASE biblioteca;
+USE biblioteca;
+
+CREATE TABLE autores (
+ id INT PRIMARY KEY AUTO_INCREMENT,
+ nome VARCHAR(100) NOT NULL,
+ nacionalidade VARCHAR(50)
+);
+
+CREATE TABLE livros (
+ id INT PRIMARY KEY AUTO_INCREMENT,
+ titulo VARCHAR(200) NOT NULL,
+ isbn VARCHAR(20) UNIQUE,
+ autor_id INT,
+ disponivel BOOLEAN DEFAULT TRUE,
+ FOREIGN KEY (autor_id) REFERENCES autores(id)
+);
+
+CREATE TABLE usuarios (
+ id INT PRIMARY KEY AUTO_INCREMENT,
+ nome VARCHAR(100) NOT NULL,
+ email VARCHAR(150) UNIQUE NOT NULL,
+ telefone VARCHAR(20)
+);
+
+CREATE TABLE emprestimos (
+ id INT PRIMARY KEY AUTO_INCREMENT,
+ livro_id INT NOT NULL,
+ usuario_id INT NOT NULL,
+ data_saida DATE NOT NULL,
+ data_prevista DATE NOT NULL,
+ data_retorno DATE,
+ FOREIGN KEY (livro_id) REFERENCES livros(id),
+ FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+-- Inserir dados de exemplo
+INSERT INTO autores (nome, nacionalidade) VALUES
+ ('Robert C. Martin', 'Americano'),
+ ('Joshua Bloch', 'Americano');
+
+INSERT INTO livros (titulo, isbn, autor_id) VALUES
+ ('Clean Code', '978-0132350884', 1),
+ ('Java Efetivo', '978-0134685991', 2);
+
+-- Consulta: livros com nome do autor
+SELECT l.titulo, a.nome AS autor, l.disponivel
+FROM livros l
+INNER JOIN autores a ON l.autor_id = a.id;</code></pre></div></div></div><!-- JAVA + MYSQL --><div id="java-conn" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Java + MySQL no NetBeans</h3><span class="badge badge-primary">Integração</span></div></div><div class="topic-card-body"><div class="callout callout-info"><div><div class="callout-title">Pré-requisitos</div><p class="text-sm">1. MySQL instalado e rodando (porta 3306)<br>2. Driver JDBC adicionado ao projeto NetBeans: <strong>mysql-connector-j-8.x.x.jar</strong><br>3. Banco de dados criado no MySQL Workbench</p></div></div><h4 class="mt-2">Passo 1: Adicionar o Driver JDBC no NetBeans</h4><div class="callout callout-tip"><div><p class="text-sm">Botão direito no projeto → Properties → Libraries → Add JAR/Folder → Selecionar o arquivo <code>mysql-connector-j.jar</code></p></div></div><h4 class="mt-2">Passo 2: Classe de Conexão</h4><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Conexão MySQL</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class Conexao {
+ // Dados de conexão (substitua pelos seus)
+ private static final String URL = "jdbc:mysql://localhost:3306/escola";
+ private static final String USUARIO = "root";
+ private static final String SENHA = "suaSenha123";
+
+ public static Connection conectar() {
+ Connection conn = null;
+ try {
+ conn = DriverManager.getConnection(URL, USUARIO, SENHA);
+ System.out.println(" Conectado ao MySQL com sucesso!");
+ } catch (SQLException e) {
+ System.out.println(" Erro ao conectar: " + e.getMessage());
+ }
+ return conn;
+ }
+
+ public static void fechar(Connection conn) {
+ if (conn != null) {
+ try {
+ conn.close();
+ System.out.println(" Conexão fechada.");
+ } catch (SQLException e) {
+ System.out.println("Erro ao fechar: " + e.getMessage());
+ }
+ }
+ }
+}</code></pre></div><h4 class="mt-2">Passo 3: CRUD Completo em Java</h4><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — CRUD com JDBC</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">import java.sql.*;
+
+public class AlunoDAO {
+ // CREATE — Inserir aluno
+ public void inserir(String nome, String email, double nota) {
+ String sql = "INSERT INTO alunos (nome, email, nota) VALUES (?, ?, ?)";
+ try (Connection conn = Conexao.conectar();
+ PreparedStatement ps = conn.prepareStatement(sql)) {
+
+ ps.setString(1, nome);
+ ps.setString(2, email);
+ ps.setDouble(3, nota);
+ ps.executeUpdate();
+ System.out.println(" Aluno inserido: " + nome);
+
+ } catch (SQLException e) {
+ System.out.println(" Erro: " + e.getMessage());
+ }
+ }
+
+ // READ — Listar todos
+ public void listarTodos() {
+ String sql = "SELECT * FROM alunos ORDER BY nome";
+ try (Connection conn = Conexao.conectar();
+ Statement stmt = conn.createStatement();
+ ResultSet rs = stmt.executeQuery(sql)) {
+
+ System.out.println("=== ALUNOS ===");
+ while (rs.next()) {
+ int id = rs.getInt("id");
+ String nome = rs.getString("nome");
+ double nota = rs.getDouble("nota");
+ System.out.printf("%d | %-20s | %.1f%n", id, nome, nota);
+ }
+
+ } catch (SQLException e) {
+ System.out.println(" Erro: " + e.getMessage());
+ }
+ }
+
+ // UPDATE — Atualizar nota
+ public void atualizarNota(int id, double novaNota) {
+ String sql = "UPDATE alunos SET nota = ? WHERE id = ?";
+ try (Connection conn = Conexao.conectar();
+ PreparedStatement ps = conn.prepareStatement(sql)) {
+
+ ps.setDouble(1, novaNota);
+ ps.setInt(2, id);
+ int linhas = ps.executeUpdate();
+ System.out.println(" " + linhas + " registro(s) atualizado(s).");
+
+ } catch (SQLException e) {
+ System.out.println(" Erro: " + e.getMessage());
+ }
+ }
+
+ // DELETE — Remover aluno
+ public void deletar(int id) {
+ String sql = "DELETE FROM alunos WHERE id = ?";
+ try (Connection conn = Conexao.conectar();
+ PreparedStatement ps = conn.prepareStatement(sql)) {
+
+ ps.setInt(1, id);
+ ps.executeUpdate();
+ System.out.println(" Aluno id=" + id + " removido.");
+
+ } catch (SQLException e) {
+ System.out.println(" Erro: " + e.getMessage());
+ }
+ }
+}</code></pre></div><div class="callout callout-tip mt-2"><div><div class="callout-title">PreparedStatement vs Statement</div><p class="text-sm">Sempre use <strong>PreparedStatement</strong>com <code>?</code>para valores de usuário. Isso previne <strong>SQL Injection</strong>— um dos ataques mais comuns em aplicações web.</p></div></div></div></div><!-- CHECKLIST --><div id="checklist" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Checklist do Dia 3</h3></div></div><div class="topic-card-body"><ul class="checklist" id="checklistDia3"><li><input type="checkbox" id="d3c1" onchange="saveChecklist3()"><label for="d3c1">Entendo o que é banco de dados relacional</label></li><li><input type="checkbox" id="d3c2" onchange="saveChecklist3()"><label for="d3c2">Sei escrever SELECT com WHERE, ORDER BY, LIMIT</label></li><li><input type="checkbox" id="d3c3" onchange="saveChecklist3()"><label for="d3c3">Sei usar INSERT para adicionar registros</label></li><li><input type="checkbox" id="d3c4" onchange="saveChecklist3()"><label for="d3c4">Sei usar UPDATE (sempre com WHERE!)</label></li><li><input type="checkbox" id="d3c5" onchange="saveChecklist3()"><label for="d3c5">Sei usar DELETE (sempre com WHERE!)</label></li><li><input type="checkbox" id="d3c6" onchange="saveChecklist3()"><label for="d3c6">Entendo PRIMARY KEY e FOREIGN KEY</label></li><li><input type="checkbox" id="d3c7" onchange="saveChecklist3()"><label for="d3c7">Sei fazer INNER JOIN para consultas entre tabelas</label></li><li><input type="checkbox" id="d3c8" onchange="saveChecklist3()"><label for="d3c8">Consigo criar um diagrama ER simples</label></li><li><input type="checkbox" id="d3c9" onchange="saveChecklist3()"><label for="d3c9">Sei conectar Java ao MySQL com JDBC</label></li></ul><div class="mt-2"><div class="progress-label"><span>Progresso Dia 3</span><span id="check3Pct">0/9</span></div><div class="progress-bar"><div class="progress-fill" id="check3Fill" style="width:0%"></div></div></div><div class="flex gap-1 mt-2"><a href="exercicios.html" class="btn btn-primary">Exercícios →</a><a href="sql-playground.html" class="btn btn-secondary">SQL Playground</a><a href="../dia4-frontend/conteudo.html" class="btn btn-ghost">Dia 4 →</a></div></div></div></main></div></div><footer class="footer"><div class="container"><p><a href="../index.html">← Portal</a>| Dia 3 — Banco de Dados | <a href="sql-playground.html">SQL Playground</a></p></div></footer><script>hljs.highlightAll();
+ function switchTab(group, id, btn) {
+ document.querySelectorAll(`[id^="${group}-"]`).forEach(p =>p.classList.remove('active'));
+ btn.closest('.tabs').querySelectorAll('.tab-btn').forEach(b =>b.classList.remove('active'));
+ document.getElementById(`${group}-${id}`).classList.add('active');
+ btn.classList.add('active');
+ }
+ function copyCode(btn) {
+ const pre = btn.closest('.code-block').querySelector('pre code');
+ navigator.clipboard.writeText(pre.textContent).then(() =>{ btn.textContent = ' Copiado!'; setTimeout(() =>btn.textContent = 'Copiar', 2000); });
+ }
+ function saveChecklist3() {
+ const checks = {};
+ for (let i = 1; i <= 9; i++) { const el = document.getElementById('d3c' + i); if (el) checks['d3c' + i] = el.checked; }
+ localStorage.setItem('dia3checklist', JSON.stringify(checks));
+ updateProgress3();
+ }
+ function loadChecklist3() {
+ const saved = JSON.parse(localStorage.getItem('dia3checklist') || '{}');
+ for (let i = 1; i <= 9; i++) { const el = document.getElementById('d3c' + i); if (el && saved['d3c' + i]) el.checked = true; }
+ updateProgress3();
+ }
+ function updateProgress3() {
+ let count = 0;
+ for (let i = 1; i <= 9; i++) { const el = document.getElementById('d3c' + i); if (el && el.checked) count++; }
+ document.getElementById('check3Pct').textContent = count + '/9';
+ document.getElementById('check3Fill').style.width = (count / 9 * 100) + '%';
+ }
+ loadChecklist3();
+</script></body></html>
+
+
+

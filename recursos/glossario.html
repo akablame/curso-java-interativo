@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Glossário — Termos Java</title><link rel="stylesheet" href="../assets/style.css"/><style>.gloss-controls{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;margin-bottom:1.5rem;}
+ .gloss-search{flex:1;min-width:200px;padding:.6rem 1rem;border:2px solid var(--borda);border-radius:20px;font-family:inherit;font-size:.9rem;outline:none;}
+ .gloss-search:focus{border-color:var(--primaria);}
+ .alpha-bar{display:flex;flex-wrap:wrap;gap:.25rem;margin-bottom:1rem;}
+ .alpha-btn{background:var(--bg-card);border:1px solid var(--borda);border-radius:6px;padding:.2rem .55rem;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .15s;}
+ .alpha-btn:hover,.alpha-btn.active{background:var(--primaria);color:white;border-color:var(--primaria);}
+ .theme-filter{display:flex;flex-wrap:wrap;gap:.35rem;}
+ .tf-chip{padding:.25rem .7rem;border-radius:16px;border:1px solid var(--borda);background:var(--bg-card);font-size:.75rem;cursor:pointer;font-weight:600;}
+ .tf-chip.on{background:var(--primaria);color:white;border-color:var(--primaria);}
+ .gloss-section{margin-bottom:2rem;}
+ .gloss-letter{font-size:1.8rem;font-weight:900;color:var(--primaria);border-bottom:2px solid var(--primaria);margin-bottom:.75rem;padding-bottom:.25rem;}
+ .gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.75rem;}
+ .gloss-item{background:var(--bg-card);border:1px solid var(--borda);border-radius:12px;padding:1rem;box-shadow:var(--sombra);transition:transform .15s;}
+ .gloss-item:hover{transform:translateY(-2px);}
+ .gloss-term{font-weight:700;font-size:1rem;color:var(--texto);margin-bottom:.25rem;}
+ .gloss-def{font-size:.85rem;color:var(--texto-suave);line-height:1.5;}
+ .gloss-tag{display:inline-block;font-size:.68rem;font-weight:700;padding:.1rem .5rem;border-radius:10px;margin-top:.4rem;}
+ .tag-logica{background:rgba(93,175,142,.15);color:var(--sucesso);}
+ .tag-poo{background:rgba(106,86,176,.12);color:var(--primaria);}
+ .tag-sql{background:rgba(136,184,245,.12);color:var(--secundaria);}
+ .tag-web{background:rgba(233,124,160,.12);color:var(--acento);}
+ .tag-eng{background:rgba(244,160,58,.15);color:var(--aviso);}
+ .hidden-g{display:none;}
+ .no-results{text-align:center;padding:3rem;color:var(--texto-suave);}
+ .gloss-code{font-family:'Fira Code',monospace;font-size:.78rem;background:rgba(106,86,176,.06);padding:.1rem .4rem;border-radius:4px;color:var(--primaria);}
+ </style></head><body><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="flashcards.html">Flashcards</a><a href="quiz-geral.html">Quiz</a></div></div></nav><div class="page-header" style="background:linear-gradient(135deg,var(--primaria),#E97CA0)"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› Recursos</div><h1>Glossário</h1><p>60+ termos do universo Java e desenvolvimento de software, explicados de forma clara!</p></div></div><div class="container section"><div class="gloss-controls"><input class="gloss-search" id="glossSearch" placeholder=" Buscar termo..." oninput="filterGloss()"/><div class="theme-filter"><span class="tf-chip on" data-t="all">Todos</span><span class="tf-chip" data-t="logica">Lógica</span><span class="tf-chip" data-t="poo">POO</span><span class="tf-chip" data-t="sql">SQL</span><span class="tf-chip" data-t="web">Web</span><span class="tf-chip" data-t="eng">Engenharia</span></div></div><div class="alpha-bar" id="alphaBar"></div><div id="glossContainer"></div><div class="no-results" id="noResults" style="display:none">Nenhum termo encontrado. Tente outra busca!</div></div><footer class="footer"><div class="container"><p><a href="../index.html">← Portal</a>| <a href="flashcards.html">Flashcards</a>| <a href="cheatsheet-java.html">Cheatsheet</a></p></div></footer><script>const TERMS = [
+ // LÓGICA
+ {t:'A',th:'logica',term:'Array',def:'Coleção de tamanho fixo de elementos do mesmo tipo, acessados por índice começando em 0.',ex:'int[] nums = {1, 2, 3};'},
+ {t:'A',th:'logica',term:'ArrayList',def:'Lista dinâmica do pacote java.util que cresce e encolhe automaticamente.',ex:'new ArrayList<String>()'},
+ {t:'A',th:'logica',term:'Algoritmo',def:'Sequência finita e ordenada de passos para resolver um problema.'},
+ {t:'B',th:'logica',term:'boolean',def:'Tipo primitivo com apenas dois valores: true ou false.',ex:'boolean ativo = true;'},
+ {t:'B',th:'logica',term:'break',def:'Instrução que encerra um loop ou um bloco switch imediatamente.',ex:'if(i==5) break;'},
+ {t:'C',th:'logica',term:'Casting',def:'Conversão explícita de um tipo para outro.',ex:'int x = (int) 9.9; // x = 9'},
+ {t:'C',th:'logica',term:'continue',def:'Pula a iteração atual de um loop e vai para a próxima.',ex:'if(i%2==0) continue;'},
+ {t:'D',th:'logica',term:'double',def:'Tipo primitivo para números de ponto flutuante com dupla precisão.',ex:'double pi = 3.14159;'},
+ {t:'E',th:'logica',term:'Expressão',def:'Combinação de variáveis, operadores e valores que produz um resultado.',ex:'int x = 2 + 3 * 4;'},
+ {t:'F',th:'logica',term:'for (loop)',def:'Estrutura de repetição com inicialização, condição e incremento definidos na declaração.',ex:'for(int i=0; i<10; i++)'},
+ {t:'I',th:'logica',term:'int',def:'Tipo primitivo para números inteiros (−2.147.483.648 a 2.147.483.647).',ex:'int idade = 20;'},
+ {t:'L',th:'logica',term:'Loop',def:'Estrutura que repete um bloco de código até que uma condição seja falsa.'},
+ {t:'M',th:'logica',term:'Método',def:'Bloco de código nomeado e reutilizável que pode receber parâmetros e retornar valor.',ex:'public int somar(int a, int b) { return a+b; }'},
+ {t:'M',th:'logica',term:'Módulo (%)',def:'Operador que retorna o resto da divisão inteira.',ex:'10 % 3 = 1'},
+ {t:'R',th:'logica',term:'Recursão',def:'Técnica onde um método chama a si mesmo para resolver subproblemas menores.',ex:'int fat(int n) { return n<=1 ? 1 : n*fat(n-1); }'},
+ {t:'S',th:'logica',term:'String',def:'Tipo não primitivo que representa uma sequência de caracteres.',ex:'String nome = "Java";'},
+ {t:'S',th:'logica',term:'Switch',def:'Instrução de seleção que compara um valor com vários casos.',ex:'switch(dia) { case 1: ... }'},
+ {t:'T',th:'logica',term:'Ternário (?:)',def:'Operador condicional inline: condição ? valorTrue : valorFalse.',ex:'int max = a>b ? a : b;'},
+ {t:'V',th:'logica',term:'Variável',def:'Nome que referencia um espaço de memória para armazenar um valor.',ex:'int contador = 0;'},
+ {t:'W',th:'logica',term:'while (loop)',def:'Loop que executa enquanto a condição for verdadeira. Verifica ANTES de executar.',ex:'while(i < 10) { i++; }'},
+
+ // POO
+ {t:'A',th:'poo',term:'Abstração',def:'Ocultar complexidade, expondo apenas o essencial. Classes abstratas forçam subclasses a implementar métodos.'},
+ {t:'A',th:'poo',term:'Atributo',def:'Variável declarada dentro de uma classe que representa um dado de um objeto.',ex:'private String nome;'},
+ {t:'C',th:'poo',term:'Classe',def:'Molde/template que define atributos e métodos. Objetos são instâncias de classes.',ex:'class Carro { ... }'},
+ {t:'C',th:'poo',term:'Construtor',def:'Método especial com o mesmo nome da classe, chamado ao criar um objeto com new.',ex:'public Aluno(String nome) { this.nome = nome; }'},
+ {t:'E',th:'poo',term:'Encapsulamento',def:'Esconder o estado interno (private) e acessar por métodos públicos (getters/setters).',ex:'private double saldo; public double getSaldo()'},
+ {t:'H',th:'poo',term:'Herança',def:'Mecanismo que permite uma classe reutilizar atributos e métodos de outra.',ex:'class Cão extends Animal { }'},
+ {t:'I',th:'poo',term:'Interface',def:'Contrato com métodos sem implementação. Classes que a implementam devem fornecer todos os métodos.',ex:'interface Voavel { void voar(); }'},
+ {t:'I',th:'poo',term:'instanceof',def:'Operador que verifica se um objeto é instância de determinada classe.',ex:'if(animal instanceof Cachorro)'},
+ {t:'O',th:'poo',term:'Objeto',def:'Instância de uma classe. Um objeto tem estado (atributos) e comportamento (métodos).',ex:'Carro c = new Carro();'},
+ {t:'O',th:'poo',term:'Override (@Override)',def:'Anotação que indica que um método sobrescreve o método da classe pai.',ex:'@Override public String toString()'},
+ {t:'P',th:'poo',term:'Polimorfismo',def:'Capacidade de um mesmo método se comportar de formas diferentes em objetos distintos.',ex:'animal.fazerSom(); // diferente para cada animal'},
+ {t:'S',th:'poo',term:'static',def:'Modificador que faz um membro pertencer à classe, não ao objeto.',ex:'static int contador; NomeClasse.contador++'},
+ {t:'S',th:'poo',term:'super',def:'Referência à superclasse. super() chama o construtor pai; super.metodo() chama método do pai.',ex:'super(nome, idade);'},
+ {t:'T',th:'poo',term:'this',def:'Referência ao objeto atual. Usado para diferenciar atributos de parâmetros com mesmo nome.',ex:'this.nome = nome;'},
+
+ // SQL
+ {t:'A',th:'sql',term:'AUTO_INCREMENT',def:'Atributo MySQL que incrementa automaticamente o valor de uma coluna inteira a cada INSERT.',ex:'id INT AUTO_INCREMENT PRIMARY KEY'},
+ {t:'C',th:'sql',term:'CRUD',def:'Create, Read, Update, Delete — as 4 operações básicas de banco de dados.',ex:'INSERT / SELECT / UPDATE / DELETE'},
+ {t:'D',th:'sql',term:'DAO (Data Access Object)',def:'Padrão de projeto que separa o código de acesso ao banco das regras de negócio.',ex:'class AlunoDAO { void salvar(Aluno a); }'},
+ {t:'D',th:'sql',term:'DDL',def:'Data Definition Language — comandos para definir estruturas: CREATE, ALTER, DROP.',ex:'CREATE TABLE, ALTER TABLE'},
+ {t:'D',th:'sql',term:'DML',def:'Data Manipulation Language — comandos para manipular dados: INSERT, SELECT, UPDATE, DELETE.'},
+ {t:'F',th:'sql',term:'FOREIGN KEY',def:'Restrição que referencia a PRIMARY KEY de outra tabela, criando relacionamento.',ex:'FOREIGN KEY (turma_id) REFERENCES turmas(id)'},
+ {t:'G',th:'sql',term:'GROUP BY',def:'Agrupa linhas com valores iguais, usado com COUNT, AVG, SUM, MAX, MIN.',ex:'GROUP BY turma_id'},
+ {t:'H',th:'sql',term:'HAVING',def:'Filtra grupos APÓS o GROUP BY. Similar ao WHERE, mas para grupos.',ex:'HAVING AVG(nota) >= 7'},
+ {t:'I',th:'sql',term:'INNER JOIN',def:'Retorna apenas linhas com correspondência nas duas tabelas.',ex:'JOIN turmas t ON a.turma_id = t.id'},
+ {t:'J',th:'sql',term:'JDBC',def:'Java Database Connectivity — API Java para conectar e executar queries em bancos relacionais.',ex:'Connection conn = DriverManager.getConnection(url)'},
+ {t:'L',th:'sql',term:'LEFT JOIN',def:'Retorna todos os registros da tabela esquerda e correspondências da direita (NULL onde não há).',ex:'FROM alunos a LEFT JOIN turmas t ON ...'},
+ {t:'N',th:'sql',term:'NULL',def:'Valor especial que indica ausência de dado. Verificado com IS NULL, nunca com = NULL.',ex:'WHERE email IS NULL'},
+ {t:'P',th:'sql',term:'PreparedStatement',def:'Query pré-compilada com parâmetros (?) que previne SQL Injection.',ex:'ps.setString(1, nome);'},
+ {t:'P',th:'sql',term:'PRIMARY KEY',def:'Identifica unicamente cada linha de uma tabela. Não pode ser NULL nem duplicada.',ex:'id INT PRIMARY KEY'},
+ {t:'T',th:'sql',term:'Transaction',def:'Conjunto de operações que devem ser executadas completamente (COMMIT) ou revertidas (ROLLBACK).',ex:'conn.setAutoCommit(false);'},
+
+ // WEB
+ {t:'B',th:'web',term:'BOM (Browser Object Model)',def:'Conjunto de objetos JavaScript que representam o navegador: window, navigator, history, location.'},
+ {t:'C',th:'web',term:'CSS Custom Properties',def:'Variáveis CSS declaradas com -- e usadas com var(). Facilitam temas e manutenção.',ex:':root { --cor: var(--primaria); } color: var(--cor);'},
+ {t:'D',th:'web',term:'DOM',def:'Document Object Model — representação em árvore dos elementos HTML, manipulável via JavaScript.',ex:'document.getElementById("id")'},
+ {t:'F',th:'web',term:'Flexbox',def:'Sistema CSS para layout unidimensional (linhas OU colunas), com alinhamento poderoso.',ex:'display: flex; justify-content: center;'},
+ {t:'G',th:'web',term:'Grid (CSS)',def:'Sistema CSS para layout bidimensional (linhas E colunas).',ex:'display: grid; grid-template-columns: repeat(3, 1fr);'},
+ {t:'J',th:'web',term:'JSON',def:'JavaScript Object Notation — formato de texto para troca de dados, muito usado em APIs.',ex:'{ "nome": "Ana", "idade": 25 }'},
+ {t:'L',th:'web',term:'localStorage',def:'API do navegador para persistir dados chave-valor no cliente sem expiração.',ex:'localStorage.setItem("k", "v");'},
+ {t:'M',th:'web',term:'Media Query',def:'Regra CSS que aplica estilos baseado no tamanho da tela (responsividade).',ex:'@media (max-width: 768px) { ... }'},
+ {t:'P',th:'web',term:'Promise',def:'Objeto JavaScript que representa operação assíncrona futura. Estados: pending, fulfilled, rejected.',ex:'fetch(url).then(r =>r.json()).then(data =>...)'},
+ {t:'R',th:'web',term:'Responsividade',def:'Design que se adapta a diferentes tamanhos de tela (mobile, tablet, desktop).'},
+ {t:'S',th:'web',term:'Seletor CSS',def:'Padrão que define a quais elementos uma regra CSS se aplica.',ex:'#id, .classe, tag, pai >filho'},
+
+ // ENGENHARIA
+ {t:'A',th:'eng',term:'Acoplamento',def:'Grau de dependência entre módulos. Baixo acoplamento é desejável para facilitar mudanças.'},
+ {t:'A',th:'eng',term:'Arquitetura MVC',def:'Model-View-Controller: separa dados, interface e lógica de negócio em camadas distintas.'},
+ {t:'B',th:'eng',term:'Backlog',def:'Lista priorizada de todas as funcionalidades desejadas para o produto, gerenciada pelo Product Owner.'},
+ {t:'C',th:'eng',term:'Coesão',def:'Grau em que uma classe tem uma única responsabilidade bem definida. Alta coesão é desejável.'},
+ {t:'D',th:'eng',term:'Daily Scrum',def:'Reunião diária de 15 minutos da equipe: o que fiz, o que farei, quais impedimentos.'},
+ {t:'E',th:'eng',term:'Engenharia de Software',def:'Disciplina que aplica princípios de engenharia ao desenvolvimento de software.'},
+ {t:'P',th:'eng',term:'Product Owner',def:'Papel no Scrum responsável por definir e priorizar as funcionalidades do produto (backlog).'},
+ {t:'R',th:'eng',term:'Refatoração',def:'Melhorar a estrutura interna do código sem alterar seu comportamento externo.'},
+ {t:'R',th:'eng',term:'Requisito Funcional',def:'Descreve O QUE o sistema deve fazer — funcionalidades específicas.',ex:'RF01: O sistema deve autenticar usuários.'},
+ {t:'R',th:'eng',term:'Requisito Não-Funcional',def:'Descreve COMO o sistema deve se comportar — qualidade, desempenho, segurança.',ex:'RNF01: Resposta em menos de 2 segundos.'},
+ {t:'S',th:'eng',term:'Scrum',def:'Framework ágil de desenvolvimento em ciclos curtos (Sprints) com entregas incrementais.'},
+ {t:'S',th:'eng',term:'Sprint',def:'Ciclo de desenvolvimento de 1-4 semanas com meta definida e entrega funcional ao final.'},
+ {t:'U',th:'eng',term:'UML',def:'Unified Modeling Language — linguagem visual padronizada para modelar sistemas de software.'},
+ {t:'U',th:'eng',term:'User Story',def:'Descrição de funcionalidade do ponto de vista do usuário: "Como X, quero Y para Z".',ex:'Como aluno, quero ver notas para saber minha situação.'},
+];
+
+let activeTheme = 'all', activeAlpha = 'all';
+
+function build() {
+ const container = document.getElementById('glossContainer');
+ container.innerHTML = '';
+
+ const search = document.getElementById('glossSearch').value.toLowerCase();
+
+ let filtered = TERMS.filter(item =>{
+ const matchTheme = activeTheme === 'all' || item.th === activeTheme;
+ const matchAlpha = activeAlpha === 'all' || item.t === activeAlpha;
+ const matchSearch = !search || item.term.toLowerCase().includes(search) || item.def.toLowerCase().includes(search);
+ return matchTheme && matchAlpha && matchSearch;
+ });
+
+ if (filtered.length === 0) { document.getElementById('noResults').style.display = 'block'; return; }
+ document.getElementById('noResults').style.display = 'none';
+
+ const grouped = {};
+ filtered.forEach(item =>{
+ if (!grouped[item.t]) grouped[item.t] = [];
+ grouped[item.t].push(item);
+ });
+
+ Object.keys(grouped).sort().forEach(letter =>{
+ const sec = document.createElement('div');
+ sec.className = 'gloss-section';
+ sec.innerHTML = '<div class="gloss-letter">' + letter + '</div><div class="gloss-grid" id="grid-' + letter + '"></div>';
+ container.appendChild(sec);
+ const grid = document.getElementById('grid-' + letter);
+ grouped[letter].forEach(item =>{
+ const el = document.createElement('div');
+ el.className = 'gloss-item';
+ el.innerHTML = '<div class="gloss-term">' + item.term + '</div>' +
+ '<div class="gloss-def">' + item.def + '</div>' +
+ (item.ex ? '<div class="gloss-code">' + item.ex.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>' : '') +
+ '<span class="gloss-tag tag-' + item.th + '">' + {logica:' Lógica',poo:' POO',sql:' SQL',web:' Web',eng:' Eng.'}[item.th] + '</span>';
+ grid.appendChild(el);
+ });
+ });
+}
+
+// Alpha bar
+const letters = [...new Set(TERMS.map(t =>t.t))].sort();
+const bar = document.getElementById('alphaBar');
+const allBtn = document.createElement('button');
+allBtn.className = 'alpha-btn active'; allBtn.textContent = 'Todos';
+allBtn.onclick = () =>{ activeAlpha = 'all'; bar.querySelectorAll('.alpha-btn').forEach(b =>b.classList.remove('active')); allBtn.classList.add('active'); build(); };
+bar.appendChild(allBtn);
+letters.forEach(l =>{
+ const btn = document.createElement('button');
+ btn.className = 'alpha-btn'; btn.textContent = l;
+ btn.onclick = () =>{ activeAlpha = l; bar.querySelectorAll('.alpha-btn').forEach(b =>b.classList.remove('active')); btn.classList.add('active'); build(); };
+ bar.appendChild(btn);
+});
+
+// Theme chips
+document.querySelectorAll('.tf-chip').forEach(chip =>{
+ chip.onclick = () =>{
+ document.querySelectorAll('.tf-chip').forEach(c =>c.classList.remove('on'));
+ chip.classList.add('on');
+ activeTheme = chip.dataset.t;
+ build();
+ };
+});
+
+function filterGloss() { build(); }
+
+build();
+</script></body></html>
+
+
+

@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Exercícios Front-end — Dia 4</title><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>.exercise-card{background:var(--bg-card);border-radius:16px;border:1px solid var(--borda);box-shadow:var(--sombra);margin-bottom:2rem;overflow:hidden;}
+ .exercise-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;background:linear-gradient(135deg,rgba(244,160,58,0.07),rgba(233,124,160,0.05));border-bottom:1px solid var(--borda);}
+ .ex-number{background:linear-gradient(135deg,var(--aviso),var(--acento));color:white;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0;}
+ .ex-title{flex:1;margin:0 .75rem;font-size:1.05rem;font-weight:700;}
+ .exercise-body{padding:1.5rem;}
+ .sol-block{display:none;} .sol-block.show{display:block;}
+ .done-btn.done{background:var(--sucesso)!important;color:white!important;border-color:var(--sucesso)!important;}
+ </style></head><body><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="conteudo.html">Conteúdo</a><a href="editor-ao-vivo.html">Editor</a></div></div></nav><div class="page-header" style="background:linear-gradient(135deg,#F4A03A,#E97CA0)"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› <a href="conteudo.html">Dia 4</a>› Exercícios</div><h1>Exercícios — Dia 4: Front-end</h1><p>HTML, CSS e JavaScript na prática! Use o <a href="editor-ao-vivo.html" style="color:white;text-decoration:underline">Editor ao Vivo</a>para testar.</p></div></div><div class="container section"><!-- EX 1 --><div class="exercise-card"><div class="exercise-header"><div class="ex-number">1</div><div class="ex-title">Página de Perfil HTML/CSS</div><span class="badge badge-success">HTML + CSS</span></div><div class="exercise-body"><p>Crie uma página de <strong>perfil pessoal</strong>com: foto (pode ser emoji), nome, descrição, lista de habilidades e um botão de contato. Estilize com CSS usando cores da paleta do curso.</p><div class="flex gap-1 mt-2"><button class="btn btn-outline btn-sm" onclick="toggleEl('s1')">Solução</button><button class="btn btn-sm done-btn" id="done1" onclick="markDone(1)">Feito</button></div><div id="s1" class="sol-block mt-2"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">HTML + CSS</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+ &lt;meta charset="UTF-8"&gt;
+ &lt;title&gt;Meu Perfil&lt;/title&gt;
+ &lt;style&gt;
+ * { box-sizing: border-box; margin: 0; padding: 0; }
+ body { font-family: 'Segoe UI', sans-serif; background: #f8f6fc; padding: 2rem; }
+ .perfil {
+ max-width: 380px; margin: 0 auto;
+ background: var(--bg-card); border-radius: 20px;
+ padding: 2rem; text-align: center;
+ box-shadow: 0 4px 20px rgba(106,86,176,0.12);
+ }
+ .avatar {
+ width: 100px; height: 100px;
+ background: linear-gradient(135deg, var(--primaria), var(--secundaria));
+ border-radius: 50%; margin: 0 auto 1rem;
+ display: flex; align-items: center;
+ justify-content: center; font-size: 2.5rem;
+ }
+ h1 { color: var(--texto); margin-bottom: .25rem; }
+ .cargo { color: var(--primaria); font-size: .9rem; margin-bottom: 1rem; }
+ p { color: #555; font-size: .9rem; line-height: 1.6; margin-bottom: 1.25rem; }
+ .habilidades { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: center; margin-bottom: 1.5rem; }
+ .habilidade {
+ background: rgba(106,86,176,.1); color: var(--primaria);
+ padding: .25rem .75rem; border-radius: 99px;
+ font-size: .8rem; font-weight: 600;
+ }
+ .btn-contato {
+ display: inline-block; padding: .7rem 2rem;
+ background: var(--primaria); color: white;
+ border: none; border-radius: 99px; font-size: .95rem;
+ font-weight: 700; cursor: pointer; text-decoration: none;
+ transition: all .2s;
+ }
+ .btn-contato:hover { background: #6345a8; transform: translateY(-2px); }
+ &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+ &lt;div class="perfil"&gt;
+ &lt;div class="avatar"&gt;&lt;/div&gt;
+ &lt;h1&gt;Akira Santos&lt;/h1&gt;
+ &lt;div class="cargo"&gt;Estudante de Programação Java&lt;/div&gt;
+ &lt;p&gt;Apaixonada por tecnologia e desenvolvimento de sistemas. Futura desenvolvedora full-stack! &lt;/p&gt;
+ &lt;div class="habilidades"&gt;
+ &lt;span class="habilidade"&gt;Java&lt;/span&gt;
+ &lt;span class="habilidade"&gt;HTML/CSS&lt;/span&gt;
+ &lt;span class="habilidade"&gt;SQL&lt;/span&gt;
+ &lt;span class="habilidade"&gt;NetBeans&lt;/span&gt;
+ &lt;/div&gt;
+ &lt;a href="mailto:akira@email.com" class="btn-contato"&gt; Entrar em contato&lt;/a&gt;
+ &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div></div></div><!-- EX 2 --><div class="exercise-card"><div class="exercise-header"><div class="ex-number">2</div><div class="ex-title">Calculadora Web com JavaScript</div><span class="badge badge-blue">JavaScript</span></div><div class="exercise-body"><p>Crie uma calculadora web com HTML, CSS e JavaScript. Deve ter: operações básicas (+, -, *, /), display do resultado, botão de limpar e validação contra divisão por zero.</p><div class="flex gap-1 mt-2"><button class="btn btn-outline btn-sm" onclick="toggleEl('s2')">Solução</button><button class="btn btn-sm done-btn" id="done2" onclick="markDone(2)">Feito</button></div><div id="s2" class="sol-block mt-2"><div class="callout callout-tip"><div><p class="text-sm">Abra o <a href="editor-ao-vivo.html">Editor ao Vivo</a>e carregue o exemplo "Calculadora" para ver em ação!</p></div></div><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">JavaScript — Calculadora Simples</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-javascript">function calcular() {
+ const num1 = parseFloat(document.getElementById('num1').value);
+ const num2 = parseFloat(document.getElementById('num2').value);
+ const op = document.getElementById('operacao').value;
+ const resultEl = document.getElementById('resultado');
+
+ if (isNaN(num1) || isNaN(num2)) {
+ resultEl.textContent = ' Digite números válidos!';
+ resultEl.style.color = 'red';
+ return;
+ }
+
+ let resultado;
+ switch (op) {
+ case '+': resultado = num1 + num2; break;
+ case '-': resultado = num1 - num2; break;
+ case '*': resultado = num1 * num2; break;
+ case '/':
+ if (num2 === 0) {
+ resultEl.textContent = ' Erro: divisão por zero!';
+ resultEl.style.color = 'red';
+ return;
+ }
+ resultado = num1 / num2;
+ break;
+ }
+
+ resultEl.textContent = `${num1} ${op} ${num2} = ${resultado}`;
+ resultEl.style.color = 'green';
+}</code></pre></div></div></div></div><!-- EX 3 --><div class="exercise-card"><div class="exercise-header"><div class="ex-number">3</div><div class="ex-title">Lista de Compras Dinâmica</div><span class="badge badge-warn">DOM Manipulation</span></div><div class="exercise-body"><p>Crie uma lista de compras onde o usuário pode: adicionar items, marcar como comprado (riscado), remover items e ver o contador de items pendentes.</p><div class="flex gap-1 mt-2"><button class="btn btn-outline btn-sm" onclick="toggleEl('s3')">Solução</button><button class="btn btn-sm done-btn" id="done3" onclick="markDone(3)">Feito</button></div><div id="s3" class="sol-block mt-2"><div class="callout callout-tip"><div><p class="text-sm">Carregue o exemplo "Lista Dinâmica" no <a href="editor-ao-vivo.html">Editor ao Vivo</a>para referência visual!</p></div></div></div></div></div><!-- EX 4 --><div class="exercise-card"><div class="exercise-header"><div class="ex-number">4</div><div class="ex-title">Formulário com Validação Completa</div><span class="badge badge-accent">Validação</span></div><div class="exercise-body"><p>Crie um formulário de <strong>cadastro de aluno</strong>com: nome, email, data de nascimento, curso (select) e nota (0-10). Valide todos os campos antes de "enviar" e mostre mensagem de sucesso estilizada.</p><div class="flex gap-1 mt-2"><button class="btn btn-outline btn-sm" onclick="toggleEl('s4')">Solução</button><button class="btn btn-sm done-btn" id="done4" onclick="markDone(4)">Feito</button></div><div id="s4" class="sol-block mt-2"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">JavaScript — Validação</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-javascript">function validar(e) {
+ e.preventDefault();
+ const erros = [];
+
+ const nome = document.getElementById('nome').value.trim();
+ const email = document.getElementById('email').value.trim();
+ const nota = parseFloat(document.getElementById('nota').value);
+ const curso = document.getElementById('curso').value;
+
+ if (nome.length < 3) erros.push('Nome deve ter pelo menos 3 caracteres');
+ if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) erros.push('E-mail inválido');
+ if (isNaN(nota) || nota < 0 || nota >10) erros.push('Nota deve ser entre 0 e 10');
+ if (!curso) erros.push('Selecione um curso');
+
+ const erroEl = document.getElementById('erros');
+ const sucessoEl = document.getElementById('sucesso');
+
+ if (erros.length >0) {
+ erroEl.innerHTML = erros.map(e =>` ${e}`).join('<br>');
+ erroEl.style.display = 'block';
+ sucessoEl.style.display = 'none';
+ } else {
+ erroEl.style.display = 'none';
+ sucessoEl.innerHTML = ` Aluno cadastrado!<br><strong>${nome}</strong>| ${email}<br>Curso: ${curso} | Nota: ${nota}`;
+ sucessoEl.style.display = 'block';
+ document.getElementById('form').reset();
+ }
+}</code></pre></div></div></div></div><!-- EX 5 --><div class="exercise-card"><div class="exercise-header"><div class="ex-number">5</div><div class="ex-title">JFrame — Sistema de Login</div><span class="badge badge-primary">Java Swing</span></div><div class="exercise-body"><p>Crie uma tela de <strong>login</strong>com JFrame usando: campo de usuário, campo de senha (JPasswordField), botão entrar e botão limpar. Valide login "admin" e senha "1234", mostrando JOptionPane de sucesso ou erro.</p><div class="flex gap-1 mt-2"><button class="btn btn-outline btn-sm" onclick="toggleEl('s5')">Solução</button><button class="btn btn-sm done-btn" id="done5" onclick="markDone(5)">Feito</button></div><div id="s5" class="sol-block mt-2"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — JFrame Login</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class TelaLogin extends JFrame {
+ private JTextField txtUsuario;
+ private JPasswordField txtSenha;
+ private JButton btnEntrar, btnLimpar;
+ private JLabel lblTentativas;
+ private int tentativas = 0;
+
+ public TelaLogin() {
+ setTitle(" Login do Sistema");
+ setSize(380, 250);
+ setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+ setLocationRelativeTo(null);
+ setLayout(new GridLayout(5, 2, 8, 8));
+ setBackground(Color.WHITE);
+ ((JPanel)getContentPane()).setBorder(BorderFactory.createEmptyBorder(15,20,15,20));
+
+ add(new JLabel(" Usuário:"));
+ txtUsuario = new JTextField();
+ add(txtUsuario);
+
+ add(new JLabel(" Senha:"));
+ txtSenha = new JPasswordField();
+ add(txtSenha);
+
+ lblTentativas = new JLabel("Tentativas: 0/3");
+ lblTentativas.setForeground(Color.GRAY);
+ add(lblTentativas);
+ add(new JLabel());
+
+ btnLimpar = new JButton(" Limpar");
+ btnEntrar = new JButton("Entrar →");
+ btnEntrar.setBackground(new Color(124, 92, 191));
+ btnEntrar.setForeground(Color.WHITE);
+ btnEntrar.setFont(new Font("Arial", Font.BOLD, 13));
+
+ add(btnLimpar);
+ add(btnEntrar);
+
+ btnEntrar.addActionListener(e ->verificarLogin());
+ txtSenha.addActionListener(e ->verificarLogin()); // Enter na senha
+ btnLimpar.addActionListener(e ->{ txtUsuario.setText(""); txtSenha.setText(""); });
+
+ setVisible(true);
+ }
+
+ private void verificarLogin() {
+ if (tentativas >= 3) {
+ JOptionPane.showMessageDialog(this, " Conta bloqueada!", "Bloqueado", JOptionPane.ERROR_MESSAGE);
+ return;
+ }
+
+ String usuario = txtUsuario.getText().trim();
+ String senha = new String(txtSenha.getPassword());
+
+ tentativas++;
+ lblTentativas.setText("Tentativas: " + tentativas + "/3");
+ if (tentativas >= 3) lblTentativas.setForeground(Color.RED);
+
+ if (usuario.equals("admin") && senha.equals("1234")) {
+ JOptionPane.showMessageDialog(this,
+ " Login realizado!\nBem-vindo, " + usuario + "!",
+ "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+ dispose();
+ } else {
+ int restantes = 3 - tentativas;
+ JOptionPane.showMessageDialog(this,
+ " Usuário ou senha incorretos!\n" + restantes + " tentativa(s) restante(s).",
+ "Erro", JOptionPane.ERROR_MESSAGE);
+ txtSenha.setText("");
+ }
+ }
+
+ public static void main(String[] args) {
+ SwingUtilities.invokeLater(TelaLogin::new);
+ }
+}</code></pre></div></div></div></div><div class="card"><div class="card-body text-center"><h3>Front-end dominado!</h3><p class="text-muted mt-1 mb-2">Próximo: Engenharia de Software e UML!</p><div class="flex gap-1 justify-between flex-wrap"><a href="editor-ao-vivo.html" class="btn btn-secondary">Editor ao Vivo</a><a href="../dia5-engenharia/conteudo.html" class="btn btn-primary">Dia 5: Engenharia →</a></div></div></div></div><footer class="footer"><div class="container"><p><a href="../index.html">← Portal</a>| <a href="conteudo.html">Conteúdo</a>| <a href="../dia5-engenharia/conteudo.html">Dia 5 →</a></p></div></footer><script>hljs.highlightAll();
+ function toggleEl(id){const el=document.getElementById(id);el.classList.toggle('show');if(el.classList.contains('show'))hljs.highlightAll();}
+ function copyCode(btn){const pre=btn.closest('.code-block').querySelector('pre code');navigator.clipboard.writeText(pre.textContent).then(()=>{btn.textContent=' Copiado!';setTimeout(()=>btn.textContent='Copiar',2000);});}
+ function markDone(n){const saved=JSON.parse(localStorage.getItem('dia4ex')||'{}');saved[n]=!saved[n];localStorage.setItem('dia4ex',JSON.stringify(saved));const btn=document.getElementById('done'+n);if(saved[n]){btn.textContent=' Feito!';btn.classList.add('done');}else{btn.textContent=' Feito';btn.classList.remove('done');}}
+ function init(){const saved=JSON.parse(localStorage.getItem('dia4ex')||'{}');for(let i=1;i<=5;i++){if(saved[i]){const btn=document.getElementById('done'+i);btn.textContent=' Feito!';btn.classList.add('done');}}}init();
+</script></body></html>
+
+
+

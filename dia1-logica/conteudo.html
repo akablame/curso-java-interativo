@@ -1,0 +1,410 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Dia 1 — Lógica de Programação</title><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>.analogy-box {
+ background: linear-gradient(135deg,rgba(233,124,160,0.08),rgba(106,86,176,0.06));
+ border: 1px solid rgba(233,124,160,0.3);
+ border-radius: 12px;
+ padding: 1rem 1.25rem;
+ margin: 0.75rem 0;
+ }
+ .analogy-box .ana-title { font-weight:700; color: var(--acento); font-size:0.85rem; margin-bottom:0.3rem; }
+ .output-box {
+ background: #0d1117;
+ border-radius: 8px;
+ padding: 0.75rem 1rem;
+ font-family: 'Fira Code',monospace;
+ font-size:0.85rem;
+ color: #7ee787;
+ margin-top:0.5rem;
+ border-left: 3px solid var(--sucesso);
+ }
+ .output-box::before { content:'Output: '; color:#8b949e; }
+ .try-input {
+ width:100%; padding:0.6rem 0.85rem;
+ border:2px solid var(--borda);
+ border-radius:8px;
+ font-family:'Fira Code',monospace;
+ font-size:0.85rem;
+ background:#1e1e2e; color:#cdd6f4;
+ margin-bottom:0.5rem;
+ resize:vertical; min-height:80px;
+ }
+ .try-input:focus { outline:none; border-color:var(--primaria); }
+ .answer-block { display:none; margin-top:0.75rem; }
+ .answer-block.show { display:block; }
+ .operator-table td, .operator-table th { text-align:center; }
+ .op-demo { cursor:pointer; background:rgba(106,86,176,0.1); border-radius:6px; padding:0.2rem 0.5rem; }
+ .op-demo:hover { background:rgba(106,86,176,0.2); }
+ .topics-check { list-style:none; margin-top:1rem; }
+ .topics-check li { display:flex; align-items:center; gap:0.5rem; padding:0.4rem 0; border-bottom:1px solid var(--borda); }
+ .topics-check li:last-child { border-bottom:none; }
+ </style></head><body><!-- NAVBAR --><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="exercicios.html">Exercícios</a><a href="playground.html">Playground</a><a href="../recursos/flashcards.html">Flashcards</a></div></div></nav><!-- PAGE HEADER --><div class="page-header"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› Dia 1</div><h1>Dia 1 — Lógica de Programação</h1><p>Fundamentos que sustentam tudo: variáveis, operadores, condições, laços e funções.</p></div></div><!-- LAYOUT --><div class="container"><div class="content-layout"><!-- SIDEBAR --><aside class="sidebar"><div class="sidebar-title">Tópicos</div><nav class="sidebar-nav"><a href="#variaveis">Variáveis e Tipos</a><a href="#operadores">Operadores</a><a href="#condicionais">if / else</a><a href="#loops">Loops</a><a href="#arrays">Arrays</a><a href="#funcoes">Funções</a><a href="#algoritmos">Algoritmos</a><a href="#checklist">Checklist</a></nav></aside><!-- CONTEÚDO PRINCIPAL --><main><!-- ============================
+ VARIÁVEIS E TIPOS
+ ============================ --><div id="variaveis" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Variáveis e Tipos de Dados</h3><span class="badge badge-primary">Fundação</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia do dia a dia</div><p>Pense em variáveis como <strong>caixas etiquetadas</strong>. Cada caixa tem um nome (etiqueta), um tipo (o que cabe dentro) e um valor (o que está dentro).</p></div><h4 class="mt-2">Tipos Primitivos em Java</h4><div class="table-wrapper mt-1 mb-2"><table><thead><tr><th>Tipo</th><th>O que guarda</th><th>Exemplo</th><th>Tamanho</th></tr></thead><tbody><tr><td><code>int</code></td><td>Número inteiro</td><td><code>int idade = 20;</code></td><td>32 bits</td></tr><tr><td><code>double</code></td><td>Número decimal</td><td><code>double altura = 1.68;</code></td><td>64 bits</td></tr><tr><td><code>boolean</code></td><td>Verdadeiro/Falso</td><td><code>boolean ativo = true;</code></td><td>1 bit</td></tr><tr><td><code>char</code></td><td>Um caractere</td><td><code>char letra = 'A';</code></td><td>16 bits</td></tr><tr><td><code>String</code></td><td>Texto (objeto)</td><td><code>String nome = "Maria";</code></td><td>variável</td></tr><tr><td><code>long</code></td><td>Inteiro grande</td><td><code>long pop = 215000000L;</code></td><td>64 bits</td></tr><tr><td><code>float</code></td><td>Decimal menor</td><td><code>float nota = 9.5f;</code></td><td>32 bits</td></tr></tbody></table></div><h4>Exemplo Completo</h4><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">public class MinhaApresentacao {
+ public static void main(String[] args) {
+ // Declarando variáveis
+ String nome = "Ana";
+ int idade = 19;
+ double altura = 1.65;
+ boolean estudante = true;
+ char inicial = 'A';
+
+ // Exibindo no console
+ System.out.println("Nome: " + nome);
+ System.out.println("Idade: " + idade + " anos");
+ System.out.println("Altura: " + altura + "m");
+ System.out.println("É estudante? " + estudante);
+ System.out.println("Inicial do nome: " + inicial);
+ }
+}</code></pre></div><div class="output-box">Nome: Ana | Idade: 19 anos | Altura: 1.65m | É estudante? true | Inicial do nome: A</div><div class="try-it mt-2"><div class="try-it-title">Tente você mesmo!</div><p class="text-sm mb-1">Crie variáveis com <strong>seu nome</strong>, sua <strong>cidade</strong>e sua <strong>cor favorita</strong>e imprima tudo:</p><textarea class="try-input" placeholder="String meuNome = &#10;String minhaCidade = &#10;String corFavorita = &#10;System.out.println(...)"></textarea><div class="flex gap-1"><button class="btn btn-sm btn-ghost" onclick="showAnswer('ans-var')">Ver resposta</button></div><div id="ans-var" class="answer-block"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span></div><pre><code class="language-java">String meuNome = "Akira"; // Troque pelo seu nome!
+String minhaCidade = "São Paulo"; // Troque pela sua cidade!
+String corFavorita = "roxo"; // Troque pela sua cor!
+
+System.out.println("Olá! Meu nome é " + meuNome);
+System.out.println("Moro em " + minhaCidade);
+System.out.println("Minha cor favorita é " + corFavorita);</code></pre></div></div></div><div class="accordion mt-2"><div class="accordion-item"><button class="accordion-header" onclick="toggleAccordion(this)">Dica extra: var (Java 10+) <span class="accordion-arrow">▼</span></button><div class="accordion-body"><p>Em Java 10+, você pode usar <code>var</code>e o Java descobre o tipo automaticamente:</p><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span></div><pre><code class="language-java">var nome = "Maria"; // Java sabe que é String
+var idade = 20; // Java sabe que é int
+var nota = 9.5; // Java sabe que é double</code></pre></div><p class="text-sm text-muted"><code>var</code>só funciona dentro de métodos, não para atributos de classe.</p></div></div></div></div></div><!-- ============================
+ OPERADORES
+ ============================ --><div id="operadores" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Operadores</h3><span class="badge badge-blue">Expressões</span></div></div><div class="topic-card-body"><div class="tabs"><div class="tab-list"><button class="tab-btn active" onclick="switchTab('op','aritmeticos',this)">Aritméticos</button><button class="tab-btn" onclick="switchTab('op','relacionais',this)">Relacionais</button><button class="tab-btn" onclick="switchTab('op','logicos',this)">Lógicos</button></div><div id="op-aritmeticos" class="tab-panel active"><div class="table-wrapper"><table class="operator-table"><thead><tr><th>Operador</th><th>Significado</th><th>Exemplo</th><th>Resultado</th></tr></thead><tbody><tr><td><code>+</code></td><td>Adição</td><td><code>10 + 3</code></td><td><strong>13</strong></td></tr><tr><td><code>-</code></td><td>Subtração</td><td><code>10 - 3</code></td><td><strong>7</strong></td></tr><tr><td><code>*</code></td><td>Multiplicação</td><td><code>10 * 3</code></td><td><strong>30</strong></td></tr><tr><td><code>/</code></td><td>Divisão</td><td><code>10 / 3</code></td><td><strong>3</strong>(int!)</td></tr><tr><td><code>%</code></td><td>Resto</td><td><code>10 % 3</code></td><td><strong>1</strong></td></tr><tr><td><code>++</code></td><td>Incremento</td><td><code>x++</code></td><td>x + 1</td></tr><tr><td><code>--</code></td><td>Decremento</td><td><code>x--</code></td><td>x - 1</td></tr></tbody></table></div><div class="callout callout-warn mt-2"><div><div class="callout-title">Atenção na divisão de inteiros!</div><p class="text-sm"><code>10 / 3</code>em Java retorna <strong>3</strong>(não 3.33). Para obter decimal, use <code>(double)10 / 3</code>→ <strong>3.33</strong></p></div></div></div><div id="op-relacionais" class="tab-panel"><div class="table-wrapper"><table class="operator-table"><thead><tr><th>Operador</th><th>Significado</th><th>Exemplo</th><th>Resultado</th></tr></thead><tbody><tr><td><code>==</code></td><td>Igual a</td><td><code>5 == 5</code></td><td><strong>true</strong></td></tr><tr><td><code>!=</code></td><td>Diferente de</td><td><code>5 != 3</code></td><td><strong>true</strong></td></tr><tr><td><code>&gt;</code></td><td>Maior que</td><td><code>8 &gt; 5</code></td><td><strong>true</strong></td></tr><tr><td><code>&lt;</code></td><td>Menor que</td><td><code>3 &lt; 5</code></td><td><strong>true</strong></td></tr><tr><td><code>&gt;=</code></td><td>Maior ou igual</td><td><code>5 &gt;= 5</code></td><td><strong>true</strong></td></tr><tr><td><code>&lt;=</code></td><td>Menor ou igual</td><td><code>4 &lt;= 5</code></td><td><strong>true</strong></td></tr></tbody></table></div></div><div id="op-logicos" class="tab-panel"><div class="table-wrapper"><table class="operator-table"><thead><tr><th>Operador</th><th>Significado</th><th>Exemplo</th><th>Resultado</th></tr></thead><tbody><tr><td><code>&&</code></td><td>E (AND) — ambos true</td><td><code>true && false</code></td><td><strong>false</strong></td></tr><tr><td><code>||</code></td><td>OU (OR) — pelo menos um true</td><td><code>true || false</code></td><td><strong>true</strong></td></tr><tr><td><code>!</code></td><td>NÃO (NOT) — inverte</td><td><code>!true</code></td><td><strong>false</strong></td></tr></tbody></table></div><div class="analogy-box mt-2"><div class="ana-title">Quando usar cada um?</div><p><strong>&&</strong>→ "Para entrar no cinema, precisa ser maior de 18 <em>E</em>ter ingresso"<br><strong>||</strong>→ "Posso pagar com dinheiro <em>OU</em>cartão"<br><strong>!</strong>→ "Se <em>NÃO</em>está chovendo, saio sem guarda-chuva"</p></div></div></div><div class="code-block mt-2"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Operadores na prática</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">int a = 15, b = 4;
+
+// Aritméticos
+System.out.println(a + b); // 19
+System.out.println(a - b); // 11
+System.out.println(a * b); // 60
+System.out.println(a / b); // 3 (inteiro!)
+System.out.println(a % b); // 3 (resto)
+
+// Relacionais
+System.out.println(a >b); // true
+System.out.println(a == b); // false
+
+// Lógicos
+boolean maiorDeIdade = (a >= 18);
+boolean temCNH = true;
+System.out.println(maiorDeIdade && temCNH); // false (a=15, não é maior)
+System.out.println(maiorDeIdade || temCNH); // true (pelo menos um é true)</code></pre></div></div></div><!-- ============================
+ IF / ELSE
+ ============================ --><div id="condicionais" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Condicionais — if / else / switch</h3><span class="badge badge-accent">Decisões</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Semáforo</div><p>O <code>if/else</code>é como um semáforo: <em>"Se estiver verde, passe. Senão, pare."</em>O programa toma decisões dependendo de condições.</p></div><h4>Sintaxe Básica</h4><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">if (condição) {
+ // executa se a condição for VERDADEIRA
+} else if (outraCondição) {
+ // executa se a segunda condição for verdadeira
+} else {
+ // executa quando NENHUMA condição anterior é verdadeira
+}</code></pre></div><h4 class="mt-2">Exemplo 1: Positivo, Negativo ou Zero</h4><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">int numero = -7;
+
+if (numero >0) {
+ System.out.println(numero + " é POSITIVO ");
+} else if (numero < 0) {
+ System.out.println(numero + " é NEGATIVO ");
+} else {
+ System.out.println("O número é ZERO ");
+}
+// Output: -7 é NEGATIVO </code></pre></div><h4 class="mt-2">Exemplo 2: Sistema de Notas (A, B, C, D, F)</h4><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">double nota = 8.5;
+String conceito;
+
+if (nota >= 9.0) {
+ conceito = "A — Excelente! ";
+} else if (nota >= 7.0) {
+ conceito = "B — Bom! ";
+} else if (nota >= 5.0) {
+ conceito = "C — Regular ";
+} else if (nota >= 3.0) {
+ conceito = "D — Insuficiente ";
+} else {
+ conceito = "F — Reprovado ";
+}
+
+System.out.println("Nota " + nota + " → " + conceito);
+// Output: Nota 8.5 → B — Bom! </code></pre></div><h4 class="mt-2">Switch-Case — quando há muitas opções fixas</h4><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">int diaSemana = 3;
+String nomeDia;
+
+switch (diaSemana) {
+ case 1: nomeDia = "Segunda-feira"; break;
+ case 2: nomeDia = "Terça-feira"; break;
+ case 3: nomeDia = "Quarta-feira"; break;
+ case 4: nomeDia = "Quinta-feira"; break;
+ case 5: nomeDia = "Sexta-feira"; break;
+ case 6: nomeDia = "Sábado"; break;
+ case 7: nomeDia = "Domingo"; break;
+ default: nomeDia = "Dia inválido"; break;
+}
+
+System.out.println("Hoje é " + nomeDia);
+// Output: Hoje é Quarta-feira</code></pre></div><div class="try-it mt-2"><div class="try-it-title">Desafio!</div><p class="text-sm mb-1">Escreva um código que verifica se uma pessoa pode votar (maior ou igual a 16 anos) ou não:</p><textarea class="try-input" placeholder="int idade = ___&#10;if (...) {&#10; ...&#10;}"></textarea><button class="btn btn-sm btn-ghost" onclick="showAnswer('ans-if')">Ver resposta</button><div id="ans-if" class="answer-block"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span></div><pre><code class="language-java">int idade = 16;
+
+if (idade >= 18) {
+ System.out.println("Voto OBRIGATÓRIO ");
+} else if (idade >= 16) {
+ System.out.println("Voto OPCIONAL (facultativo) ");
+} else {
+ System.out.println("Não pode votar ainda ");
+}
+// Output: Voto OPCIONAL (facultativo) </code></pre></div></div></div></div></div><!-- ============================
+ LOOPS
+ ============================ --><div id="loops" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Loops — Repetição</h3><span class="badge badge-success">for | while | do-while</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Lavar louça</div><p>Um loop é como lavar louça: enquanto houver pratos sujos, você continua lavando. Quando termina, para. <em>"Repita até a condição não ser mais verdadeira."</em></p></div><div class="tabs"><div class="tab-list"><button class="tab-btn active" onclick="switchTab('loop','for',this)">for</button><button class="tab-btn" onclick="switchTab('loop','while',this)">while</button><button class="tab-btn" onclick="switchTab('loop','dowhile',this)">do-while</button></div><div id="loop-for" class="tab-panel active"><p class="text-sm text-muted mb-1">Use quando <strong>sabe quantas vezes</strong>vai repetir.</p><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">// Tabuada do 5
+for (int i = 1; i <= 10; i++) {
+ System.out.println("5 x " + i + " = " + (5 * i));
+}
+// 5 x 1 = 5
+// 5 x 2 = 10
+// ...
+// 5 x 10 = 50
+
+// Countdown
+for (int i = 10; i >= 1; i--) {
+ System.out.print(i + " ");
+}
+System.out.println(" Lançar!");
+// 10 9 8 7 6 5 4 3 2 1 Lançar!</code></pre></div></div><div id="loop-while" class="tab-panel"><p class="text-sm text-muted mb-1">Use quando <strong>não sabe quantas vezes</strong>vai repetir — depende de uma condição.</p><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">// Dobrar valor até passar de 1000
+int valor = 1;
+int passos = 0;
+
+while (valor < 1000) {
+ valor = valor * 2;
+ passos++;
+ System.out.println("Passo " + passos + ": " + valor);
+}
+
+System.out.println("Passou de 1000 em " + passos + " passos!");
+// Passo 1: 2
+// Passo 2: 4
+// ...
+// Passo 10: 1024
+// Passou de 1000 em 10 passos!</code></pre></div></div><div id="loop-dowhile" class="tab-panel"><p class="text-sm text-muted mb-1">Executa <strong>pelo menos uma vez</strong>, depois verifica a condição.</p><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">// Menu que sempre aparece pelo menos uma vez
+Scanner sc = new Scanner(System.in);
+int opcao;
+
+do {
+ System.out.println("=== MENU ===");
+ System.out.println("1 - Iniciar");
+ System.out.println("2 - Configurações");
+ System.out.println("0 - Sair");
+ System.out.print("Escolha: ");
+ opcao = sc.nextInt();
+
+ if (opcao == 1) System.out.println("Iniciando...");
+ if (opcao == 2) System.out.println("Configurações...");
+
+} while (opcao != 0);
+
+System.out.println("Até logo! ");</code></pre></div></div></div><div class="callout callout-tip mt-2"><div><div class="callout-title">Como escolher o loop certo?</div><p class="text-sm"><strong>for</strong>: sei quantas vezes (ex: 10 vezes, lista de 5 itens)<br><strong>while</strong>: não sei quantas vezes, condição pode nunca ser true<br><strong>do-while</strong>: precisa executar ao menos uma vez (ex: menus)</p></div></div></div></div><!-- ============================
+ ARRAYS
+ ============================ --><div id="arrays" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Arrays (Vetores)</h3><span class="badge badge-warn">Coleções</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Estante com gavetas numeradas</div><p>Um array é como uma estante com gavetas numeradas (0, 1, 2, 3...). Cada gaveta guarda um valor do mesmo tipo. Para acessar o conteúdo, você diz o número da gaveta (índice).</p></div><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Arrays completo</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">// 1. Declarar e inicializar
+int[] notas = {8, 7, 9, 6, 10}; // Array com valores iniciais
+String[] nomes = new String[3]; // Array vazio com 3 posições
+
+// 2. Acessar por índice (começa em 0!)
+System.out.println(notas[0]); // 8 (primeiro elemento)
+System.out.println(notas[4]); // 10 (último elemento)
+System.out.println("Tamanho: " + notas.length); // 5
+
+// 3. Modificar
+notas[2] = 10; // agora posição 2 tem 10
+
+// 4. Percorrer com for
+System.out.println("=== Notas ===");
+for (int i = 0; i < notas.length; i++) {
+ System.out.println("Nota " + (i+1) + ": " + notas[i]);
+}
+
+// 5. For-each (mais limpo)
+double soma = 0;
+for (int nota : notas) {
+ soma += nota;
+}
+double media = soma / notas.length;
+System.out.println("Média: " + media); // Média: 9.0</code></pre></div><div class="callout callout-warn mt-1"><div><div class="callout-title">Cuidado com o índice!</div><p class="text-sm">O primeiro índice é <strong>0</strong>, não 1! Um array de 5 elementos tem índices 0, 1, 2, 3, 4. Acessar <code>notas[5]</code>causa <strong>ArrayIndexOutOfBoundsException</strong>.</p></div></div><div class="try-it mt-2"><div class="try-it-title">Desafio: Calculadora de Médias</div><p class="text-sm mb-1">Crie um array com as notas de 5 alunos e calcule a média da turma:</p><textarea class="try-input" placeholder="double[] notas = {___}&#10;// calcule a soma e a média"></textarea><button class="btn btn-sm btn-ghost" onclick="showAnswer('ans-array')">Ver resposta</button><div id="ans-array" class="answer-block"><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span></div><pre><code class="language-java">double[] notas = {7.5, 8.0, 6.5, 9.0, 7.0};
+double soma = 0;
+
+for (double nota : notas) {
+ soma += nota;
+}
+
+double media = soma / notas.length;
+System.out.printf("Média da turma: %.1f%n", media);
+
+if (media >= 7.0) {
+ System.out.println("Turma APROVADA! ");
+} else {
+ System.out.println("Turma precisa de reforço ");
+}
+// Média da turma: 7.6
+// Turma APROVADA! </code></pre></div></div></div></div></div><!-- ============================
+ FUNÇÕES
+ ============================ --><div id="funcoes" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Funções (Métodos)</h3><span class="badge badge-primary">Reutilização</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Receita de bolo</div><p>Uma função é como uma receita: você escreve os passos uma vez e pode usar quantas vezes quiser. Dá para personalizar passando <em>ingredientes</em>(parâmetros) diferentes.</p></div><h4>As 4 variações de métodos</h4><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — 4 tipos de métodos</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">// 1. SEM parâmetro, SEM retorno (void)
+static void saudar() {
+ System.out.println("Olá! Bem-vindo! ");
+}
+
+// 2. COM parâmetro, SEM retorno (void)
+static void saudarPorNome(String nome) {
+ System.out.println("Olá, " + nome + "! ");
+}
+
+// 3. SEM parâmetro, COM retorno
+static String obterData() {
+ return "22/06/2025";
+}
+
+// 4. COM parâmetro, COM retorno (o mais comum!)
+static double calcularMedia(double nota1, double nota2) {
+ return (nota1 + nota2) / 2;
+}
+
+// === Como usar ===
+public static void main(String[] args) {
+ saudar(); // Olá! Bem-vindo! 
+ saudarPorNome("Akira"); // Olá, Akira! 
+ System.out.println(obterData()); // 22/06/2025
+ double media = calcularMedia(8.0, 9.5);
+ System.out.println("Média: " + media); // Média: 8.75
+}</code></pre></div><h4 class="mt-2">Método com vários parâmetros — Calculadora</h4><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">static double calcular(double a, double b, String operacao) {
+ switch (operacao) {
+ case "+": return a + b;
+ case "-": return a - b;
+ case "*": return a * b;
+ case "/":
+ if (b != 0) return a / b;
+ else { System.out.println("Erro: divisão por zero!"); return 0; }
+ default:
+ System.out.println("Operação inválida!");
+ return 0;
+ }
+}
+
+// Usar a função
+System.out.println(calcular(10, 4, "+")); // 14.0
+System.out.println(calcular(10, 4, "*")); // 40.0
+System.out.println(calcular(10, 0, "/")); // Erro: divisão por zero!</code></pre></div></div></div><!-- ============================
+ ALGORITMOS
+ ============================ --><div id="algoritmos" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Algoritmos</h3><span class="badge badge-accent">Lógica</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">O que é um algoritmo?</div><p>Um algoritmo é um <strong>conjunto de passos ordenados</strong>para resolver um problema. Como uma receita de bolo, um GPS ou as instruções de um Lego — cada passo leva ao resultado esperado.</p></div><h4>Algoritmo de Busca Linear</h4><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Busca em Array</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">// Busca linear: percorre do início ao fim
+static int buscarElemento(int[] array, int alvo) {
+ for (int i = 0; i < array.length; i++) {
+ if (array[i] == alvo) {
+ return i; // retorna o índice onde encontrou
+ }
+ }
+ return -1; // não encontrou
+}
+
+// Usando a busca
+int[] numeros = {5, 3, 8, 1, 9, 2};
+int posicao = buscarElemento(numeros, 8);
+
+if (posicao != -1) {
+ System.out.println("Encontrado na posição " + posicao); // posição 2
+} else {
+ System.out.println("Não encontrado");
+}</code></pre></div><h4 class="mt-2">Bubble Sort — Ordenação Bolha</h4><div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Ordenação</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">// Bubble Sort: compara pares adjacentes e "borbulha" os maiores para o final
+static void bubbleSort(int[] array) {
+ int n = array.length;
+ for (int i = 0; i < n - 1; i++) {
+ for (int j = 0; j < n - i - 1; j++) {
+ if (array[j] >array[j + 1]) {
+ // Trocar os elementos
+ int temp = array[j];
+ array[j] = array[j + 1];
+ array[j + 1] = temp;
+ }
+ }
+ }
+}
+
+// Usando
+int[] numeros = {64, 34, 25, 12, 22, 11, 90};
+System.out.print("Antes: ");
+for (int n : numeros) System.out.print(n + " ");
+// Antes: 64 34 25 12 22 11 90
+
+bubbleSort(numeros);
+
+System.out.print("\nDepois: ");
+for (int n : numeros) System.out.print(n + " ");
+// Depois: 11 12 22 25 34 64 90</code></pre></div><div class="callout callout-info mt-2"><div><div class="callout-title">Pseudo-código → Código Java</div><p class="text-sm">Antes de codar, escreva em português:<br><em>"Para cada elemento do array, compare com o próximo. Se for maior, troque. Repita até não haver mais trocas."</em><br>Isso é um algoritmo! Depois você traduz para qualquer linguagem.</p></div></div></div></div><!-- ============================
+ CHECKLIST
+ ============================ --><div id="checklist" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Checklist do Dia 1</h3></div></div><div class="topic-card-body"><p class="text-muted mb-2">Marque o que você já aprendeu! O progresso é salvo automaticamente </p><ul class="checklist" id="checklistDia1"><li><input type="checkbox" id="c1" onchange="saveChecklist()"><label for="c1">Entendo o que são variáveis e para que servem</label></li><li><input type="checkbox" id="c2" onchange="saveChecklist()"><label for="c2">Conheço os tipos primitivos: int, double, boolean, char, String</label></li><li><input type="checkbox" id="c3" onchange="saveChecklist()"><label for="c3">Sei usar operadores aritméticos (+, -, *, /, %)</label></li><li><input type="checkbox" id="c4" onchange="saveChecklist()"><label for="c4">Sei usar operadores relacionais e lógicos</label></li><li><input type="checkbox" id="c5" onchange="saveChecklist()"><label for="c5">Consigo escrever um if/else/else if</label></li><li><input type="checkbox" id="c6" onchange="saveChecklist()"><label for="c6">Consigo usar o switch-case</label></li><li><input type="checkbox" id="c7" onchange="saveChecklist()"><label for="c7">Sei a diferença entre for, while e do-while</label></li><li><input type="checkbox" id="c8" onchange="saveChecklist()"><label for="c8">Consigo declarar e percorrer um array</label></li><li><input type="checkbox" id="c9" onchange="saveChecklist()"><label for="c9">Sei criar funções com e sem parâmetros/retorno</label></li><li><input type="checkbox" id="c10" onchange="saveChecklist()"><label for="c10">Entendo o conceito de algoritmo</label></li></ul><div class="mt-2"><div class="progress-label"><span>Progresso do Dia 1</span><span id="checkPct">0/10</span></div><div class="progress-bar"><div class="progress-fill" id="checkFill" style="width:0%"></div></div></div><div id="conquestMsg" class="conquest">Parabéns! Você dominou a Lógica de Programação!</div><div class="flex gap-1 mt-2"><a href="exercicios.html" class="btn btn-primary">Ir para os Exercícios →</a><a href="../dia2-poo/conteudo.html" class="btn btn-ghost">Próximo: POO →</a></div></div></div></main></div></div><!-- FOOTER --><footer class="footer"><div class="container"><p><a href="../index.html">← Voltar ao Portal</a>| Dia 1 — Lógica de Programação | <a href="exercicios.html">Exercícios →</a></p></div></footer><script>hljs.highlightAll();
+
+ function toggleAccordion(btn) {
+ btn.classList.toggle('active');
+ const body = btn.nextElementSibling;
+ body.classList.toggle('open');
+ }
+
+ function switchTab(group, id, btn) {
+ document.querySelectorAll(`[id^="${group}-"]`).forEach(p =>p.classList.remove('active'));
+ btn.closest('.tabs').querySelectorAll('.tab-btn').forEach(b =>b.classList.remove('active'));
+ document.getElementById(`${group}-${id}`).classList.add('active');
+ btn.classList.add('active');
+ }
+
+ function showAnswer(id) {
+ const el = document.getElementById(id);
+ el.classList.toggle('show');
+ hljs.highlightAll();
+ }
+
+ function copyCode(btn) {
+ const pre = btn.closest('.code-block').querySelector('pre code');
+ navigator.clipboard.writeText(pre.textContent).then(() =>{
+ btn.textContent = ' Copiado!';
+ btn.classList.add('copied');
+ setTimeout(() =>{ btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
+ });
+ }
+
+ function saveChecklist() {
+ const checks = {};
+ for (let i = 1; i <= 10; i++) {
+ const el = document.getElementById('c' + i);
+ if (el) checks['c' + i] = el.checked;
+ }
+ localStorage.setItem('dia1checklist', JSON.stringify(checks));
+ updateProgress();
+ }
+
+ function loadChecklist() {
+ const saved = JSON.parse(localStorage.getItem('dia1checklist') || '{}');
+ for (let i = 1; i <= 10; i++) {
+ const el = document.getElementById('c' + i);
+ if (el && saved['c' + i]) el.checked = true;
+ }
+ updateProgress();
+ }
+
+ function updateProgress() {
+ let count = 0;
+ for (let i = 1; i <= 10; i++) {
+ const el = document.getElementById('c' + i);
+ if (el && el.checked) count++;
+ }
+ const pct = (count / 10) * 100;
+ document.getElementById('checkPct').textContent = count + '/10';
+ document.getElementById('checkFill').style.width = pct + '%';
+ // Salvar no progresso geral
+ const state = JSON.parse(localStorage.getItem('dia1progress') || '{}');
+ state.pct = pct;
+ localStorage.setItem('dia1progress', JSON.stringify(state));
+ if (count === 10) {
+ document.getElementById('conquestMsg').classList.add('show');
+ }
+ }
+
+ loadChecklist();
+
+ // Highlight sidebar link ao scroll
+ const sections = document.querySelectorAll('.topic-card');
+ const links = document.querySelectorAll('.sidebar-nav a');
+ const obs = new IntersectionObserver(entries =>{
+ entries.forEach(e =>{
+ if (e.isIntersecting) {
+ links.forEach(l =>l.classList.remove('active'));
+ const id = e.target.id;
+ const link = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+ if (link) link.classList.add('active');
+ }
+ });
+ }, { threshold: 0.4 });
+ sections.forEach(s =>obs.observe(s));
+</script></body></html>
+
+
+

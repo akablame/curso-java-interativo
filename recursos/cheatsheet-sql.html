@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Cheatsheet SQL</title><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>.cs-search{width:100%;max-width:400px;padding:.6rem 1rem;border:2px solid var(--borda);border-radius:20px;font-family:inherit;font-size:.9rem;margin-bottom:1.5rem;outline:none;}
+ .cs-search:focus{border-color:var(--secundaria);}
+ .cs-section{background:var(--bg-card);border-radius:14px;border:1px solid var(--borda);box-shadow:var(--sombra);margin-bottom:1.5rem;overflow:hidden;}
+ .cs-section-header{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1.25rem;background:linear-gradient(135deg,rgba(136,184,245,.06),rgba(106,86,176,.04));border-bottom:1px solid var(--borda);}
+ .cs-section-title{font-weight:700;display:flex;align-items:center;gap:.5rem;}
+ .cs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem;padding:1.25rem;}
+ .cs-item{background:#1e1e2e;border-radius:10px;overflow:hidden;}
+ .cs-item-header{display:flex;align-items:center;justify-content:space-between;padding:.4rem .75rem;background:#2a2a3e;}
+ .cs-item-title{color:#89dceb;font-family:'Fira Code',monospace;font-size:.78rem;font-weight:700;}
+ .cs-item pre{margin:0;padding:.6rem .75rem;font-size:.78rem;overflow-x:auto;}
+ .copy-mini{background:transparent;border:1px solid rgba(137,220,235,.3);color:#89dceb;border-radius:4px;padding:.15rem .4rem;font-size:.68rem;cursor:pointer;font-family:inherit;}
+ .copy-mini:hover{background:rgba(137,220,235,.1);}
+ .hidden-by-search{display:none;}
+ @media print{.navbar,.footer,input{display:none!important;}}
+ </style></head><body><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="cheatsheet-java.html">Java</a><a href="glossario.html">Glossário</a><button class="btn btn-ghost btn-sm" onclick="window.print()">Imprimir</button></div></div></nav><div class="page-header" style="background:linear-gradient(135deg,var(--secundaria),var(--primaria))"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› Recursos</div><h1>Cheatsheet SQL</h1><p>Referência rápida de SQL e JDBC para Java</p></div></div><div class="container section"><input class="cs-search" id="csSearch" placeholder=" Filtrar cheatsheet SQL..." oninput="filterCS()"/><!-- DDL --><div class="cs-section"><div class="cs-section-header"><div class="cs-section-title">DDL — Criar Estruturas</div></div><div class="cs-grid"><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">CREATE TABLE</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-sql">CREATE TABLE alunos (
+ id INT AUTO_INCREMENT PRIMARY KEY,
+ nome VARCHAR(100) NOT NULL,
+ email VARCHAR(100) UNIQUE,
+ cpf CHAR(14) UNIQUE NOT NULL,
+ nota DECIMAL(4,2) DEFAULT 0.0,
+ ativo BOOLEAN DEFAULT TRUE,
+ criado_em DATETIME DEFAULT NOW()
+);</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Tipos de dados</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-sql">-- Inteiros
+INT / INTEGER -- -2 bi a 2 bi
+BIGINT -- maior
+TINYINT -- 0 a 255
+SMALLINT -- -32k a 32k
+
+-- Decimais
+DECIMAL(10,2) -- 8 dígitos, 2 decimais
+FLOAT / DOUBLE -- menos preciso
+
+-- Texto
+VARCHAR(n) -- variável até n chars
+CHAR(n) -- fixo n chars
+TEXT -- texto longo
+
+-- Data/Hora
+DATE -- 2024-03-15
+TIME -- 14:30:00
+DATETIME -- 2024-03-15 14:30:00
+TIMESTAMP -- com timezone</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Constraints (restrições)</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-sql">PRIMARY KEY -- identificador único
+NOT NULL -- obrigatório
+UNIQUE -- sem duplicatas
+DEFAULT valor -- valor padrão
+FOREIGN KEY -- referência outra tabela
+CHECK (nota >= 0) -- validação
+
+-- Foreign Key completa:
+FOREIGN KEY (turma_id)
+ REFERENCES turmas(id)
+ ON DELETE CASCADE -- ou SET NULL
+ ON UPDATE CASCADE;</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">ALTER TABLE</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-sql">-- Adicionar coluna
+ALTER TABLE alunos ADD telefone VARCHAR(20);
+
+-- Modificar tipo de coluna
+ALTER TABLE alunos MODIFY nota DECIMAL(5,2);
+
+-- Renomear coluna
+ALTER TABLE alunos RENAME COLUMN nota TO media;
+
+-- Remover coluna
+ALTER TABLE alunos DROP COLUMN telefone;
+
+-- Adicionar índice
+CREATE INDEX idx_nome ON alunos(nome);</code></pre></div></div></div><!-- DML - SELECT --><div class="cs-section"><div class="cs-section-header"><div class="cs-section-title">SELECT — Consultas</div></div><div class="cs-grid"><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">SELECT básico + filtros</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-sql">SELECT * FROM alunos;
+
+SELECT nome, nota FROM alunos
+WHERE nota >= 7
+ AND ativo = TRUE
+ORDER BY nota DESC
+LIMIT 10;</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Operadores WHERE</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-sql">WHERE nota = 8.5 -- igual
+WHERE nota != 5 -- diferente
+WHERE nota >= 7 -- maior ou igual
+WHERE nota BETWEEN 5 AND 7 -- intervalo
+WHERE nome LIKE 'Ana%' -- começa com Ana
+WHERE nome LIKE '%Silva' -- termina com Silva
+WHERE id IN (1, 3, 5) -- um dos valores
+WHERE email IS NULL -- sem valor
+WHERE email IS NOT NULL -- tem valor</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">GROUP BY + Aggregate</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-sql">SELECT turma_id,
+ COUNT(*) AS total_alunos,
+ AVG(nota) AS media_turma,
+ MAX(nota) AS maior_nota,
+ MIN(nota) AS menor_nota,
+ SUM(nota) AS soma_notas
+FROM alunos
+GROUP BY turma_id
+HAVING AVG(nota) >= 6.5
+ORDER BY media_turma DESC;</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Subconsultas</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-sql">-- Alunos com nota acima da média
+SELECT nome, nota FROM alunos
+WHERE nota >(SELECT AVG(nota) FROM alunos);
+
+-- EXISTS
+SELECT * FROM pedidos p
+WHERE EXISTS (
+ SELECT 1 FROM itens i WHERE i.pedido_id = p.id
+);</code></pre></div></div></div><!-- JOINS --><div class="cs-section"><div class="cs-section-header"><div class="cs-section-title">JOINs</div></div><div class="cs-grid"><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">INNER JOIN</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-sql">-- Só registros que têm correspondência nas duas
+SELECT a.nome, t.nome AS turma
+FROM alunos a
+INNER JOIN turmas t ON a.turma_id = t.id;</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">LEFT JOIN</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-sql">-- Todos da esquerda, NULL onde não há correspondência
+SELECT a.nome, e.data_emprestimo
+FROM usuarios a
+LEFT JOIN emprestimos e ON a.id = e.usuario_id;
+-- Usuários sem empréstimos terão NULL em e.*</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Múltiplos JOINs</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-sql">SELECT a.nome, t.nome AS turma,
+ p.nome AS professor, n.nota
+FROM alunos a
+JOIN turmas t ON a.turma_id = t.id
+JOIN professores p ON t.professor_id = p.id
+LEFT JOIN notas n ON n.aluno_id = a.id
+ORDER BY t.nome, a.nome;</code></pre></div></div></div><!-- DML - INSERT/UPDATE/DELETE --><div class="cs-section"><div class="cs-section-header"><div class="cs-section-title">INSERT / UPDATE / DELETE</div></div><div class="cs-grid"><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">INSERT</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-sql">-- Um registro
+INSERT INTO alunos (nome, nota)
+VALUES ('Maria', 8.5);
+
+-- Múltiplos registros
+INSERT INTO alunos (nome, nota) VALUES
+('João', 7.0),
+('Ana', 9.5),
+('Pedro', 6.0);
+
+-- Retornar id gerado (MySQL)
+INSERT INTO ... VALUES ...;
+SELECT LAST_INSERT_ID();</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">UPDATE </span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-sql">-- SEMPRE use WHERE para não atualizar tudo!
+UPDATE alunos
+SET nota = 9.0, ativo = TRUE
+WHERE id = 5;
+
+-- Atualizar baseado em outra tabela
+UPDATE alunos a
+JOIN turmas t ON a.turma_id = t.id
+SET a.nota = a.nota + 0.5
+WHERE t.nome = 'Turma A';</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">DELETE </span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-sql">-- SEMPRE use WHERE!
+DELETE FROM alunos WHERE id = 5;
+
+-- Deletar com JOIN
+DELETE a FROM alunos a
+JOIN turmas t ON a.turma_id = t.id
+WHERE t.nome = 'Turma Cancelada';
+
+-- Deletar todos (sem WHERE) — perigo!
+TRUNCATE TABLE log_acesso; -- rápido, sem rollback
+DELETE FROM log_acesso; -- lento, com rollback</code></pre></div></div></div><!-- FUNÇÕES --><div class="cs-section"><div class="cs-section-header"><div class="cs-section-title">Funções SQL</div></div><div class="cs-grid"><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Funções de texto</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-sql">UPPER(nome) -- MAIÚSCULO
+LOWER(nome) -- minúsculo
+LENGTH(nome) -- tamanho
+TRIM(nome) -- remove espaços
+SUBSTRING(nome,1,5) -- subcadeia
+CONCAT(a, ' ', b) -- concatenar
+REPLACE(s,'a','@') -- substituir
+COALESCE(col, 'N/A') -- substitui NULL</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">Funções de data</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-sql">NOW() -- datetime atual
+CURDATE() -- data atual
+DATE(datetime) -- extrai data
+YEAR(data) -- extrai ano
+MONTH(data) -- extrai mês
+DAY(data) -- extrai dia
+DATEDIFF(d1, d2) -- diferença em dias
+DATE_ADD(data, INTERVAL 30 DAY)
+DATE_FORMAT(data, '%d/%m/%Y') -- formatar</code></pre></div><div class="cs-item"><div class="cs-item-header"><span class="cs-item-title">CASE (condicional)</span><button class="copy-mini" onclick="copyCS(this)">copiar</button></div><pre><code class="language-sql">SELECT nome,
+ CASE
+ WHEN nota >= 7.0 THEN 'Aprovado'
+ WHEN nota >= 5.0 THEN 'Recuperação'
+ ELSE 'Reprovado'
+ END AS situacao
+FROM alunos;
+
+-- CASE simples
+SELECT nome,
+ CASE ativo
+ WHEN TRUE THEN 'Sim'
+ ELSE 'Não'
+ END AS esta_ativo
+FROM alunos;</code></pre></div></div></div></div><footer class="footer"><div class="container"><p><a href="../index.html">← Portal</a>| <a href="cheatsheet-java.html">Java</a>| <a href="glossario.html">Glossário</a></p></div></footer><script>hljs.highlightAll();
+ function filterCS() {
+ const q = document.getElementById('csSearch').value.toLowerCase();
+ document.querySelectorAll('.cs-item').forEach(item =>{
+ item.classList.toggle('hidden-by-search', q.length >0 && !item.textContent.toLowerCase().includes(q));
+ });
+ document.querySelectorAll('.cs-section').forEach(sec =>{
+ const visible = [...sec.querySelectorAll('.cs-item')].some(i =>!i.classList.contains('hidden-by-search'));
+ sec.style.display = visible ? '' : 'none';
+ });
+ }
+ function copyCS(btn) {
+ const code = btn.closest('.cs-item').querySelector('code');
+ navigator.clipboard.writeText(code.textContent).then(() =>{ btn.textContent = ''; setTimeout(() =>btn.textContent = 'copiar', 1500); });
+ }
+</script></body></html>
+
+
+

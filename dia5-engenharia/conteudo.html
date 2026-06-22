@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Dia 5 — Engenharia de Software</title><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>.analogy-box{background:linear-gradient(135deg,rgba(136,184,245,0.08),rgba(106,86,176,0.06));border:1px solid rgba(136,184,245,0.3);border-radius:12px;padding:1rem 1.25rem;margin:.75rem 0;}
+ .analogy-box .ana-title{font-weight:700;color:var(--secundaria);font-size:.85rem;margin-bottom:.3rem;}
+ .uml-seq{border:1px solid var(--borda);border-radius:12px;overflow:hidden;margin:1rem 0;}
+ .uml-seq-header{background:rgba(136,184,245,0.06);padding:.75rem 1rem;font-weight:700;color:var(--secundaria);}
+ .uml-seq-body{padding:1rem;font-family:'Fira Code',monospace;font-size:.82rem;background:var(--bg-elevated);}
+ .seq-actor{display:inline-block;background:var(--secundaria);color:white;padding:.2rem .75rem;border-radius:4px;font-size:.78rem;font-weight:700;}
+ .seq-arrow{color:var(--primaria);font-size:1rem;}
+ .seq-line{padding:.25rem 0;border-bottom:1px solid var(--borda);}
+ .seq-line:last-child{border-bottom:none;}
+ .scrum-board{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1rem 0;}
+ .scrum-col{background:rgba(106,86,176,0.04);border-radius:10px;padding:.75rem;border:1px solid var(--borda);}
+ .scrum-col-title{font-weight:700;font-size:.85rem;margin-bottom:.5rem;text-align:center;padding:.35rem;border-radius:6px;}
+ .todo-title{background:rgba(244,160,58,0.15);color:var(--aviso);}
+ .doing-title{background:rgba(136,184,245,0.15);color:var(--secundaria);}
+ .done-title{background:rgba(93,175,142,0.15);color:var(--sucesso);}
+ .scrum-card{background:var(--bg-card);border-radius:6px;padding:.5rem .65rem;margin-bottom:.35rem;font-size:.8rem;border-left:3px solid var(--primaria);box-shadow:0 1px 4px rgba(0,0,0,.06);cursor:grab;}
+ .scrum-card:hover{box-shadow:0 2px 8px rgba(106,86,176,.15);}
+ .req-table td,.req-table th{font-size:.82rem;}
+ .user-story{background:rgba(106,86,176,0.04);border-left:4px solid var(--primaria);padding:.6rem 1rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.88rem;}
+ .mvc-diagram{display:flex;gap:1rem;align-items:center;justify-content:center;flex-wrap:wrap;margin:1rem 0;}
+ .mvc-box{border:2px solid;border-radius:10px;padding:1rem 1.5rem;text-align:center;min-width:120px;}
+ .mvc-m{border-color:var(--sucesso);color:var(--sucesso);}
+ .mvc-v{border-color:var(--secundaria);color:var(--secundaria);}
+ .mvc-c{border-color:var(--primaria);color:var(--primaria);}
+ .answer-block{display:none;} .answer-block.show{display:block;}
+ @media(max-width:600px){.scrum-board{grid-template-columns:1fr;}}
+ </style></head><body><nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="exercicios.html">Exercícios</a><a href="uml-interativo.html">UML Builder</a><a href="../dia4-frontend/conteudo.html">← Dia 4</a><a href="../dia6-projeto/guia-projeto.html">Dia 6 →</a></div></div></nav><div class="page-header" style="background:linear-gradient(135deg,var(--secundaria),var(--primaria))"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› Dia 5</div><h1>Dia 5 — Engenharia de Software</h1><p>UML, diagramas, requisitos, arquitetura e Scrum — como profissionais constroem sistemas.</p></div></div><div class="container"><div class="content-layout"><aside class="sidebar"><div class="sidebar-title">Tópicos</div><nav class="sidebar-nav"><a href="#uml">O que é UML?</a><a href="#casos-uso">Casos de Uso</a><a href="#sequencia">Sequência</a><a href="#uml-classes">Classes UML</a><a href="#requisitos">Requisitos</a><a href="#arquitetura">Arquitetura</a><a href="#scrum">Scrum</a><a href="#checklist">Checklist</a></nav></aside><main><!-- UML --><div id="uml" class="topic-card fade-in"><div class="topic-card-header"><div><h3>O que é UML?</h3><span class="badge badge-blue">Unified Modeling Language</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Planta baixa de uma casa</div><p>Antes de construir uma casa, o arquiteto faz a <strong>planta baixa</strong>. UML é a "planta baixa" do software — você desenha o sistema antes de codar, economizando tempo e evitando retrabalho.</p></div><h4 class="mt-2">Principais Tipos de Diagramas UML</h4><div class="table-wrapper mt-1"><table><thead><tr><th>Diagrama</th><th>O que mostra</th><th>Quando usar</th></tr></thead><tbody><tr><td>Casos de Uso</td><td>O que o sistema faz e para quem</td><td>Início do projeto (levantamento)</td></tr><tr><td>Classes</td><td>Estrutura das classes e relacionamentos</td><td>Design e modelagem POO</td></tr><tr><td>Sequência</td><td>Ordem de mensagens entre objetos</td><td>Modelar fluxos/processos</td></tr><tr><td>Atividade</td><td>Fluxo de trabalho (como um fluxograma)</td><td>Modelar algoritmos</td></tr><tr><td>Componentes</td><td>Arquitetura de alto nível</td><td>Sistemas distribuídos</td></tr></tbody></table></div></div></div><!-- CASOS DE USO --><div id="casos-uso" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Diagrama de Casos de Uso</h3><span class="badge badge-accent">Use Case</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Quem faz o quê?</div><p>O diagrama de casos de uso responde: <em>"Quem usa o sistema?"</em>(atores) e <em>"O que eles podem fazer?"</em>(casos de uso). É a visão do usuário sobre o sistema.</p></div><h4>Componentes do Diagrama</h4><div class="table-wrapper mt-1 mb-2"><table><thead><tr><th>Símbolo</th><th>Nome</th><th>Representa</th></tr></thead><tbody><tr><td></td><td>Ator</td><td>Pessoa ou sistema externo que usa o sistema</td></tr><tr><td></td><td>Caso de Uso</td><td>Uma funcionalidade do sistema</td></tr><tr><td>──────</td><td>Associação</td><td>Ator usa esse caso de uso</td></tr><tr><td>→ «include»</td><td>Include</td><td>Um caso de uso sempre inclui outro</td></tr><tr><td>→ «extend»</td><td>Extend</td><td>Um caso de uso pode estender outro</td></tr></tbody></table></div><div class="uml-seq"><div class="uml-seq-header">Exemplo: Sistema de Biblioteca</div><div class="uml-seq-body"><pre style="font-size:.8rem;color:var(--texto);line-height:1.8">┌─────────────────────────────────────────────┐
+ │ Sistema de Biblioteca │
+ │ │
+ │ ┌──────────────┐ ┌───────────────────┐ │
+ │ │ Buscar Livro │ │ Realizar Empréstimo│ │
+ │ └──────────────┘ └───────────────────┘ │
+ │ ↑ ↑ │
+ │ ┌──────────────┐ ┌───────────────────┐ │
+ │ │Devolver Livro│ │ Renovar Empréstimo │ │
+ │ └──────────────┘ └───────────────────┘ │
+ │ ↑ «include» Verificar Disponib. │
+ └─────────────────────────────────────────────┘
+ ↑ ↑
+ Usuário Bibliotecário</pre></div></div><div class="callout callout-tip mt-1"><div><div class="callout-title">Dica de identificação de atores</div><p class="text-sm">Para encontrar os atores, pergunte: <em>"Quem vai usar este sistema?"</em>e <em>"Há sistemas externos que interagem?"</em>. Atores sempre ficam <strong>fora</strong>do retângulo do sistema.</p></div></div></div></div><!-- DIAGRAMA DE SEQUÊNCIA --><div id="sequencia" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Diagrama de Sequência</h3><span class="badge badge-primary">Sequence Diagram</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Roteiro de uma ligação</div><p>O diagrama de sequência é como um roteiro: mostra <em>quem fala com quem</em>, <em>o que diz</em>e <em>em que ordem</em>. As "linhas de vida" representam os participantes.</p></div><h4>Fluxo de Login — Exemplo</h4><div class="uml-seq mt-1"><div class="uml-seq-header">Diagrama de Sequência: Login</div><div class="uml-seq-body"><div class="seq-line"><span class="seq-actor">Usuário</span><span class="seq-arrow">──► </span><span class="seq-actor">Interface</span>: digitarCredenciais(login, senha)</div><div class="seq-line"><span class="seq-actor">Interface</span><span class="seq-arrow">──► </span><span class="seq-actor">SistemaLogin</span>: autenticar(login, senha)</div><div class="seq-line"><span class="seq-actor">SistemaLogin</span><span class="seq-arrow">──► </span><span class="seq-actor">BancoDados</span>: buscarUsuario(login)</div><div class="seq-line"><span class="seq-actor">BancoDados</span><span class="seq-arrow">◄── </span><span class="seq-actor">BancoDados</span>: [retorna usuario ou null]</div><div class="seq-line"><span class="seq-actor">SistemaLogin</span><span class="seq-arrow">──► </span><span class="seq-actor">SistemaLogin</span>: verificarSenha(hash)</div><div class="seq-line"><span class="seq-actor">Interface</span><span class="seq-arrow">◄── </span><span class="seq-actor">SistemaLogin</span>: retornaResultado(sucesso/falha)</div><div class="seq-line"><span class="seq-actor">Usuário</span><span class="seq-arrow">◄── </span><span class="seq-actor">Interface</span>: exibirMensagem()</div></div></div></div></div><!-- UML CLASSES --><div id="uml-classes" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Notação UML para Classes</h3><span class="badge badge-success">Class Diagram</span></div></div><div class="topic-card-body"><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">UML — Notação</span></div><pre><code class="language-text">┌─────────────────────────────────┐
+│ ContaBancaria │ ← Nome da Classe
+├─────────────────────────────────┤
+│ - titular: String │ ← Atributos
+│ - saldo: double │ (- = private, + = public, # = protected)
+│ - numeroConta: String │
+├─────────────────────────────────┤
+│ + depositar(valor: double): void│ ← Métodos
+│ + sacar(valor: double): boolean │
+│ + getSaldo(): double │
+└─────────────────────────────────┘
+
+Relacionamentos:
+────────────► Associação (usa)
+────────────▷ Herança (é um)
+- - - - - -► Dependência (usa temporariamente)
+────────────◇ Agregação (tem um, pode existir sem)
+────────────◆ Composição (tem um, não existe sem)</code></pre></div></div></div><!-- REQUISITOS --><div id="requisitos" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Requisitos de Software</h3><span class="badge badge-warn">Requirements</span></div></div><div class="topic-card-body"><div class="table-wrapper mt-1 mb-2"><table class="req-table"><thead><tr><th>Tipo</th><th>Definição</th><th>Exemplos</th></tr></thead><tbody><tr><td><strong>Funcionais (RF)</strong></td><td>O que o sistema <em>faz</em></td><td>RF01: O sistema deve permitir login. RF02: Cadastrar aluno.</td></tr><tr><td><strong>Não-Funcionais (RNF)</strong></td><td>Como o sistema <em>se comporta</em></td><td>RNF01: Resposta em &lt;2s. RNF02: Suportar 1000 usuários.</td></tr></tbody></table></div><h4>Histórias de Usuário (User Stories)</h4><div class="analogy-box"><div class="ana-title">Formato padrão</div><p><strong>Como</strong>[tipo de usuário], <strong>quero</strong>[ação/funcionalidade] <strong>para</strong>[benefício/motivo].</p></div><h5 class="mt-2 mb-1">Exemplo: Sistema Escolar</h5><div class="user-story"><strong>US01:</strong>Como <em>aluno</em>, quero <em>visualizar minhas notas</em>para <em>saber minha situação acadêmica</em>.</div><div class="user-story"><strong>US02:</strong>Como <em>professor</em>, quero <em>lançar notas de forma rápida</em>para <em>economizar tempo</em>.</div><div class="user-story"><strong>US03:</strong>Como <em>coordenador</em>, quero <em>gerar relatórios de desempenho</em>para <em>tomar decisões pedagógicas</em>.</div><h4 class="mt-2">Requisitos Funcionais — Sistema Escolar</h4><div class="table-wrapper mt-1"><table class="req-table"><thead><tr><th>#</th><th>Requisito</th><th>Prioridade</th></tr></thead><tbody><tr><td>RF01</td><td>O sistema deve autenticar usuários por login e senha</td><td><span class="badge badge-accent">Alta</span></td></tr><tr><td>RF02</td><td>Professores devem poder lançar e editar notas</td><td><span class="badge badge-accent">Alta</span></td></tr><tr><td>RF03</td><td>O sistema deve calcular médias automaticamente</td><td><span class="badge badge-accent">Alta</span></td></tr><tr><td>RF04</td><td>Alunos devem visualizar seu boletim</td><td><span class="badge badge-blue">Média</span></td></tr><tr><td>RF05</td><td>O sistema deve enviar e-mail de aprovação/reprovação</td><td><span class="badge badge-success">Baixa</span></td></tr></tbody></table></div></div></div><!-- ARQUITETURA --><div id="arquitetura" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Arquitetura de Software</h3><span class="badge badge-primary">Patterns</span></div></div><div class="topic-card-body"><h4>MVC — Model, View, Controller</h4><div class="mvc-diagram"><div class="mvc-box mvc-v"><div style="font-size:1.5rem"></div><strong>View</strong><div style="font-size:.75rem;margin-top:.25rem">Interface/Tela<br>(JFrame, HTML)</div></div><div style="font-size:1.5rem;color:var(--texto-suave)">⟷</div><div class="mvc-box mvc-c"><div style="font-size:1.5rem"></div><strong>Controller</strong><div style="font-size:.75rem;margin-top:.25rem">Regras/Lógica<br>(Classes Java)</div></div><div style="font-size:1.5rem;color:var(--texto-suave)">⟷</div><div class="mvc-box mvc-m"><div style="font-size:1.5rem"></div><strong>Model</strong><div style="font-size:.75rem;margin-top:.25rem">Dados/BD<br>(DAO, SQL)</div></div></div><div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Estrutura MVC</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">// MODEL (representa os dados)
+public class Aluno {
+ private int id;
+ private String nome;
+ private double nota;
+ // getters, setters, construtores
+}
+
+// DAO (acessa o banco — parte do Model)
+public class AlunoDAO {
+ public void salvar(Aluno a) { /* INSERT no BD */ }
+ public Aluno buscarPorId(int id) { /* SELECT */ }
+ public List&lt;Aluno&gt; listarTodos() { /* SELECT * */ }
+}
+
+// CONTROLLER (regras de negócio)
+public class AlunoController {
+ private AlunoDAO dao = new AlunoDAO();
+
+ public void cadastrarAluno(String nome, double nota) {
+ if (nome.isEmpty()) throw new IllegalArgumentException("Nome vazio!");
+ if (nota < 0 || nota >10) throw new IllegalArgumentException("Nota inválida!");
+ Aluno a = new Aluno(nome, nota);
+ dao.salvar(a);
+ }
+}
+
+// VIEW (JFrame — só exibe e captura input)
+public class TelaAlunos extends JFrame {
+ private AlunoController controller = new AlunoController();
+
+ void aoClicarSalvar() {
+ String nome = txtNome.getText();
+ double nota = Double.parseDouble(txtNota.getText());
+ controller.cadastrarAluno(nome, nota); // usa o controller!
+ JOptionPane.showMessageDialog(this, "Salvo!");
+ }
+}</code></pre></div><div class="callout callout-info mt-2"><div><div class="callout-title">Por que usar MVC?</div><p class="text-sm">Separação de responsabilidades: se mudar a tela (View), não precisa mudar o banco (Model). Se mudar a regra (Controller), não precisa mexer na tela. Facilita manutenção e trabalho em equipe!</p></div></div></div></div><!-- SCRUM --><div id="scrum" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Scrum — Metodologia Ágil</h3><span class="badge badge-success">Agile</span></div></div><div class="topic-card-body"><div class="analogy-box"><div class="ana-title">Analogia: Entrega de pizza</div><p>Em vez de demorar 6 meses para entregar o sistema completo, o Scrum entrega <strong>partes funcionais a cada 2 semanas</strong>(Sprint). O cliente vê resultado rápido e pode dar feedback!</p></div><div class="table-wrapper mt-2 mb-2"><table><thead><tr><th>Papel</th><th>Responsabilidade</th></tr></thead><tbody><tr><td><strong>Product Owner (PO)</strong></td><td>Define o que deve ser feito (backlog), prioriza funcionalidades</td></tr><tr><td><strong>Scrum Master</strong></td><td>Facilita o processo, remove impedimentos, protege o time</td></tr><tr><td><strong>Dev Team</strong></td><td>Desenvolve o produto — programadores, designers, testers</td></tr></tbody></table></div><h4>Cerimônias do Scrum</h4><div class="accordion mt-1 mb-2"><div class="accordion-item"><button class="accordion-header" onclick="toggleAccordion(this)">Sprint Planning <span class="accordion-arrow">▼</span></button><div class="accordion-body">Planejamento do Sprint: time decide QUAIS tarefas do backlog serão feitas neste Sprint (1-4 semanas).</div></div><div class="accordion-item"><button class="accordion-header" onclick="toggleAccordion(this)">Daily Scrum (15 min) <span class="accordion-arrow">▼</span></button><div class="accordion-body">Reunião diária de 15 minutos: 1) O que fiz ontem? 2) O que farei hoje? 3) Há algum impedimento?</div></div><div class="accordion-item"><button class="accordion-header" onclick="toggleAccordion(this)">Sprint Review <span class="accordion-arrow">▼</span></button><div class="accordion-body">No final do Sprint, o time demonstra o que foi produzido para o Product Owner e stakeholders.</div></div><div class="accordion-item"><button class="accordion-header" onclick="toggleAccordion(this)">Retrospectiva <span class="accordion-arrow">▼</span></button><div class="accordion-body">Time reflete sobre o Sprint: o que funcionou bem? O que pode melhorar? Gera plano de melhoria.</div></div></div><h4>Quadro Kanban Interativo</h4><div class="scrum-board" id="scrumBoard"><div class="scrum-col"><div class="scrum-col-title todo-title">A Fazer</div><div id="todo"><div class="scrum-card" draggable="true">RF05: E-mail automático</div><div class="scrum-card" draggable="true">RF06: Relatório PDF</div><div class="scrum-card" draggable="true">RNF01: Testes</div></div></div><div class="scrum-col"><div class="scrum-col-title doing-title">Fazendo</div><div id="doing"><div class="scrum-card" draggable="true">RF03: Calcular médias</div><div class="scrum-card" draggable="true">RF04: Boletim aluno</div></div></div><div class="scrum-col"><div class="scrum-col-title done-title">Concluído</div><div id="done-col"><div class="scrum-card" draggable="true" style="opacity:.7">RF01: Sistema login</div><div class="scrum-card" draggable="true" style="opacity:.7">RF02: Lançar notas</div></div></div></div><p class="text-xs text-muted text-center">Arraste os cards entre as colunas! </p></div></div><!-- CHECKLIST --><div id="checklist" class="topic-card fade-in"><div class="topic-card-header"><div><h3>Checklist do Dia 5</h3></div></div><div class="topic-card-body"><ul class="checklist"><li><input type="checkbox" id="d5c1" onchange="saveC5()"><label for="d5c1">Entendo o que é UML e para que serve</label></li><li><input type="checkbox" id="d5c2" onchange="saveC5()"><label for="d5c2">Sei criar um diagrama de casos de uso</label></li><li><input type="checkbox" id="d5c3" onchange="saveC5()"><label for="d5c3">Entendo o diagrama de sequência</label></li><li><input type="checkbox" id="d5c4" onchange="saveC5()"><label for="d5c4">Sei a notação formal UML de classes (+, -, #)</label></li><li><input type="checkbox" id="d5c5" onchange="saveC5()"><label for="d5c5">Sei a diferença entre requisitos funcionais e não-funcionais</label></li><li><input type="checkbox" id="d5c6" onchange="saveC5()"><label for="d5c6">Consigo escrever histórias de usuário</label></li><li><input type="checkbox" id="d5c7" onchange="saveC5()"><label for="d5c7">Entendo a arquitetura MVC</label></li><li><input type="checkbox" id="d5c8" onchange="saveC5()"><label for="d5c8">Conheço os papéis e cerimônias do Scrum</label></li></ul><div class="mt-2"><div class="progress-label"><span>Progresso Dia 5</span><span id="c5pct">0/8</span></div><div class="progress-bar"><div class="progress-fill" id="c5fill" style="width:0%"></div></div></div><div class="flex gap-1 mt-2"><a href="exercicios.html" class="btn btn-primary">Exercícios →</a><a href="uml-interativo.html" class="btn btn-secondary">UML Builder</a><a href="../dia6-projeto/guia-projeto.html" class="btn btn-ghost">Dia 6 →</a></div></div></div></main></div></div><footer class="footer"><div class="container"><p><a href="../index.html">← Portal</a>| Dia 5 — Engenharia | <a href="../dia6-projeto/guia-projeto.html">Dia 6 →</a></p></div></footer><script>hljs.highlightAll();
+ function copyCode(btn){const pre=btn.closest('.code-block').querySelector('pre code');navigator.clipboard.writeText(pre.textContent).then(()=>{btn.textContent=' Copiado!';setTimeout(()=>btn.textContent='Copiar',2000);});}
+ function toggleAccordion(btn){btn.classList.toggle('active');btn.nextElementSibling.classList.toggle('open');}
+ function saveC5(){const checks={};for(let i=1;i<=8;i++){const el=document.getElementById('d5c'+i);if(el)checks[i]=el.checked;}localStorage.setItem('dia5checklist',JSON.stringify(checks));let c=Object.values(checks).filter(Boolean).length;document.getElementById('c5pct').textContent=c+'/8';document.getElementById('c5fill').style.width=(c/8*100)+'%';}
+ function loadC5(){const saved=JSON.parse(localStorage.getItem('dia5checklist')||'{}');let c=0;for(let i=1;i<=8;i++){const el=document.getElementById('d5c'+i);if(el&&saved[i]){el.checked=true;c++;}}document.getElementById('c5pct').textContent=c+'/8';document.getElementById('c5fill').style.width=(c/8*100)+'%';}
+ loadC5();
+
+ // Drag & Drop do Kanban
+ let dragCard = null;
+ document.querySelectorAll('.scrum-card').forEach(card =>{
+ card.addEventListener('dragstart', () =>{ dragCard = card; card.style.opacity = '0.5'; });
+ card.addEventListener('dragend', () =>{ card.style.opacity = ''; dragCard = null; });
+ });
+ ['todo','doing','done-col'].forEach(colId =>{
+ const col = document.getElementById(colId);
+ col.addEventListener('dragover', e =>e.preventDefault());
+ col.addEventListener('drop', () =>{ if (dragCard) col.appendChild(dragCard); });
+ });
+</script></body></html>
+
+
+
