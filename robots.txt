@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://akablame.github.io/curso-java-interativo/sitemap.xml

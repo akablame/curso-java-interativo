@@ -1,0 +1,23 @@
+# Curso Java Interativo
+
+Portal de estudos em português para aprender Java em 6 dias, com aulas, exercícios, playgrounds, revisões e projeto final.
+
+## Páginas principais
+
+- [Portal](https://akablame.github.io/curso-java-interativo/)
+- [Dia 1: Lógica de Programação](https://akablame.github.io/curso-java-interativo/dia1-logica/conteudo.html)
+- [Dia 2: Programação Orientada a Objetos](https://akablame.github.io/curso-java-interativo/dia2-poo/conteudo.html)
+- [Dia 3: Banco de Dados e SQL](https://akablame.github.io/curso-java-interativo/dia3-banco/conteudo.html)
+- [Dia 4: Front-end e JFrame](https://akablame.github.io/curso-java-interativo/dia4-frontend/conteudo.html)
+- [Dia 5: Engenharia de Software](https://akablame.github.io/curso-java-interativo/dia5-engenharia/conteudo.html)
+- [Dia 6: Projetos Completos](https://akablame.github.io/curso-java-interativo/dia6-projeto/guia-projeto.html)
+- [Revisão Java Swing + DAO](https://akablame.github.io/curso-java-interativo/prova-swing/conteudo.html)
+
+## Recursos
+
+- [Quiz Geral](https://akablame.github.io/curso-java-interativo/recursos/quiz-geral.html)
+- [Flashcards](https://akablame.github.io/curso-java-interativo/recursos/flashcards.html)
+- [Tutor Local](https://akablame.github.io/curso-java-interativo/recursos/tutor.html)
+- [Cheatsheet Java](https://akablame.github.io/curso-java-interativo/recursos/cheatsheet-java.html)
+- [Cheatsheet SQL](https://akablame.github.io/curso-java-interativo/recursos/cheatsheet-sql.html)
+- [Glossário](https://akablame.github.io/curso-java-interativo/recursos/glossario.html)

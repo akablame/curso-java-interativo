@@ -3,18 +3,55 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="description" content="Portal de estudos Java em 6 dias com lógica, POO, SQL, front-end, engenharia de software, projeto completo, quiz e recursos de revisão."/>
+  <meta name="robots" content="index, follow"/>
+  <meta name="theme-color" content="#0f1411"/>
+  <link rel="canonical" href="https://akablame.github.io/curso-java-interativo/"/>
+  <meta property="og:title" content="Curso Java — Portal de Estudos"/>
+  <meta property="og:description" content="Portal de estudos Java em 6 dias com lógica, POO, SQL, front-end, engenharia de software, projeto completo, quiz e recursos de revisão."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://akablame.github.io/curso-java-interativo/"/>
+  <meta name="twitter:card" content="summary"/>
   <title>Curso Java — Portal de Estudos</title>
   <link rel="stylesheet" href="assets/style.css"/>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "Curso Java Interativo",
+    "description": "Trilha prática de 6 dias para estudar Java, lógica, programação orientada a objetos, SQL, front-end, engenharia de software e projeto completo.",
+    "inLanguage": "pt-BR",
+    "provider": {
+      "@type": "Organization",
+      "name": "Curso Java Interativo",
+      "url": "https://akablame.github.io/curso-java-interativo/"
+    },
+    "hasCourseInstance": {
+      "@type": "CourseInstance",
+      "courseMode": "online",
+      "courseWorkload": "P6D"
+    }
+  }
+  </script>
   <style>
     /* ── Portal hero ── */
     .portal-hero {
-      padding: 3.5rem 0 2.5rem;
+      padding: 3.25rem 0 2.35rem;
       border-bottom: 1px solid var(--borda);
     }
+    .portal-kicker {
+      color: var(--aviso);
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.45rem;
+      text-transform: uppercase;
+    }
     .portal-hero h1 {
-      font-size: clamp(2rem, 5vw, 3rem);
+      font-size: 2.9rem;
       font-weight: 800;
-      letter-spacing: -0.03em;
+      letter-spacing: 0;
       margin-bottom: 0.5rem;
       line-height: 1.1;
     }
@@ -32,15 +69,15 @@
     .portal-progress-bar {
       flex: 1;
       min-width: 160px;
-      height: 3px;
+      height: 6px;
       background: var(--bg-elevated);
-      border-radius: 99px;
+      border-radius: var(--r);
       overflow: hidden;
     }
     .portal-progress-fill {
       height: 100%;
-      background: var(--primaria-dim);
-      border-radius: 99px;
+      background: linear-gradient(90deg, var(--primaria-dim), var(--aviso));
+      border-radius: var(--r);
       transition: width 0.4s ease;
     }
     .portal-progress-label {
@@ -70,9 +107,14 @@
       display: flex;
       align-items: center;
       gap: 0.4rem;
+      min-height: 2.75rem;
     }
     .resource-strip a:hover { color: var(--texto); background: var(--bg-surface); }
     .resource-strip a:first-child { border-left: 1px solid var(--borda); }
+    .resource-strip .exam-link {
+      color: var(--aviso);
+      font-weight: 800;
+    }
 
     /* ── Section label ── */
     .section-label {
@@ -84,6 +126,7 @@
       color: var(--texto-suave);
       margin-bottom: 1.25rem;
     }
+    .days-section { padding-top: 2rem; padding-bottom: 3rem; }
 
     /* ── Day cards ── */
     .days-grid {
@@ -92,7 +135,7 @@
       gap: 1px;
       background: var(--borda);
       border: 1px solid var(--borda);
-      border-radius: 12px;
+      border-radius: var(--r-lg);
       overflow: hidden;
     }
     .day-card {
@@ -120,7 +163,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, rgba(14,14,23,0.82) 0%, rgba(14,14,23,0.54) 48%, rgba(14,14,23,0.22) 100%);
+      background: linear-gradient(90deg, rgba(15,20,17,0.88) 0%, rgba(15,20,17,0.58) 48%, rgba(15,20,17,0.20) 100%);
     }
     .day-img-meta {
       position: absolute;
@@ -132,7 +175,7 @@
       font-family: var(--mono);
       font-size: 0.65rem;
       font-weight: 700;
-      color: rgba(213,213,238,0.78);
+      color: rgba(231,239,231,0.78);
       text-transform: uppercase;
       letter-spacing: 0.1em;
       margin-bottom: 0.2rem;
@@ -168,6 +211,8 @@
     .day-tags {
       display: flex;
       flex-wrap: wrap;
+      align-content: flex-start;
+      align-items: flex-start;
       gap: 0.3rem;
       margin-bottom: 0.875rem;
       flex: 1;
@@ -177,9 +222,12 @@
       color: var(--texto-suave);
       background: var(--bg-elevated);
       border: 1px solid var(--borda-viva);
-      border-radius: 3px;
+      border-radius: var(--r);
       padding: 0.1rem 0.4rem;
       line-height: 1.5;
+      display: inline-flex;
+      align-items: center;
+      min-height: 1.55rem;
     }
     .day-links {
       display: flex;
@@ -219,6 +267,7 @@
       font-family: var(--sans);
       transition: color 0.12s, border-color 0.12s;
       text-align: center;
+      min-height: 2.5rem;
     }
     .day-done-btn:hover { color: var(--sucesso); border-color: var(--sucesso); }
     .day-card.done .day-done-btn { color: var(--sucesso); border-color: rgba(144,212,168,0.3); background: rgba(144,212,168,0.05); }
@@ -232,9 +281,9 @@
       font-size: 0.6rem;
       font-weight: 700;
       color: var(--sucesso);
-      background: rgba(14,14,23,0.85);
+      background: rgba(15,20,17,0.88);
       border: 1px solid rgba(144,212,168,0.3);
-      border-radius: 3px;
+      border-radius: var(--r);
       padding: 0.15rem 0.45rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
@@ -243,6 +292,7 @@
 
     @media (max-width: 900px) { .days-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 580px) {
+      .portal-hero h1 { font-size: 2.1rem; }
       .days-grid { grid-template-columns: 1fr; }
       .day-card { min-height: 0; }
       .day-body { min-height: 0; }
@@ -251,14 +301,59 @@
     @media (max-width: 380px) {
       .day-links { grid-template-columns: 1fr; }
     }
+
+    .exam-section { padding-bottom: 3rem; }
+    .exam-card {
+      background: linear-gradient(135deg, rgba(239,159,107,0.11), rgba(143,214,148,0.06)), var(--bg-card);
+      border: 1px solid rgba(239,159,107,0.34);
+      border-radius: var(--r-lg);
+      display: grid;
+      grid-template-columns: 6px minmax(0, 1fr) minmax(180px, 0.55fr);
+      overflow: hidden;
+    }
+    .exam-accent { background: linear-gradient(180deg, var(--acento), var(--aviso)); }
+    .exam-content { padding: 1.25rem 1.5rem; min-width: 0; }
+    .exam-kicker {
+      color: var(--aviso);
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.3rem;
+      text-transform: uppercase;
+    }
+    .exam-title { color: #fff; font-size: 1.05rem; font-weight: 800; margin-bottom: 0.35rem; }
+    .exam-copy { color: var(--texto-suave); font-size: 0.86rem; margin-bottom: 1rem; }
+    .exam-stack {
+      align-content: center;
+      border-left: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 1rem 1.5rem;
+    }
+    .code-pill {
+      background: rgba(143,214,148,0.08);
+      border: 1px solid rgba(143,214,148,0.18);
+      border-radius: var(--r);
+      color: var(--texto-suave);
+      font-family: var(--mono);
+      font-size: 0.73rem;
+      padding: 0.15rem 0.5rem;
+    }
+    @media (max-width: 720px) {
+      .exam-card { grid-template-columns: 6px 1fr; }
+      .exam-stack { grid-column: 2; border-left: 0; border-top: 1px solid rgba(255,255,255,0.06); }
+    }
   </style>
+  <script src="assets/site.js" defer></script>
 </head>
-<body>
+<body><a class="skip-link" href="#main-content">Pular para conteúdo principal</a>
 
 <nav class="navbar">
   <div class="container navbar-inner">
     <a href="index.html" class="navbar-brand">Curso Java</a>
-    <button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button>
+    <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">Menu</button>
     <div class="navbar-links">
       <a href="recursos/flashcards.html">Flashcards</a>
       <a href="recursos/quiz-geral.html">Quiz</a>
@@ -270,13 +365,15 @@
   </div>
 </nav>
 
+<main id="main-content" tabindex="-1">
 <!-- HERO -->
 <div class="container">
   <div class="portal-hero">
-    <h1 id="heroGreeting">Bom dia.</h1>
+    <p class="portal-kicker" id="heroGreeting">Bom dia.</p>
+    <h1>Curso Java Interativo</h1>
     <p class="sub">6 dias · do zero ao projeto completo em Java.</p>
     <div class="portal-progress">
-      <div class="portal-progress-bar">
+      <div class="portal-progress-bar" id="portalProgress" role="progressbar" aria-labelledby="progressLabel" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0">
         <div class="portal-progress-fill" id="progressFill" style="width:0%"></div>
       </div>
       <span class="portal-progress-label" id="progressLabel">0 de 6 dias concluídos</span>
@@ -285,7 +382,7 @@
 </div>
 
 <!-- RECURSOS -->
-<div class="resource-strip">
+<nav class="resource-strip" aria-label="Recursos rápidos">
   <a href="recursos/flashcards.html">Flashcards</a>
   <a href="recursos/quiz-geral.html">Quiz</a>
   <a href="recursos/tutor.html">Tutor</a>
@@ -293,18 +390,18 @@
   <a href="recursos/cheatsheet-sql.html">SQL</a>
   <a href="recursos/glossario.html">Glossário</a>
   <a href="dia6-projeto/checklist.html">Checklist</a>
-  <a href="prova-swing/conteudo.html" style="color:#f5cc7a;font-weight:700;">⚡ Prova Swing+DAO</a>
-</div>
+  <a href="prova-swing/conteudo.html" class="exam-link">Prova Swing+DAO</a>
+</nav>
 
 <!-- DIAS -->
-<div class="container" style="padding-top:2rem;padding-bottom:3rem;">
-  <p class="section-label">Conteúdo</p>
+<section class="container days-section" aria-labelledby="conteudo-title">
+  <h2 class="section-label" id="conteudo-title">Conteúdo</h2>
   <div class="days-grid" id="daysGrid">
 
     <!-- DIA 1 -->
     <div class="day-card" id="dayCard1">
       <div class="done-badge">Concluído</div>
-      <div class="day-img" style="background-image:url('assets/images/dia1.png')">
+      <div class="day-img" style="background-image:url('assets/images/dia1-card.jpg')">
         <div class="day-img-meta">
           <div class="day-num">Dia 01</div>
           <div class="day-title">Lógica de Programação</div>
@@ -325,14 +422,14 @@
           <a href="dia1-logica/exercicios.html">Exercícios</a>
           <a href="dia1-logica/playground.html">Playground</a>
         </div>
-        <button class="day-done-btn" onclick="toggleDay(1)"><span id="doneBtn1">Marcar como concluído</span></button>
+        <button class="day-done-btn" type="button" aria-pressed="false" onclick="toggleDay(1)"><span id="doneBtn1">Marcar como concluído</span></button>
       </div>
     </div>
 
     <!-- DIA 2 -->
     <div class="day-card" id="dayCard2">
       <div class="done-badge">Concluído</div>
-      <div class="day-img" style="background-image:url('assets/images/dia2.png')">
+      <div class="day-img" style="background-image:url('assets/images/dia2-card.jpg')">
         <div class="day-img-meta">
           <div class="day-num">Dia 02</div>
           <div class="day-title">Orientação a Objetos</div>
@@ -352,14 +449,14 @@
           <a href="dia2-poo/exercicios.html">Exercícios</a>
           <a href="dia2-poo/visualizador-classes.html">Visualizador</a>
         </div>
-        <button class="day-done-btn" onclick="toggleDay(2)"><span id="doneBtn2">Marcar como concluído</span></button>
+        <button class="day-done-btn" type="button" aria-pressed="false" onclick="toggleDay(2)"><span id="doneBtn2">Marcar como concluído</span></button>
       </div>
     </div>
 
     <!-- DIA 3 -->
     <div class="day-card" id="dayCard3">
       <div class="done-badge">Concluído</div>
-      <div class="day-img" style="background-image:url('assets/images/dia3.png')">
+      <div class="day-img" style="background-image:url('assets/images/dia3-card.jpg')">
         <div class="day-img-meta">
           <div class="day-num">Dia 03</div>
           <div class="day-title">Banco de Dados</div>
@@ -379,14 +476,14 @@
           <a href="dia3-banco/exercicios.html">Exercícios</a>
           <a href="dia3-banco/sql-playground.html">SQL Play</a>
         </div>
-        <button class="day-done-btn" onclick="toggleDay(3)"><span id="doneBtn3">Marcar como concluído</span></button>
+        <button class="day-done-btn" type="button" aria-pressed="false" onclick="toggleDay(3)"><span id="doneBtn3">Marcar como concluído</span></button>
       </div>
     </div>
 
     <!-- DIA 4 -->
     <div class="day-card" id="dayCard4">
       <div class="done-badge">Concluído</div>
-      <div class="day-img" style="background-image:url('assets/images/dia4.png')">
+      <div class="day-img" style="background-image:url('assets/images/dia4-card.jpg')">
         <div class="day-img-meta">
           <div class="day-num">Dia 04</div>
           <div class="day-title">Front-end</div>
@@ -405,14 +502,14 @@
           <a href="dia4-frontend/exercicios.html">Exercícios</a>
           <a href="dia4-frontend/editor-ao-vivo.html">Editor</a>
         </div>
-        <button class="day-done-btn" onclick="toggleDay(4)"><span id="doneBtn4">Marcar como concluído</span></button>
+        <button class="day-done-btn" type="button" aria-pressed="false" onclick="toggleDay(4)"><span id="doneBtn4">Marcar como concluído</span></button>
       </div>
     </div>
 
     <!-- DIA 5 -->
     <div class="day-card" id="dayCard5">
       <div class="done-badge">Concluído</div>
-      <div class="day-img" style="background-image:url('assets/images/dia5.png')">
+      <div class="day-img" style="background-image:url('assets/images/dia5-card.jpg')">
         <div class="day-img-meta">
           <div class="day-num">Dia 05</div>
           <div class="day-title">Engenharia de Software</div>
@@ -431,14 +528,14 @@
           <a href="dia5-engenharia/exercicios.html">Exercícios</a>
           <a href="dia5-engenharia/uml-interativo.html">UML</a>
         </div>
-        <button class="day-done-btn" onclick="toggleDay(5)"><span id="doneBtn5">Marcar como concluído</span></button>
+        <button class="day-done-btn" type="button" aria-pressed="false" onclick="toggleDay(5)"><span id="doneBtn5">Marcar como concluído</span></button>
       </div>
     </div>
 
     <!-- DIA 6 -->
     <div class="day-card" id="dayCard6">
       <div class="done-badge">Concluído</div>
-      <div class="day-img" style="background-image:url('assets/images/dia6.png')">
+      <div class="day-img" style="background-image:url('assets/images/dia6-card.jpg')">
         <div class="day-img-meta">
           <div class="day-num">Dia 06</div>
           <div class="day-title">Projeto Completo</div>
@@ -456,34 +553,33 @@
           <a href="dia6-projeto/guia-projeto.html">Guia</a>
           <a href="dia6-projeto/checklist.html">Checklist</a>
         </div>
-        <button class="day-done-btn" onclick="toggleDay(6)"><span id="doneBtn6">Marcar como concluído</span></button>
+        <button class="day-done-btn" type="button" aria-pressed="false" onclick="toggleDay(6)"><span id="doneBtn6">Marcar como concluído</span></button>
       </div>
     </div>
 
   </div>
-</div>
+</section>
 
 <!-- PROVA CARD -->
-<div class="container" style="padding-bottom:3rem;">
-  <p class="section-label">Revisão para Prova</p>
-  <div style="background:#13131e;border:1px solid rgba(240,96,64,.35);border-radius:12px;overflow:hidden;display:flex;align-items:stretch;gap:0;flex-wrap:wrap;">
-    <div style="background:linear-gradient(135deg,#c84020,#7a56c0);width:6px;flex-shrink:0;min-height:100px;"></div>
-    <div style="padding:1.25rem 1.5rem;flex:1;min-width:200px;">
-      <div style="font-family:'Fira Code',monospace;font-size:.68rem;color:rgba(245,204,122,.8);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem;">PROVA — 30/06 · SENAI Duque de Caxias</div>
-      <div style="font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:.35rem;">Java Swing + DAO</div>
-      <div style="font-size:.85rem;color:#8a8ab8;margin-bottom:1rem;">Conexão, Teste de Conexão, Padrão DAO, Cadastro e Busca com Swing — tudo que vai cair na prova.</div>
-      <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
-        <a href="prova-swing/conteudo.html" style="display:inline-flex;align-items:center;gap:.35rem;padding:.42rem 1rem;border-radius:5px;background:rgba(240,96,64,.15);border:1px solid rgba(240,96,64,.4);color:#f5cc7a;font-size:.8rem;font-weight:700;text-decoration:none;">Estudar agora →</a>
-      </div>
+<section class="container exam-section" aria-labelledby="prova-title">
+  <h2 class="section-label" id="prova-title">Revisão para Prova</h2>
+  <div class="exam-card">
+    <div class="exam-accent" aria-hidden="true"></div>
+    <div class="exam-content">
+      <div class="exam-kicker">Prova — 30/06 · SENAI Duque de Caxias</div>
+      <div class="exam-title">Java Swing + DAO</div>
+      <p class="exam-copy">Conexão, teste de conexão, padrão DAO, cadastro e busca com Swing: o pacote essencial para revisar antes da avaliação.</p>
+      <a href="prova-swing/conteudo.html" class="btn btn-primary">Estudar agora</a>
     </div>
-    <div style="padding:1rem 1.5rem;display:flex;flex-direction:row;gap:.5rem;flex-wrap:wrap;align-content:center;border-top:1px solid rgba(255,255,255,.06);">
-      <span style="font-size:.73rem;padding:.15rem .5rem;border-radius:3px;background:rgba(181,160,240,.08);border:1px solid rgba(181,160,240,.15);color:#8a8ab8;font-family:'Fira Code',monospace;">Conexao.java</span>
-      <span style="font-size:.73rem;padding:.15rem .5rem;border-radius:3px;background:rgba(181,160,240,.08);border:1px solid rgba(181,160,240,.15);color:#8a8ab8;font-family:'Fira Code',monospace;">ClienteDAO.java</span>
-      <span style="font-size:.73rem;padding:.15rem .5rem;border-radius:3px;background:rgba(181,160,240,.08);border:1px solid rgba(181,160,240,.15);color:#8a8ab8;font-family:'Fira Code',monospace;">CadastroFrame.java</span>
-      <span style="font-size:.73rem;padding:.15rem .5rem;border-radius:3px;background:rgba(181,160,240,.08);border:1px solid rgba(181,160,240,.15);color:#8a8ab8;font-family:'Fira Code',monospace;">BuscaFrame.java</span>
+    <div class="exam-stack" aria-label="Arquivos importantes para revisar">
+      <span class="code-pill">Conexao.java</span>
+      <span class="code-pill">ClienteDAO.java</span>
+      <span class="code-pill">CadastroFrame.java</span>
+      <span class="code-pill">BuscaFrame.java</span>
     </div>
   </div>
-</div>
+</section>
+</main>
 
 <footer class="footer">
   <div class="container">
@@ -513,18 +609,23 @@
     const done = DAYS.filter(d => s[d]).length;
     document.getElementById('progressFill').style.width = (done / 6 * 100) + '%';
     document.getElementById('progressLabel').textContent = done + ' de 6 dias concluídos';
+    document.getElementById('portalProgress').setAttribute('aria-valuenow', String(done));
 
     DAYS.forEach(d => {
       const card = document.getElementById('dayCard' + d);
       const btn  = document.getElementById('doneBtn' + d);
       const prog = document.getElementById('prog' + d);
+      const button = btn.closest('button');
       if (s[d]) {
         card.classList.add('done');
         btn.textContent = 'Concluído — clique para desmarcar';
         prog.style.width = '100%';
+        button.setAttribute('aria-pressed', 'true');
       } else {
         card.classList.remove('done');
         btn.textContent = 'Marcar como concluído';
+        prog.style.width = '0%';
+        button.setAttribute('aria-pressed', 'false');
       }
     });
   }

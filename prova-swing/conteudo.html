@@ -1,4 +1,13 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Prova — Java Swing + DAO</title><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="description" content="Revisão para prova de Java Swing com DAO: conexão MySQL, teste de conexão, ClienteDAO, cadastro, busca e padrões essenciais."/>
+  <meta name="robots" content="index, follow"/>
+  <meta name="theme-color" content="#0f1411"/>
+  <link rel="canonical" href="https://akablame.github.io/curso-java-interativo/prova-swing/conteudo.html"/>
+  <meta property="og:title" content="Prova — Java Swing + DAO"/>
+  <meta property="og:description" content="Revisão para prova de Java Swing com DAO: conexão MySQL, teste de conexão, ClienteDAO, cadastro, busca e padrões essenciais."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://akablame.github.io/curso-java-interativo/prova-swing/conteudo.html"/>
+  <meta name="twitter:card" content="summary"/><title>Prova — Java Swing + DAO</title><link rel="stylesheet" href="../assets/style.css"/><style>
 .analogy-box{background:linear-gradient(135deg,rgba(240,96,64,0.08),rgba(181,160,240,0.06));border:1px solid rgba(240,96,64,0.3);border-radius:12px;padding:1rem 1.25rem;margin:.75rem 0;}
 .analogy-box .ana-title{font-weight:700;color:var(--aviso);font-size:.85rem;margin-bottom:.3rem;}
 .badge-warn{background:rgba(245,204,122,0.12);color:var(--aviso);border:1px solid rgba(245,204,122,0.22);}
@@ -124,9 +133,10 @@
 .mt-1{margin-top:.5rem;}.mt-2{margin-top:1rem;}.mb-1{margin-bottom:.5rem;}
 .text-sm{font-size:.85rem;}.text-muted{color:var(--texto-suave);}
 .flex{display:flex;flex-wrap:wrap;}.gap-1{gap:.5rem;}
-</style></head><body>
+</style>  <script src="../assets/site.js" defer></script>
+</head><body><a class="skip-link" href="#main-content">Pular para conteúdo principal</a>
 
-<nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="../recursos/cheatsheet-java.html">Cheatsheet Java</a><a href="../recursos/cheatsheet-sql.html">Cheatsheet SQL</a><a href="../recursos/flashcards.html">Flashcards</a><a href="../dia3-banco/conteudo.html">← Banco de Dados</a><a href="../dia4-frontend/conteudo.html">Swing →</a></div></div></nav>
+<nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">Menu</button><div class="navbar-links"><a href="../recursos/cheatsheet-java.html">Cheatsheet Java</a><a href="../recursos/cheatsheet-sql.html">Cheatsheet SQL</a><a href="../recursos/flashcards.html">Flashcards</a><a href="../dia3-banco/conteudo.html">← Banco de Dados</a><a href="../dia4-frontend/conteudo.html">Swing →</a></div></div></nav>
 
 <div class="page-header" style="background:linear-gradient(135deg,#c84020,#7a56c0)!important;border-bottom:1px solid rgba(255,255,255,.07)!important;"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› Prova</div><h1 style="color:#fff!important;">Prova — Java Swing + DAO</h1><p style="color:rgba(255,255,255,.75)!important;">Conexão, DAO, Cadastro e Busca com Swing — SENAI Duque de Caxias · UC Desenvolvimento de Sistemas</p></div></div>
 
@@ -150,7 +160,7 @@
   </nav>
 </aside>
 
-<main>
+<main id="main-content" tabindex="-1">
 
 <!-- URGÊNCIA -->
 <div class="urgency-strip">
@@ -1115,7 +1125,7 @@ import javax.swing.JOptionPane;</code></pre></div>
 <footer class="footer"><div class="container"><p><a href="../index.html">← Portal</a> | Prova — Swing + DAO | SENAI Duque de Caxias · UC Desenvolvimento de Sistemas</p></div></footer>
 
 <script>
-hljs.highlightAll();
+window.hljs && hljs.highlightAll();
 
 function switchTab(group, id, btn) {
   document.querySelectorAll(`[id^="${group}-"]`).forEach(p => p.classList.remove('active'));
