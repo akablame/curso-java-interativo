@@ -1,0 +1,1160 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Prova — Java Swing + DAO</title><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>
+.analogy-box{background:linear-gradient(135deg,rgba(240,96,64,0.08),rgba(181,160,240,0.06));border:1px solid rgba(240,96,64,0.3);border-radius:12px;padding:1rem 1.25rem;margin:.75rem 0;}
+.analogy-box .ana-title{font-weight:700;color:var(--aviso);font-size:.85rem;margin-bottom:.3rem;}
+.badge-warn{background:rgba(245,204,122,0.12);color:var(--aviso);border:1px solid rgba(245,204,122,0.22);}
+.badge-accent{background:rgba(240,168,190,0.12);color:var(--acento);border:1px solid rgba(240,168,190,0.22);}
+.badge-blue{background:rgba(136,184,245,0.12);color:var(--secundaria);border:1px solid rgba(136,184,245,0.22);}
+
+/* Arquitetura / Diagrama */
+.arch-flow{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin:1rem 0;justify-content:center;}
+.arch-box{background:var(--bg-elevated);border:2px solid var(--borda-viva);border-radius:10px;padding:.65rem 1.1rem;text-align:center;min-width:120px;}
+.arch-box .arch-label{font-family:var(--mono);font-size:.7rem;color:var(--texto-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.2rem;}
+.arch-box .arch-name{font-weight:700;font-size:.9rem;color:var(--texto);}
+.arch-box .arch-file{font-family:var(--mono);font-size:.72rem;color:var(--primaria);margin-top:.1rem;}
+.arch-box.view{border-color:rgba(136,184,245,0.5);}
+.arch-box.dao{border-color:rgba(181,160,240,0.5);}
+.arch-box.conn{border-color:rgba(245,204,122,0.5);}
+.arch-box.db{border-color:rgba(93,175,142,0.5);}
+.arch-arrow{color:var(--texto-suave);font-size:1.2rem;flex-shrink:0;}
+
+/* File tree */
+.file-tree{font-family:var(--mono);font-size:.83rem;background:var(--bg-code);border:1px solid var(--borda);border-radius:10px;padding:1rem 1.25rem;line-height:1.9;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.file-tree .ft-dir{color:var(--aviso);}
+.file-tree .ft-file{color:var(--texto-suave);white-space:nowrap;}
+.file-tree .ft-file.hl{color:var(--primaria);font-weight:600;}
+.file-tree .ft-comment{color:var(--texto-dim);font-style:italic;}
+
+/* Callouts */
+.callout{display:flex;gap:.85rem;background:var(--bg-surface);border-radius:10px;border:1px solid var(--borda);padding:.9rem 1.1rem;margin:.75rem 0;}
+.callout-info{border-left:3px solid var(--secundaria);}
+.callout-tip{border-left:3px solid var(--sucesso);}
+.callout-danger{border-left:3px solid var(--erro);}
+.callout-warn{border-left:3px solid var(--aviso);}
+.callout-title{font-weight:700;font-size:.85rem;margin-bottom:.25rem;}
+.callout-info .callout-title{color:var(--secundaria);}
+.callout-tip .callout-title{color:var(--sucesso);}
+.callout-danger .callout-title{color:var(--erro);}
+.callout-warn .callout-title{color:var(--aviso);}
+
+/* Code blocks */
+.code-block{border:1px solid var(--borda);border-radius:10px;overflow:hidden;margin:.5rem 0;}
+.code-block-header{display:flex;align-items:center;justify-content:space-between;padding:.4rem .9rem;background:var(--bg-elevated);border-bottom:1px solid var(--borda);}
+.dots{display:flex;gap:.35rem;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-red{background:#ff5f57;}.dot-yellow{background:#febc2e;}.dot-green{background:#28c840;}
+.lang{font-family:var(--mono);font-size:.72rem;color:var(--texto-dim);}
+.copy-btn{font-size:.72rem;color:var(--texto-suave);background:transparent;border:1px solid var(--borda-viva);border-radius:4px;padding:.15rem .5rem;cursor:pointer;font-family:var(--sans);}
+.copy-btn:hover{color:var(--texto);border-color:var(--primaria-dim);}
+
+/* Steps */
+.steps{list-style:none;counter-reset:steps;margin:.75rem 0;}
+.steps li{counter-increment:steps;display:flex;gap:.85rem;align-items:flex-start;padding:.55rem 0;border-bottom:1px solid var(--borda);}
+.steps li:last-child{border-bottom:none;}
+.steps li::before{content:counter(steps);display:flex;align-items:center;justify-content:center;min-width:24px;height:24px;border-radius:50%;background:var(--primaria-dim);color:#fff;font-size:.75rem;font-weight:700;flex-shrink:0;margin-top:.1rem;}
+
+/* Comparison */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.75rem 0;}
+.col-box{background:var(--bg-surface);border:1px solid var(--borda);border-radius:8px;padding:.9rem 1rem;}
+.col-box h5{font-size:.82rem;margin-bottom:.5rem;}
+@media(max-width:600px){
+  .two-col{grid-template-columns:1fr;}
+  .arch-flow{gap:.35rem;}
+  .arch-box{min-width:80px;padding:.4rem .6rem;font-size:.8rem;}
+  .arch-box .arch-file{display:none;}
+  .arch-arrow{font-size:.9rem;}
+  .code-block-header{padding:.35rem .65rem;gap:.4rem;}
+  .lang{display:none;}
+  .steps li{gap:.6rem;}
+  .topic-card-body{padding:.9rem;}
+  .callout{padding:.75rem .9rem;gap:.6rem;}
+  .checklist label{font-size:.85rem;}
+  .table-wrapper table{font-size:.78rem;}
+  .table-wrapper th,.table-wrapper td{padding:.35rem .5rem;}
+}
+
+/* Checklist */
+.checklist{list-style:none;margin:0;}
+.checklist li{display:flex;align-items:flex-start;gap:.75rem;padding:.55rem 0;border-bottom:1px solid var(--borda);}
+.checklist li:last-child{border-bottom:none;}
+.checklist input[type=checkbox]{margin-top:.18rem;width:16px;height:16px;flex-shrink:0;accent-color:var(--primaria-dim);}
+.checklist label{cursor:pointer;line-height:1.45;font-size:.9rem;}
+.checklist input:checked+label{color:var(--sucesso);text-decoration:line-through;text-decoration-color:rgba(144,212,168,0.4);}
+.progress-label{display:flex;justify-content:space-between;font-size:.8rem;color:var(--texto-suave);margin-bottom:.35rem;}
+
+/* Tables */
+.table-wrapper{overflow-x:auto;margin:.75rem 0;}
+.table-wrapper table{width:100%;border-collapse:collapse;font-size:.85rem;}
+.table-wrapper th{background:var(--primaria-dim);color:#fff;padding:.4rem .85rem;text-align:left;font-size:.8rem;}
+.table-wrapper td{padding:.4rem .85rem;border-bottom:1px solid var(--borda);vertical-align:top;}
+.table-wrapper tr:last-child td{border-bottom:none;}
+.table-wrapper tr:hover td{background:rgba(106,86,176,0.04);}
+
+/* Highlight inline */
+.hl-java{color:var(--primaria);font-family:var(--mono);font-size:.87em;}
+.hl-sql{color:var(--sucesso);font-family:var(--mono);font-size:.87em;}
+
+/* Fade in */
+.fade-in{animation:fadeIn .3s ease both;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* Urgency header strip */
+.urgency-strip{background:linear-gradient(90deg,rgba(240,96,64,.12),rgba(181,160,240,.08));border:1px solid rgba(240,96,64,.25);border-radius:10px;padding:.75rem 1.1rem;display:flex;align-items:flex-start;gap:.75rem;margin-bottom:1.25rem;flex-wrap:wrap;}
+.urgency-strip .urg-icon{font-size:1.2rem;flex-shrink:0;margin-top:.05rem;}
+.urgency-strip p{margin:0;font-size:.88rem;color:var(--texto);flex:1;min-width:200px;}
+.urgency-strip strong{color:var(--aviso);}
+
+/* Tabs */
+.tabs{margin:.75rem 0;}
+.tab-list{display:flex;gap:0;border-bottom:1px solid var(--borda);margin-bottom:-.5rem;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.tab-list::-webkit-scrollbar{display:none;}
+.tab-btn{background:transparent;border:none;color:var(--texto-suave);font-size:.82rem;font-weight:600;padding:.55rem .85rem;cursor:pointer;border-bottom:2px solid transparent;font-family:var(--sans);transition:color .12s;white-space:nowrap;flex-shrink:0;}
+.tab-btn:hover{color:var(--texto);}
+.tab-btn.active{color:var(--primaria);border-bottom-color:var(--primaria);}
+.tab-panel{display:none;padding-top:1rem;}
+.tab-panel.active{display:block;}
+
+/* Utils */
+.mt-1{margin-top:.5rem;}.mt-2{margin-top:1rem;}.mb-1{margin-bottom:.5rem;}
+.text-sm{font-size:.85rem;}.text-muted{color:var(--texto-suave);}
+.flex{display:flex;flex-wrap:wrap;}.gap-1{gap:.5rem;}
+</style></head><body>
+
+<nav class="navbar"><div class="container navbar-inner"><a href="../index.html" class="navbar-brand">Curso Java</a><button class="nav-toggle" onclick="this.closest('.navbar').querySelector('.navbar-links').classList.toggle('open')">Menu</button><div class="navbar-links"><a href="../recursos/cheatsheet-java.html">Cheatsheet Java</a><a href="../recursos/cheatsheet-sql.html">Cheatsheet SQL</a><a href="../recursos/flashcards.html">Flashcards</a><a href="../dia3-banco/conteudo.html">← Banco de Dados</a><a href="../dia4-frontend/conteudo.html">Swing →</a></div></div></nav>
+
+<div class="page-header" style="background:linear-gradient(135deg,#c84020,#7a56c0)!important;border-bottom:1px solid rgba(255,255,255,.07)!important;"><div class="container"><div class="breadcrumb"><a href="../index.html">Home</a>› Prova</div><h1 style="color:#fff!important;">Prova — Java Swing + DAO</h1><p style="color:rgba(255,255,255,.75)!important;">Conexão, DAO, Cadastro e Busca com Swing — SENAI Duque de Caxias · UC Desenvolvimento de Sistemas</p></div></div>
+
+<div class="container" style="padding-top:2rem;padding-bottom:3rem;">
+<div class="content-layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-title">Tópicos</div>
+  <nav class="sidebar-nav">
+    <a href="#visao-geral">Visão Geral</a>
+    <a href="#sql-setup">SQL (Setup)</a>
+    <a href="#conexao">Conexão</a>
+    <a href="#teste-conexao">Teste de Conexão</a>
+    <a href="#model">Model (Cliente)</a>
+    <a href="#dao">Padrão DAO</a>
+    <a href="#cadastro-swing">Cadastro (Swing)</a>
+    <a href="#busca-swing">Busca (Swing)</a>
+    <a href="#dicas">Dicas de Prova</a>
+    <a href="#checklist">Checklist</a>
+  </nav>
+</aside>
+
+<main>
+
+<!-- URGÊNCIA -->
+<div class="urgency-strip">
+  <span class="urg-icon">⚡</span>
+  <p><strong>Prova amanhã, 30/06.</strong> Esta página cobre exatamente o que vai cair: conexão, DAO, cadastro e busca com Swing. Estude nesta ordem — cada tópico depende do anterior.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 1. VISÃO GERAL -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="visao-geral" class="topic-card fade-in">
+  <div class="topic-card-header"><div><h3>Visão Geral — Como tudo se encaixa</h3><span class="badge badge-primary">Arquitetura</span></div></div>
+  <div class="topic-card-body">
+    <div class="analogy-box"><div class="ana-title">Analogia: Restaurante</div>
+    <p>O <strong>Garçom (View/Swing)</strong> fala com o cliente e anota o pedido.<br>
+    O <strong>Garçom passa para o Cozinheiro (DAO)</strong> que sabe como preparar a comida.<br>
+    O <strong>Cozinheiro usa a Despensa (Conexão)</strong> para pegar os ingredientes.<br>
+    A <strong>Despensa é o Banco de Dados (MySQL)</strong> onde os dados ficam guardados.</p></div>
+
+    <h4 class="mt-2">Fluxo completo da aplicação</h4>
+    <div class="arch-flow">
+      <div class="arch-box view"><div class="arch-label">Camada de View</div><div class="arch-name">Swing JFrame</div><div class="arch-file">CadastroFrame.java<br>BuscaFrame.java</div></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box dao"><div class="arch-label">Camada de DAO</div><div class="arch-name">DAO</div><div class="arch-file">ClienteDAO.java</div></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box conn"><div class="arch-label">Conexão</div><div class="arch-name">Conexao</div><div class="arch-file">Conexao.java</div></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box db"><div class="arch-label">Banco de Dados</div><div class="arch-name">MySQL</div><div class="arch-file">localhost:3306</div></div>
+    </div>
+
+    <h4 class="mt-2">Estrutura de arquivos no NetBeans</h4>
+    <div class="file-tree">
+      <div><span class="ft-dir">📁 SistemaCadastro/</span></div>
+      <div>&nbsp;&nbsp;<span class="ft-dir">📁 Source Packages/</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ft-dir">📁 model/</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ft-file hl">Cliente.java</span> <span class="ft-comment">// representa o dado</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ft-dir">📁 dao/</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ft-file hl">ClienteDAO.java</span> <span class="ft-comment">// acessa o banco</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ft-dir">📁 conexao/ (ou util/)</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ft-file hl">Conexao.java</span> <span class="ft-comment">// faz a conexão com MySQL</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ft-dir">📁 view/</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ft-file hl">CadastroFrame.java</span> <span class="ft-comment">// tela de cadastro</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ft-file hl">BuscaFrame.java</span> <span class="ft-comment">// tela de busca</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ft-file">Main.java</span> <span class="ft-comment">// inicia a aplicação</span></div>
+    </div>
+
+    <div class="callout callout-info mt-2"><div>
+      <div class="callout-title">Ordem de criação — SEMPRE nesta ordem:</div>
+      <ol style="margin:.25rem 0 0 1rem;font-size:.88rem;line-height:1.9;">
+        <li>Criar o banco e a tabela no MySQL (SQL)</li>
+        <li>Criar <strong>Conexao.java</strong> e testar</li>
+        <li>Criar <strong>Cliente.java</strong> (o modelo)</li>
+        <li>Criar <strong>ClienteDAO.java</strong> (inserir + buscar)</li>
+        <li>Criar <strong>CadastroFrame.java</strong> (tela Swing)</li>
+        <li>Criar <strong>BuscaFrame.java</strong> (tela Swing)</li>
+      </ol>
+    </div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 2. SQL SETUP -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="sql-setup" class="topic-card fade-in">
+  <div class="topic-card-header"><div><h3>SQL — Configurando o Banco de Dados</h3><span class="badge badge-success">1º passo</span></div></div>
+  <div class="topic-card-body">
+    <p class="text-sm text-muted">Execute este SQL no MySQL Workbench <strong>antes</strong> de começar a programar em Java.</p>
+    <div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">SQL — MySQL Workbench</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-sql">-- 1. Criar o banco de dados
+CREATE DATABASE IF NOT EXISTS sistema;
+
+-- 2. Usar o banco
+USE sistema;
+
+-- 3. Criar a tabela de clientes
+CREATE TABLE IF NOT EXISTS clientes (
+    id        INT PRIMARY KEY AUTO_INCREMENT,
+    nome      VARCHAR(100) NOT NULL,
+    email     VARCHAR(150),
+    telefone  VARCHAR(20)
+);
+
+-- (Opcional) Inserir alguns registros para testar
+INSERT INTO clientes (nome, email, telefone) VALUES
+    ('Ana Silva',    'ana@email.com',    '(21) 98000-0001'),
+    ('Bruno Santos', 'bruno@email.com',  '(21) 97000-0002'),
+    ('Carla Lima',   'carla@email.com',  '(21) 96000-0003');
+
+-- Verificar se está ok
+SELECT * FROM clientes;</code></pre></div>
+
+    <div class="callout callout-warn mt-2"><div>
+      <div class="callout-title">Verifique antes de codar:</div>
+      <p class="text-sm">MySQL rodando? (ícone na bandeja do sistema ou MySQL Workbench conectado)<br>
+      Porta padrão: <code>3306</code> | Usuário padrão: <code>root</code> | Senha: a que você definiu na instalação</p>
+    </div></div>
+
+    <h4 class="mt-2">Como adicionar o Driver JDBC no NetBeans</h4>
+    <ol class="steps">
+      <li>Baixe o arquivo <code>mysql-connector-j-8.x.x.jar</code> (ou peça para o professor)</li>
+      <li>No NetBeans: botão direito no projeto → <strong>Properties</strong></li>
+      <li>Clique em <strong>Libraries</strong> → <strong>Add JAR/Folder</strong></li>
+      <li>Selecione o arquivo <code>.jar</code> e clique em OK</li>
+      <li>Pronto! O import <code>java.sql.*</code> vai funcionar</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 3. CONEXAO -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="conexao" class="topic-card fade-in">
+  <div class="topic-card-header"><div><h3>Conexao.java — Classe de Conexão com MySQL</h3><span class="badge badge-warn">Fundação</span></div></div>
+  <div class="topic-card-body">
+    <div class="analogy-box"><div class="ana-title">O que é essa classe?</div>
+    <p>É a única classe que sabe como se conectar ao banco. Todas as outras classes (DAO) pegam a conexão a partir dela. É como a chave da despensa — centralizada num lugar só.</p></div>
+
+    <div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Conexao.java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">package conexao; // ou util, ou o pacote que você criou
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
+public class Conexao {
+
+    // URL de conexão: jdbc:mysql://HOST:PORTA/NOME_DO_BANCO
+    private static final String URL     = "jdbc:mysql://localhost:3306/sistema";
+    private static final String USUARIO = "root";
+    private static final String SENHA   = "root"; // ← mude para a sua senha
+
+    // Método que retorna a conexão
+    public static Connection getConexao() {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(URL, USUARIO, SENHA);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(
+                null,
+                "Erro ao conectar ao banco:\n" + e.getMessage(),
+                "Erro de Conexão",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
+        return conn;
+    }
+}</code></pre></div>
+
+    <h4 class="mt-2">Linha por linha — o que cada parte faz:</h4>
+    <div class="table-wrapper"><table>
+      <thead><tr><th>Trecho</th><th>O que faz</th></tr></thead>
+      <tbody>
+        <tr><td><code>jdbc:mysql://localhost:3306/sistema</code></td><td>Endereço do banco: protocolo + host + porta + nome do banco</td></tr>
+        <tr><td><code>root</code> (usuário)</td><td>Usuário do MySQL — normalmente "root" em desenvolvimento</td></tr>
+        <tr><td><code>root</code> (senha)</td><td>Senha do MySQL — coloque a senha que você definiu na instalação</td></tr>
+        <tr><td><code>DriverManager.getConnection(...)</code></td><td>Método do Java que abre a conexão com o banco</td></tr>
+        <tr><td><code>catch (SQLException e)</code></td><td>Captura erros de banco (banco offline, senha errada, banco não existe)</td></tr>
+        <tr><td><code>JOptionPane.showMessageDialog</code></td><td>Exibe o erro em uma janela popup do Swing para o usuário ver</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="callout callout-danger mt-2"><div>
+      <div class="callout-title">Erros mais comuns na conexão:</div>
+      <p class="text-sm">
+        <strong>"Communications link failure"</strong> → MySQL não está rodando. Inicie o serviço.<br>
+        <strong>"Access denied for user"</strong> → Usuário ou senha errados na classe Conexao.<br>
+        <strong>"Unknown database"</strong> → O banco <code>sistema</code> não foi criado. Execute o SQL primeiro.<br>
+        <strong>"No suitable driver"</strong> → O JAR do MySQL Connector não foi adicionado ao projeto.
+      </p>
+    </div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 4. TESTE CONEXÃO -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="teste-conexao" class="topic-card fade-in">
+  <div class="topic-card-header"><div><h3>Teste de Conexão — Verificar se funciona</h3><span class="badge badge-blue">Diagnóstico</span></div></div>
+  <div class="topic-card-body">
+    <p class="text-sm text-muted">Antes de criar qualquer tela, teste se a conexão está funcionando. Isso economiza muito tempo na prova!</p>
+
+    <div class="tabs">
+      <div class="tab-list">
+        <button class="tab-btn active" onclick="switchTab('teste','main',this)">Via main (console)</button>
+        <button class="tab-btn" onclick="switchTab('teste','swing',this)">Via botão Swing</button>
+      </div>
+
+      <div id="teste-main" class="tab-panel active">
+        <p class="text-sm text-muted mb-1">Crie uma classe <strong>TesteConexao.java</strong> separada e execute ela (botão direito → Run File):</p>
+        <div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — TesteConexao.java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">package conexao; // mesmo pacote da classe Conexao
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
+public class TesteConexao {
+
+    public static void main(String[] args) {
+        System.out.println("Tentando conectar ao banco...");
+
+        Connection conn = Conexao.getConexao();
+
+        if (conn != null) {
+            System.out.println("✅ CONEXÃO BEM-SUCEDIDA!");
+            try {
+                conn.close(); // sempre feche a conexão após usar
+                System.out.println("Conexão fechada com sucesso.");
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar: " + e.getMessage());
+            }
+        } else {
+            System.out.println("❌ FALHOU! Verifique URL, usuário e senha.");
+        }
+    }
+}</code></pre></div>
+        <div class="callout callout-tip"><div>
+          <div class="callout-title">Como executar:</div>
+          <p class="text-sm">No NetBeans: clique com o botão direito no arquivo <strong>TesteConexao.java</strong> → <strong>Run File</strong>. Veja o resultado no console (aba Output).</p>
+        </div></div>
+      </div>
+
+      <div id="teste-swing" class="tab-panel">
+        <p class="text-sm text-muted mb-1">Adicione um botão "Testar Conexão" na sua tela principal:</p>
+        <div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Botão de teste em JFrame</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">// Dentro do seu JFrame, no ActionListener de um JButton:
+JButton btnTestar = new JButton("Testar Conexão");
+
+btnTestar.addActionListener(e -> {
+    Connection conn = Conexao.getConexao();
+    if (conn != null) {
+        JOptionPane.showMessageDialog(this,
+            "✅ Conectado com sucesso!",
+            "Conexão OK",
+            JOptionPane.INFORMATION_MESSAGE);
+        try { conn.close(); } catch (SQLException ex) {}
+    } else {
+        JOptionPane.showMessageDialog(this,
+            "❌ Falha na conexão!",
+            "Erro",
+            JOptionPane.ERROR_MESSAGE);
+    }
+});</code></pre></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 5. MODEL -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="model" class="topic-card fade-in">
+  <div class="topic-card-header"><div><h3>Model — Cliente.java (Classe de Dados)</h3><span class="badge badge-accent">Modelo</span></div></div>
+  <div class="topic-card-body">
+    <div class="analogy-box"><div class="ana-title">O que é o Model?</div>
+    <p>É a classe que <strong>representa um registro da tabela</strong>. Cada campo da tabela <code>clientes</code> vira um atributo privado com getter e setter. O DAO usa essa classe para passar dados entre o Java e o banco.</p></div>
+
+    <div class="two-col">
+      <div class="col-box">
+        <h5 style="color:var(--sucesso);">Tabela MySQL</h5>
+        <p class="text-sm" style="font-family:var(--mono);">
+          id INT<br>
+          nome VARCHAR(100)<br>
+          email VARCHAR(150)<br>
+          telefone VARCHAR(20)
+        </p>
+      </div>
+      <div class="col-box">
+        <h5 style="color:var(--primaria);">Classe Java</h5>
+        <p class="text-sm" style="font-family:var(--mono);">
+          private int id;<br>
+          private String nome;<br>
+          private String email;<br>
+          private String telefone;
+        </p>
+      </div>
+    </div>
+
+    <div class="code-block mt-1"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Cliente.java (Model)</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">package model;
+
+public class Cliente {
+
+    // Atributos privados — espelham as colunas da tabela
+    private int    id;
+    private String nome;
+    private String email;
+    private String telefone;
+
+    // Construtor vazio (necessário para o DAO)
+    public Cliente() {}
+
+    // Construtor completo (opcional, mas útil)
+    public Cliente(String nome, String email, String telefone) {
+        this.nome     = nome;
+        this.email    = email;
+        this.telefone = telefone;
+    }
+
+    // ─── Getters e Setters ───────────────────────────────────
+    public int getId()              { return id; }
+    public void setId(int id)       { this.id = id; }
+
+    public String getNome()         { return nome; }
+    public void setNome(String n)   { this.nome = n; }
+
+    public String getEmail()        { return email; }
+    public void setEmail(String e)  { this.email = e; }
+
+    public String getTelefone()          { return telefone; }
+    public void setTelefone(String t)    { this.telefone = t; }
+
+    // toString (opcional — útil para debug)
+    @Override
+    public String toString() {
+        return "Cliente[id=" + id + ", nome=" + nome + "]";
+    }
+}</code></pre></div>
+
+    <div class="callout callout-tip mt-2"><div>
+      <div class="callout-title">Dica rápida — NetBeans gera getters/setters automaticamente:</div>
+      <p class="text-sm">Declare os atributos, depois clique com o botão direito no editor → <strong>Insert Code</strong> → <strong>Getter and Setter</strong> → selecione todos → OK. O NetBeans gera tudo!</p>
+    </div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 6. DAO -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="dao" class="topic-card fade-in">
+  <div class="topic-card-header"><div><h3>Padrão DAO — ClienteDAO.java</h3><span class="badge badge-primary">DAO</span></div></div>
+  <div class="topic-card-body">
+    <div class="analogy-box"><div class="ana-title">DAO = Data Access Object</div>
+    <p>É o padrão onde você <strong>separa todo o código SQL em uma classe dedicada</strong>. A tela Swing não sabe nada de SQL — ela só chama métodos do DAO como <code>dao.inserir(cliente)</code> e <code>dao.buscarPorNome("Ana")</code>. Isso deixa o código organizado.</p></div>
+
+    <div class="tabs">
+      <div class="tab-list">
+        <button class="tab-btn active" onclick="switchTab('dao','inserir',this)">inserir()</button>
+        <button class="tab-btn" onclick="switchTab('dao','listar',this)">listarTodos()</button>
+        <button class="tab-btn" onclick="switchTab('dao','buscar',this)">buscarPorNome()</button>
+        <button class="tab-btn" onclick="switchTab('dao','completo',this)">Classe completa</button>
+      </div>
+
+      <div id="dao-inserir" class="tab-panel active">
+        <p class="text-sm text-muted mb-1">Salva um objeto Cliente no banco. Usa <code>PreparedStatement</code> com <code>?</code> para evitar SQL Injection.</p>
+        <div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — inserir()</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">public void inserir(Cliente c) {
+    // ? são os parâmetros que serão preenchidos depois
+    String sql = "INSERT INTO clientes (nome, email, telefone) VALUES (?, ?, ?)";
+
+    try (Connection conn = Conexao.getConexao();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, c.getNome());     // 1º ? = nome
+        ps.setString(2, c.getEmail());    // 2º ? = email
+        ps.setString(3, c.getTelefone()); // 3º ? = telefone
+
+        ps.executeUpdate(); // executa o INSERT
+
+        JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso!");
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null,
+            "Erro ao inserir: " + e.getMessage(),
+            "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+}</code></pre></div>
+        <div class="callout callout-tip"><div>
+          <div class="callout-title">Por que PreparedStatement e não Statement?</div>
+          <p class="text-sm">Com <code>PreparedStatement</code> e <code>?</code>, o Java trata os valores como dados (não como SQL). Isso previne SQL Injection. <strong>Sempre use PreparedStatement quando há valores de usuário!</strong></p>
+        </div></div>
+      </div>
+
+      <div id="dao-listar" class="tab-panel">
+        <p class="text-sm text-muted mb-1">Retorna todos os clientes do banco como uma lista Java.</p>
+        <div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — listarTodos()</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">public List&lt;Cliente&gt; listarTodos() {
+    List&lt;Cliente&gt; lista = new ArrayList&lt;&gt;();
+    String sql = "SELECT * FROM clientes ORDER BY nome";
+
+    try (Connection conn = Conexao.getConexao();
+         Statement stmt = conn.createStatement();
+         ResultSet rs   = stmt.executeQuery(sql)) {
+
+        // Percorre cada linha retornada
+        while (rs.next()) {
+            Cliente c = new Cliente();
+            c.setId(rs.getInt("id"));
+            c.setNome(rs.getString("nome"));
+            c.setEmail(rs.getString("email"));
+            c.setTelefone(rs.getString("telefone"));
+            lista.add(c);
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null,
+            "Erro ao listar: " + e.getMessage(),
+            "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+
+    return lista;
+}</code></pre></div>
+      </div>
+
+      <div id="dao-buscar" class="tab-panel">
+        <p class="text-sm text-muted mb-1">Busca clientes cujo nome <em>contenha</em> o texto digitado. O <code>%</code> no LIKE é o "curinga" — <code>%Ana%</code> acha "Ana", "Anabela", "Banana" etc.</p>
+        <div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — buscarPorNome()</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">public List&lt;Cliente&gt; buscarPorNome(String nome) {
+    List&lt;Cliente&gt; lista = new ArrayList&lt;&gt;();
+    String sql = "SELECT * FROM clientes WHERE nome LIKE ? ORDER BY nome";
+
+    try (Connection conn = Conexao.getConexao();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        // "%" + nome + "%" = busca por conteúdo, não exato
+        ps.setString(1, "%" + nome + "%");
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Cliente c = new Cliente();
+            c.setId(rs.getInt("id"));
+            c.setNome(rs.getString("nome"));
+            c.setEmail(rs.getString("email"));
+            c.setTelefone(rs.getString("telefone"));
+            lista.add(c);
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null,
+            "Erro na busca: " + e.getMessage(),
+            "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+
+    return lista;
+}</code></pre></div>
+      </div>
+
+      <div id="dao-completo" class="tab-panel">
+        <p class="text-sm text-muted mb-1">Classe completa com todos os métodos juntos para copiar direto:</p>
+        <div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — ClienteDAO.java (completo)</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">package dao;
+
+import conexao.Conexao;
+import model.Cliente;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+
+public class ClienteDAO {
+
+    // ── Inserir ─────────────────────────────────────────────
+    public void inserir(Cliente c) {
+        String sql = "INSERT INTO clientes (nome, email, telefone) VALUES (?, ?, ?)";
+        try (Connection conn = Conexao.getConexao();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, c.getNome());
+            ps.setString(2, c.getEmail());
+            ps.setString(3, c.getTelefone());
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso!");
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,
+                "Erro ao inserir: " + e.getMessage(),
+                "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // ── Listar todos ─────────────────────────────────────────
+    public List&lt;Cliente&gt; listarTodos() {
+        List&lt;Cliente&gt; lista = new ArrayList&lt;&gt;();
+        String sql = "SELECT * FROM clientes ORDER BY nome";
+        try (Connection conn = Conexao.getConexao();
+             Statement stmt = conn.createStatement();
+             ResultSet rs   = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Cliente c = new Cliente();
+                c.setId(rs.getInt("id"));
+                c.setNome(rs.getString("nome"));
+                c.setEmail(rs.getString("email"));
+                c.setTelefone(rs.getString("telefone"));
+                lista.add(c);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,
+                "Erro ao listar: " + e.getMessage(),
+                "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        return lista;
+    }
+
+    // ── Buscar por nome ──────────────────────────────────────
+    public List&lt;Cliente&gt; buscarPorNome(String nome) {
+        List&lt;Cliente&gt; lista = new ArrayList&lt;&gt;();
+        String sql = "SELECT * FROM clientes WHERE nome LIKE ? ORDER BY nome";
+        try (Connection conn = Conexao.getConexao();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, "%" + nome + "%");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Cliente c = new Cliente();
+                c.setId(rs.getInt("id"));
+                c.setNome(rs.getString("nome"));
+                c.setEmail(rs.getString("email"));
+                c.setTelefone(rs.getString("telefone"));
+                lista.add(c);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,
+                "Erro na busca: " + e.getMessage(),
+                "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        return lista;
+    }
+}</code></pre></div>
+      </div>
+    </div>
+
+    <h4 class="mt-2">Resumo dos métodos do ResultSet</h4>
+    <div class="table-wrapper"><table>
+      <thead><tr><th>Método</th><th>Para que serve</th><th>Exemplo</th></tr></thead>
+      <tbody>
+        <tr><td><code>rs.next()</code></td><td>Avança para a próxima linha. Retorna false quando acabar.</td><td><code>while (rs.next()) { ... }</code></td></tr>
+        <tr><td><code>rs.getInt("coluna")</code></td><td>Lê um valor INT da coluna</td><td><code>rs.getInt("id")</code></td></tr>
+        <tr><td><code>rs.getString("coluna")</code></td><td>Lê um valor VARCHAR/TEXT da coluna</td><td><code>rs.getString("nome")</code></td></tr>
+        <tr><td><code>rs.getDouble("coluna")</code></td><td>Lê um valor DECIMAL/DOUBLE da coluna</td><td><code>rs.getDouble("preco")</code></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 7. CADASTRO SWING -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="cadastro-swing" class="topic-card fade-in">
+  <div class="topic-card-header"><div><h3>Cadastro — CadastroFrame.java (Tela Swing)</h3><span class="badge badge-blue">Swing</span></div></div>
+  <div class="topic-card-body">
+    <div class="analogy-box"><div class="ana-title">O que é um JFrame?</div>
+    <p>JFrame é a janela principal do Swing. Dentro dela você coloca componentes: <strong>JLabel</strong> (texto estático), <strong>JTextField</strong> (campo de digitação), <strong>JButton</strong> (botão clicável), <strong>JPanel</strong> (agrupador de componentes).</p></div>
+
+    <h4>Componentes Swing mais usados:</h4>
+    <div class="table-wrapper mt-1"><table>
+      <thead><tr><th>Componente</th><th>Para que serve</th><th>Criar</th></tr></thead>
+      <tbody>
+        <tr><td><code>JLabel</code></td><td>Texto estático (rótulo)</td><td><code>new JLabel("Nome:")</code></td></tr>
+        <tr><td><code>JTextField</code></td><td>Campo de texto de uma linha</td><td><code>new JTextField(20)</code></td></tr>
+        <tr><td><code>JTextArea</code></td><td>Campo de texto de múltiplas linhas</td><td><code>new JTextArea(5, 20)</code></td></tr>
+        <tr><td><code>JButton</code></td><td>Botão clicável</td><td><code>new JButton("Salvar")</code></td></tr>
+        <tr><td><code>JTable</code></td><td>Tabela com linhas e colunas</td><td><code>new JTable(modelo)</code></td></tr>
+        <tr><td><code>JScrollPane</code></td><td>Adiciona barra de rolagem</td><td><code>new JScrollPane(tabela)</code></td></tr>
+        <tr><td><code>JPanel</code></td><td>Agrupa componentes</td><td><code>new JPanel(new GridLayout(...))</code></td></tr>
+        <tr><td><code>JOptionPane</code></td><td>Janela de mensagem/alerta</td><td><code>JOptionPane.showMessageDialog(...)</code></td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="code-block mt-2"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — CadastroFrame.java (completo)</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">package view;
+
+import dao.ClienteDAO;
+import model.Cliente;
+import javax.swing.*;
+import java.awt.*;
+
+public class CadastroFrame extends JFrame {
+
+    // ── Componentes da tela ──────────────────────────────────
+    private JTextField txtNome;
+    private JTextField txtEmail;
+    private JTextField txtTelefone;
+    private JButton    btnSalvar;
+    private JButton    btnLimpar;
+
+    // ── Construtor — monta a janela ─────────────────────────
+    public CadastroFrame() {
+        setTitle("Cadastro de Clientes");
+        setSize(400, 230);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // fecha só esta janela
+        setLocationRelativeTo(null); // centraliza na tela
+        setResizable(false);
+
+        initComponents(); // monta os componentes
+    }
+
+    // ── Monta os componentes na tela ─────────────────────────
+    private void initComponents() {
+        // Painel principal com GridLayout (linhas x colunas x espaço)
+        JPanel painel = new JPanel(new GridLayout(4, 2, 8, 8));
+        painel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
+
+        // Linha 1: Nome
+        painel.add(new JLabel("Nome:"));
+        txtNome = new JTextField();
+        painel.add(txtNome);
+
+        // Linha 2: Email
+        painel.add(new JLabel("Email:"));
+        txtEmail = new JTextField();
+        painel.add(txtEmail);
+
+        // Linha 3: Telefone
+        painel.add(new JLabel("Telefone:"));
+        txtTelefone = new JTextField();
+        painel.add(txtTelefone);
+
+        // Linha 4: Botões
+        btnSalvar = new JButton("Salvar");
+        btnLimpar = new JButton("Limpar");
+        painel.add(btnSalvar);
+        painel.add(btnLimpar);
+
+        add(painel); // adiciona o painel na janela
+
+        // ── Eventos dos botões ───────────────────────────────
+        btnSalvar.addActionListener(e -> salvar());
+        btnLimpar.addActionListener(e -> limpar());
+    }
+
+    // ── Salvar cliente no banco ──────────────────────────────
+    private void salvar() {
+        String nome = txtNome.getText().trim();
+
+        // Validação básica
+        if (nome.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "O campo Nome é obrigatório!",
+                "Campos obrigatórios",
+                JOptionPane.WARNING_MESSAGE);
+            txtNome.requestFocus(); // foca o campo vazio
+            return; // interrompe o método
+        }
+
+        // Cria o objeto com os dados da tela
+        Cliente c = new Cliente();
+        c.setNome(nome);
+        c.setEmail(txtEmail.getText().trim());
+        c.setTelefone(txtTelefone.getText().trim());
+
+        // Chama o DAO para salvar no banco
+        ClienteDAO dao = new ClienteDAO();
+        dao.inserir(c);
+
+        limpar(); // limpa os campos após salvar
+    }
+
+    // ── Limpar campos ────────────────────────────────────────
+    private void limpar() {
+        txtNome.setText("");
+        txtEmail.setText("");
+        txtTelefone.setText("");
+        txtNome.requestFocus(); // foca o primeiro campo
+    }
+}</code></pre></div>
+
+    <h4 class="mt-2">Layouts mais usados no Swing:</h4>
+    <div class="table-wrapper"><table>
+      <thead><tr><th>Layout</th><th>Comportamento</th><th>Quando usar</th></tr></thead>
+      <tbody>
+        <tr><td><code>GridLayout(L, C, hgap, vgap)</code></td><td>Grade com L linhas e C colunas, todos iguais</td><td>Formulários simples</td></tr>
+        <tr><td><code>BorderLayout</code></td><td>5 regiões: NORTH, SOUTH, EAST, WEST, CENTER</td><td>Tela com área de busca em cima e tabela no centro</td></tr>
+        <tr><td><code>FlowLayout</code></td><td>Componentes em linha, como texto numa página</td><td>Barras de botões ou filtros</td></tr>
+        <tr><td><code>BoxLayout</code></td><td>Empilha componentes verticalmente (Y_AXIS) ou horizontalmente</td><td>Menus ou formulários verticais</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 8. BUSCA SWING -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="busca-swing" class="topic-card fade-in">
+  <div class="topic-card-header"><div><h3>Busca — BuscaFrame.java (Tela Swing com JTable)</h3><span class="badge badge-success">Busca</span></div></div>
+  <div class="topic-card-body">
+    <div class="analogy-box"><div class="ana-title">JTable — a tabela de resultados</div>
+    <p><strong>JTable</strong> exibe dados em linhas e colunas. Ela precisa de um <strong>DefaultTableModel</strong> que é como a "fonte de dados" da tabela — você adiciona e remove linhas nele, e a tabela atualiza automaticamente.</p></div>
+
+    <div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — BuscaFrame.java (completo)</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">package view;
+
+import dao.ClienteDAO;
+import model.Cliente;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.List;
+
+public class BuscaFrame extends JFrame {
+
+    // ── Componentes ──────────────────────────────────────────
+    private JTextField      txtBusca;
+    private JButton         btnBuscar;
+    private JButton         btnListarTodos;
+    private JTable          tabela;
+    private DefaultTableModel modeloTabela;
+
+    // ── Construtor ───────────────────────────────────────────
+    public BuscaFrame() {
+        setTitle("Busca de Clientes");
+        setSize(620, 400);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        initComponents();
+        listarTodos(); // carrega todos ao abrir a tela
+    }
+
+    // ── Monta os componentes ─────────────────────────────────
+    private void initComponents() {
+        // ── Painel de busca (topo) ────────────────────────────
+        JPanel painelBusca = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 8));
+        painelBusca.add(new JLabel("Nome:"));
+
+        txtBusca = new JTextField(20);
+        painelBusca.add(txtBusca);
+
+        btnBuscar     = new JButton("Buscar");
+        btnListarTodos = new JButton("Listar Todos");
+        painelBusca.add(btnBuscar);
+        painelBusca.add(btnListarTodos);
+
+        // ── Tabela de resultados ──────────────────────────────
+        // Definir as colunas da tabela
+        String[] colunas = {"ID", "Nome", "Email", "Telefone"};
+        modeloTabela = new DefaultTableModel(colunas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false; // impede edição direta na tabela
+            }
+        };
+        tabela = new JTable(modeloTabela);
+        tabela.getColumnModel().getColumn(0).setMaxWidth(50); // ID pequeno
+        JScrollPane scroll = new JScrollPane(tabela); // barra de rolagem
+
+        // ── Montar a janela ───────────────────────────────────
+        setLayout(new BorderLayout(5, 5));
+        add(painelBusca, BorderLayout.NORTH);
+        add(scroll,      BorderLayout.CENTER);
+
+        // ── Eventos ───────────────────────────────────────────
+        btnBuscar.addActionListener(e -> buscar());
+        btnListarTodos.addActionListener(e -> listarTodos());
+
+        // Enter no campo de busca também dispara a busca
+        txtBusca.addActionListener(e -> buscar());
+    }
+
+    // ── Buscar por nome ──────────────────────────────────────
+    private void buscar() {
+        String nome = txtBusca.getText().trim();
+
+        if (nome.isEmpty()) {
+            listarTodos(); // se vazio, lista todos
+            return;
+        }
+
+        modeloTabela.setRowCount(0); // limpa a tabela
+
+        ClienteDAO dao = new ClienteDAO();
+        List&lt;Cliente&gt; lista = dao.buscarPorNome(nome);
+
+        for (Cliente c : lista) {
+            modeloTabela.addRow(new Object[]{
+                c.getId(),
+                c.getNome(),
+                c.getEmail(),
+                c.getTelefone()
+            });
+        }
+
+        if (lista.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Nenhum cliente encontrado com o nome: " + nome,
+                "Sem resultados",
+                JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    // ── Listar todos ─────────────────────────────────────────
+    private void listarTodos() {
+        modeloTabela.setRowCount(0); // limpa antes de recarregar
+
+        ClienteDAO dao = new ClienteDAO();
+        List&lt;Cliente&gt; lista = dao.listarTodos();
+
+        for (Cliente c : lista) {
+            modeloTabela.addRow(new Object[]{
+                c.getId(),
+                c.getNome(),
+                c.getEmail(),
+                c.getTelefone()
+            });
+        }
+    }
+}</code></pre></div>
+
+    <h4 class="mt-2">Operações com DefaultTableModel</h4>
+    <div class="table-wrapper"><table>
+      <thead><tr><th>Operação</th><th>Código</th></tr></thead>
+      <tbody>
+        <tr><td>Limpar todas as linhas</td><td><code>modeloTabela.setRowCount(0);</code></td></tr>
+        <tr><td>Adicionar uma linha</td><td><code>modeloTabela.addRow(new Object[]{id, nome, email});</code></td></tr>
+        <tr><td>Obter linha selecionada</td><td><code>int linha = tabela.getSelectedRow();</code></td></tr>
+        <tr><td>Obter valor de uma célula</td><td><code>modeloTabela.getValueAt(linha, 1);</code> (linha, coluna)</td></tr>
+        <tr><td>Remover uma linha</td><td><code>modeloTabela.removeRow(linha);</code></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 9. MAIN + INTEGRAÇÃO -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="topic-card fade-in">
+  <div class="topic-card-header"><div><h3>Main.java — Iniciando a aplicação</h3><span class="badge badge-primary">Execução</span></div></div>
+  <div class="topic-card-body">
+    <div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Main.java</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">import view.CadastroFrame;
+import view.BuscaFrame;
+import javax.swing.SwingUtilities;
+
+public class Main {
+    public static void main(String[] args) {
+        // SwingUtilities.invokeLater garante que a UI rode na thread certa
+        SwingUtilities.invokeLater(() -> {
+            CadastroFrame cadastro = new CadastroFrame();
+            cadastro.setVisible(true);
+
+            BuscaFrame busca = new BuscaFrame();
+            busca.setVisible(true);
+        });
+    }
+}</code></pre></div>
+
+    <div class="callout callout-tip mt-2"><div>
+      <div class="callout-title">Para abrir uma tela a partir de um botão de outra tela:</div>
+      <div class="code-block" style="margin:.35rem 0;"><pre style="margin:0;padding:.75rem;font-size:.82rem;"><code class="language-java">// Dentro de um ActionListener de um botão:
+btnAbrirBusca.addActionListener(e -> {
+    BuscaFrame busca = new BuscaFrame();
+    busca.setVisible(true);
+});</code></pre></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 10. DICAS DE PROVA -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="dicas" class="topic-card fade-in">
+  <div class="topic-card-header"><div><h3>Dicas de Prova — O que mais cai</h3><span class="badge badge-warn">Prova</span></div></div>
+  <div class="topic-card-body">
+    <div class="two-col">
+      <div class="col-box">
+        <h5 style="color:var(--sucesso);">O que você DEVE saber fazer:</h5>
+        <ul style="font-size:.87rem;line-height:2;padding-left:1.1rem;margin:0;">
+          <li>Criar a classe <code>Conexao</code> do zero</li>
+          <li>Criar um <code>JFrame</code> com campos e botão</li>
+          <li>Pegar texto do campo: <code>txt.getText()</code></li>
+          <li>Criar objeto, setar atributos, chamar DAO</li>
+          <li>Ler <code>ResultSet</code> com <code>rs.next()</code></li>
+          <li>Criar e popular um <code>DefaultTableModel</code></li>
+          <li>Usar <code>PreparedStatement</code> com <code>?</code></li>
+        </ul>
+      </div>
+      <div class="col-box">
+        <h5 style="color:var(--erro);">Erros clássicos para evitar:</h5>
+        <ul style="font-size:.87rem;line-height:2;padding-left:1.1rem;margin:0;">
+          <li>Esquecer de importar <code>java.sql.*</code></li>
+          <li>Colocar a senha errada na <code>Conexao</code></li>
+          <li>Não rodar o SQL antes de testar</li>
+          <li>Não adicionar o JAR do MySQL</li>
+          <li>Usar <code>executeQuery()</code> no INSERT (use <code>executeUpdate()</code>)</li>
+          <li>Esquecer o <code>rs.next()</code> antes de ler dados</li>
+          <li>Não limpar a tabela antes de repopular (<code>setRowCount(0)</code>)</li>
+        </ul>
+      </div>
+    </div>
+
+    <h4 class="mt-2">Mapa mental — execute vs query</h4>
+    <div class="table-wrapper"><table>
+      <thead><tr><th>Operação SQL</th><th>Método Java</th><th>Retorna</th></tr></thead>
+      <tbody>
+        <tr><td>SELECT</td><td><code>executeQuery(sql)</code></td><td><code>ResultSet</code> (com as linhas)</td></tr>
+        <tr><td>INSERT, UPDATE, DELETE</td><td><code>executeUpdate(sql)</code></td><td><code>int</code> (nº de linhas afetadas)</td></tr>
+      </tbody>
+    </table></div>
+
+    <h4 class="mt-2">Imports essenciais para copiar</h4>
+    <div class="code-block"><div class="code-block-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div><span class="lang">Java — Imports obrigatórios</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div><pre><code class="language-java">// Para qualquer classe que acessa o banco:
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+// Ou resumido (pega tudo de java.sql):
+import java.sql.*;
+
+// Para Swing (telas):
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+// Para listas:
+import java.util.ArrayList;
+import java.util.List;
+
+// Para mostrar mensagens no DAO sem referência à tela:
+import javax.swing.JOptionPane;</code></pre></div>
+
+    <div class="callout callout-danger mt-2"><div>
+      <div class="callout-title">Checagem rápida antes de entregar a prova:</div>
+      <p class="text-sm">
+        1. O banco MySQL está rodando e o banco <code>sistema</code> existe?<br>
+        2. O JAR do MySQL Connector está no projeto?<br>
+        3. A URL na <code>Conexao.java</code> está com o nome certo do banco e a senha certa?<br>
+        4. Você testou o INSERT (chegou no banco) e o SELECT (apareceu na tabela)?<br>
+        5. Os imports estão todos presentes em cada arquivo?
+      </p>
+    </div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 11. CHECKLIST -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="checklist" class="topic-card fade-in">
+  <div class="topic-card-header"><div><h3>Checklist da Prova</h3></div></div>
+  <div class="topic-card-body">
+    <ul class="checklist" id="checklistProva">
+      <li><input type="checkbox" id="pc1" onchange="saveChecklist()"><label for="pc1">Sei criar o banco e a tabela no MySQL (CREATE DATABASE, CREATE TABLE)</label></li>
+      <li><input type="checkbox" id="pc2" onchange="saveChecklist()"><label for="pc2">Sei escrever a classe <strong>Conexao.java</strong> do zero com URL, usuário e senha</label></li>
+      <li><input type="checkbox" id="pc3" onchange="saveChecklist()"><label for="pc3">Sei testar a conexão com uma classe main e verificar o resultado</label></li>
+      <li><input type="checkbox" id="pc4" onchange="saveChecklist()"><label for="pc4">Sei criar o Model (<strong>Cliente.java</strong>) com atributos, construtor e getters/setters</label></li>
+      <li><input type="checkbox" id="pc5" onchange="saveChecklist()"><label for="pc5">Sei escrever o método <strong>inserir()</strong> no DAO usando PreparedStatement</label></li>
+      <li><input type="checkbox" id="pc6" onchange="saveChecklist()"><label for="pc6">Sei escrever o método <strong>listarTodos()</strong> no DAO usando ResultSet</label></li>
+      <li><input type="checkbox" id="pc7" onchange="saveChecklist()"><label for="pc7">Sei escrever o método <strong>buscarPorNome()</strong> no DAO com LIKE e %</label></li>
+      <li><input type="checkbox" id="pc8" onchange="saveChecklist()"><label for="pc8">Sei criar um <strong>JFrame</strong> com JLabel, JTextField e JButton usando GridLayout</label></li>
+      <li><input type="checkbox" id="pc9" onchange="saveChecklist()"><label for="pc9">Sei capturar o clique do botão com <strong>addActionListener</strong></label></li>
+      <li><input type="checkbox" id="pc10" onchange="saveChecklist()"><label for="pc10">Sei pegar o texto do campo com <code>txtNome.getText().trim()</code></label></li>
+      <li><input type="checkbox" id="pc11" onchange="saveChecklist()"><label for="pc11">Sei criar uma <strong>JTable</strong> com DefaultTableModel e colunas</label></li>
+      <li><input type="checkbox" id="pc12" onchange="saveChecklist()"><label for="pc12">Sei popular a tabela com <code>modeloTabela.addRow(new Object[]{...})</code></label></li>
+      <li><input type="checkbox" id="pc13" onchange="saveChecklist()"><label for="pc13">Sei limpar a tabela com <code>modeloTabela.setRowCount(0)</code> antes de repopular</label></li>
+      <li><input type="checkbox" id="pc14" onchange="saveChecklist()"><label for="pc14">Sei mostrar alertas com <code>JOptionPane.showMessageDialog(...)</code></label></li>
+    </ul>
+
+    <div class="mt-2">
+      <div class="progress-label"><span>Progresso</span><span id="checkPct">0/14</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="checkFill" style="width:0%"></div></div>
+    </div>
+
+    <div id="msgEncorajo" style="display:none;margin-top:.75rem;padding:.75rem 1rem;background:rgba(144,212,168,.08);border:1px solid rgba(144,212,168,.25);border-radius:8px;font-size:.9rem;color:var(--sucesso);">
+      Tudo marcado! Você está pronto(a) para a prova. Boa sorte amanhã!
+    </div>
+
+    <div class="flex gap-1 mt-2">
+      <a href="../recursos/cheatsheet-java.html" class="btn btn-primary">Cheatsheet Java</a>
+      <a href="../recursos/cheatsheet-sql.html" class="btn btn-secondary">Cheatsheet SQL</a>
+      <a href="../recursos/flashcards.html" class="btn btn-ghost">Flashcards</a>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+</div>
+
+<footer class="footer"><div class="container"><p><a href="../index.html">← Portal</a> | Prova — Swing + DAO | SENAI Duque de Caxias · UC Desenvolvimento de Sistemas</p></div></footer>
+
+<script>
+hljs.highlightAll();
+
+function switchTab(group, id, btn) {
+  document.querySelectorAll(`[id^="${group}-"]`).forEach(p => p.classList.remove('active'));
+  btn.closest('.tabs').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`${group}-${id}`).classList.add('active');
+  btn.classList.add('active');
+}
+
+function copyCode(btn) {
+  const pre = btn.closest('.code-block').querySelector('pre code');
+  navigator.clipboard.writeText(pre.textContent).then(() => {
+    btn.textContent = 'Copiado!';
+    setTimeout(() => btn.textContent = 'Copiar', 2000);
+  });
+}
+
+function saveChecklist() {
+  const checks = {};
+  for (let i = 1; i <= 14; i++) {
+    const el = document.getElementById('pc' + i);
+    if (el) checks['pc' + i] = el.checked;
+  }
+  localStorage.setItem('provaSwingChecklist', JSON.stringify(checks));
+  updateProgress();
+}
+
+function loadChecklist() {
+  const saved = JSON.parse(localStorage.getItem('provaSwingChecklist') || '{}');
+  for (let i = 1; i <= 14; i++) {
+    const el = document.getElementById('pc' + i);
+    if (el && saved['pc' + i]) el.checked = true;
+  }
+  updateProgress();
+}
+
+function updateProgress() {
+  let count = 0;
+  for (let i = 1; i <= 14; i++) {
+    const el = document.getElementById('pc' + i);
+    if (el && el.checked) count++;
+  }
+  document.getElementById('checkPct').textContent = count + '/14';
+  document.getElementById('checkFill').style.width = (count / 14 * 100) + '%';
+  document.getElementById('msgEncorajo').style.display = count === 14 ? 'block' : 'none';
+}
+
+loadChecklist();
+</script>
+</body></html>
