@@ -41,7 +41,7 @@
 
 /* ── Reset ───────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
   font-family: var(--sans);
   font-size: 1rem;
@@ -49,6 +49,7 @@ body {
   background: var(--bg);
   color: var(--texto);
   min-height: 100vh;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 a { color: var(--primaria); text-decoration: none; }
@@ -83,8 +84,11 @@ pre {
   border-radius: var(--r);
   padding: 1rem 1.25rem;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   font-size: 0.845rem;
   line-height: 1.65;
+  max-width: 100%;
+  min-width: 0;
 }
 pre code { background: none; padding: 0; color: inherit; }
 
@@ -755,11 +759,14 @@ select option { background: var(--bg-elevated); color: var(--texto); }
   border-radius: var(--r-lg);
   overflow: hidden;
   margin: 1rem 0;
+  max-width: 100%;
+  min-width: 0;
 }
 .code-block pre {
   margin: 0;
   border: 0;
   border-radius: 0;
+  max-width: 100%;
 }
 .code-block-header {
   display: flex;
@@ -925,6 +932,17 @@ select option { background: var(--bg-elevated); color: var(--texto); }
   scrollbar-width: none;
 }
 .tab-list::-webkit-scrollbar { display: none; }
+
+/* ── Mobile global ───────────────────────────────────────── */
+@media (max-width: 600px) {
+  pre { font-size: 0.75rem; padding: 0.75rem 0.9rem; }
+  .code-block-header { padding: 0.35rem 0.65rem; }
+  .topic-card-body { padding: 0.9rem; }
+  .container { padding: 0 0.875rem; }
+  .content-layout { gap: 1rem; }
+  table { font-size: 0.78rem; }
+  th, td { padding: 0.35rem 0.55rem; }
+}
 
 /* ── Print ───────────────────────────────────────────────── */
 @media print {
